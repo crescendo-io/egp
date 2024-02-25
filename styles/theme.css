@@ -123,6 +123,10 @@ header.burger .logo{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+.strate-hero .strate-hero_inner h1.medium{
+    line-height: 6vw;
+}
+
 header.burger.is-scrolled {
     background: #FFF;
     //border-bottom: 2px solid #000;
