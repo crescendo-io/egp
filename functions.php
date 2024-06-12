@@ -45,7 +45,7 @@ add_action( 'init', 'egp_custom_post_type', 0 );
 
 
 
-function ecla_taxonomy() {
+function egp_taxonomy() {
     register_taxonomy(
         'typo_client',
         'galerie',
@@ -67,5 +67,17 @@ function ecla_taxonomy() {
             'query_var' => true
         )
     );
+
+    register_taxonomy(
+        'typo_materiaux',
+        'galerie',
+        array(
+            'hierarchical' => true,
+            'show_admin_column' => true,
+            'label' => __( 'Typologie de matériaux', 'lsd_lang'),
+            'query_var' => true
+        )
+    );
+
 }
-add_action( 'init', 'ecla_taxonomy');
+add_action( 'init', 'egp_taxonomy');
