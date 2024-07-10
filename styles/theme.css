@@ -405,6 +405,144 @@ footer {
     }
 }
 
+.main-menu{
+
+}
+
+.header ul{
+    margin-bottom: 0;
+}
+.header{
+    position: fixed;
+    z-index: 300;
+    top: 2vw;
+    background-color: rgba(255,255,255,0.8);
+    max-width: 2000px;
+    width: calc(100% - 4vw);
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 25px 25px 0 0;
+
+    .button{
+        top: 50%;
+        transform: translateY(-50%);
+        position: relative;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .col-sm-9{
+        position: static;
+    }
+
+    .logo{
+        display: inline-block;
+        vertical-align: middle;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .main-menu{
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+        width: 100%;
+    }
+
+    .submenu{
+        position: absolute;
+        left: 0;
+        top: 100%;
+        width: 100%;
+        display: none;
+        background: #FFF;
+        text-align: left;
+        padding: 2vw;
+
+        .image{
+            width: 30%;
+            display: inline-block;
+            height: 15vw;
+            overflow: hidden;
+            vertical-align: middle;
+            overflow: hidden;
+            margin-right: 60px;
+            .img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+
+        .links{
+            width: 65%;
+            display: inline-block;
+            vertical-align: middle;
+
+            .intro-link{
+                width: 100%;
+                padding-left: 0;
+                font-size: 26px;
+            }
+            .link-sub{
+                display: inline-block;
+                width: 40%;
+                padding: 7px 0;
+                vertical-align: top;
+                top: 0;
+                transform: translateY(0);
+
+            }
+        }
+    }
+}
+
+.header .main-menu .submenu a{
+    transform: translateY(0);
+}
+
+.header .main-menu li:hover ul{
+    display: block;
+}
+
+.header .main-menu li a{
+    position: relative;
+    top: 50%;
+    transform: translateY(-48%);
+    display: inline-block;
+}
+
+.header .main-menu .submenu li{
+    text-align: left;
+    max-width: 100%;
+    height: auto;
+}
+
+.header .main-menu .submenu li img{
+    width: 50%;
+    height: 30%;
+    object-fit: cover;
+}
+
+.header .main-menu li{
+    display: inline-block;
+    padding: 15px;
+    font-family: 'Readex Pro';
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 12px;
+    max-width: 8vw;
+    text-align: center;
+    vertical-align: middle;
+    height: 83px;
+}
+
+.header .main-menu li a{
+    color: #0E445F;
+}
+
+
 @media (max-width: 768px) {
     .container {
         width: 100%;
