@@ -39,6 +39,40 @@ function egp_custom_post_type() {
     );
 
     register_post_type( 'galerie', $args );
+
+    // Product
+
+    $labels = array(
+        'name'                => __( 'Produits', 'lsd_lang'),
+        'singular_name'       => __( 'Produits', 'lsd_lang'),
+        'menu_name'           => __( 'Produits', 'lsd_lang'),
+        'all_items'           => __( 'Tous les types de Produits', 'lsd_lang'),
+        'view_item'           => __( 'Voir tous les types de Produits', 'lsd_lang'),
+        'add_new_item'        => __( 'Ajouter un Produit', 'lsd_lang'),
+        'add_new'             => __( 'Ajouter', 'lsd_lang'),
+        'edit_item'           => __( 'Editer un type la Produit', 'lsd_lang'),
+        'update_item'         => __( 'Modifier un type la Produit', 'lsd_lang'),
+        'not_found'           => __( 'Non trouvée', 'lsd_lang'),
+        'not_found_in_trash'  => __( 'Non trouvée dans la corbeille', 'lsd_lang'),
+    );
+
+    $args = array(
+        'label'               => __( 'Produit', 'lsd_lang'),
+        'description'         => __( 'Produits', 'lsd_lang'),
+        'labels'              => $labels,
+        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields' ),
+        'show_in_rest'        => false,
+        'menu_icon'           => 'dashicons-admin-home',
+        'hierarchical'        => true,
+        'public'              => true,
+        'publicly_queryable' => true,
+        'has_archive'         => false,
+        'rewrite' => array(
+            'with_front' => true
+        )
+    );
+
+    register_post_type( 'product', $args );
 }
 
 add_action( 'init', 'egp_custom_post_type', 0 );
