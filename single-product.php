@@ -97,38 +97,69 @@ if($product_image){
     endwhile;
 endif; ?>
 
-<div class="cross-linkin">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <h2 class="title-cross">Ces produits peuvent vous intéresser</h2>
-            </div>
-            <div class="col-sm-3">
-                <a href="" class="article-linked">
-                    <img src="https://fakeimg.pl/500x500/" alt="">
-                    <h3>
-                        Logotype en volume
-                    </h3>
-                    <p>
-                        Logotype en volume, 8 cm d’épaisseur.
-                    </p>
-                    <div class="row princing">
-                        <div class="col-sm-8">
-                            <div class="button secondary">
-                                découvrir
+
+<?php
+$products_items = get_field("product_link");
+
+if($products_items):
+?>
+
+    <div class="cross-linkin">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2 class="title-cross">Ces produits peuvent vous intéresser</h2>
+                </div>
+
+                <?php
+                    foreach ($products_items as $product_item) :
+                        $postID = $product_item;
+                        $product_title = get_the_title($postID);
+                        $product_link = get_the_permalink($postID);
+                        $product_price = get_field('product_price', $postID);
+                        $product_intro = get_field('product_intro', $postID);
+                        $product_image = get_field('product_image', $postID);
+
+                        if($product_image){
+                            $product_image_array = get_custom_thumb($product_image, '600_600');
+                        }
+                ?>
+
+                    <div class="col-sm-3">
+                        <a href="<?= $product_link; ?>" class="article-linked">
+                            <?php if($product_image_array): ?>
+                            <img src="<?= $product_image_array['url']; ?>" alt="">
+                            <?php endif; ?>
+                            <h3>
+                                <?= $product_title; ?>
+                            </h3>
+                            <p>
+                                <?= $product_intro; ?>
+                            </p>
+                            <div class="row princing">
+                                <div class="col-sm-8">
+                                    <div class="button secondary">
+                                        découvrir
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <p>à partir de <strong><?= $product_price; ?></strong></p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4 text-right">
-                            <p>à partir de <strong>700€</strong></p>
-                        </div>
+                        </a>
                     </div>
-                </a>
+
+                <?php endforeach; ?>
+
+
             </div>
-
-
-
         </div>
     </div>
-</div>
+
+<?php
+endif;
+?>
+
+
 
 <?php get_footer();

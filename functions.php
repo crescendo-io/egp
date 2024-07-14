@@ -115,3 +115,6 @@ function egp_taxonomy() {
 
 }
 add_action( 'init', 'egp_taxonomy');
+
+
+add_image_size('600_600', 600, 600, true);
