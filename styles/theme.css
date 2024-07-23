@@ -18,6 +18,10 @@ body{
     padding: 3.5vw 0;
 }
 
+.strate ul li{
+    font-size: 16px;
+}
+
 .container-image-on-text{
     padding: 200px 0;
 }
@@ -606,7 +610,7 @@ footer {
 }
 
 .container-text-only.text-intro p{
-    max-width: 50%;
+    max-width: 70%;
 }
 .container-text-only.text-intro {
     padding-top: 8vw;
