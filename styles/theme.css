@@ -18,7 +18,8 @@ body{
     padding: 3.5vw 0;
 }
 
-.strate ul li{
+.strate ul li,
+.strate ol li{
     font-size: 16px;
 }
 
