@@ -23,6 +23,11 @@ body{
     font-size: 16px;
 }
 
+.strate ul li:before,
+.strate ol li:before{
+    content: "- ";
+}
+
 .container-image-on-text{
     padding: 200px 0;
 }
