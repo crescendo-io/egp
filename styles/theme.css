@@ -367,8 +367,8 @@ header.burger.is-scrolled {
     padding: 15px;
     padding-bottom: 30px;
     border: 1px solid #CCC;
-    margin-bottom: 0;
-    height: 100%;
+    margin-bottom: 30px;
+    height: auto;
     text-align: center;
 
 }
@@ -639,6 +639,7 @@ footer {
     position: relative;
     border: 0;
     padding: 0;
+    margin-bottom: 30px;
 
     &:before{
         content: '';
