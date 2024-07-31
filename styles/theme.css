@@ -617,6 +617,7 @@ footer {
 
 .container-text-only.text-intro p{
     max-width: 70%;
+    width: 100%;
 }
 .container-text-only.text-intro {
     padding-top: 8vw;
