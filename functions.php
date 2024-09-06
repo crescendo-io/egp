@@ -60,7 +60,7 @@ function egp_custom_post_type() {
         'label'               => __( 'Produit', 'lsd_lang'),
         'description'         => __( 'Produits', 'lsd_lang'),
         'labels'              => $labels,
-        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields' ),
+        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields', 'page-attributes' ),
         'show_in_rest'        => false,
         'menu_icon'           => 'dashicons-admin-home',
         'hierarchical'        => true,
