@@ -831,12 +831,13 @@ footer {
     }
 
     h3 {
-        font-size: 50px;
-        line-height: 50px;
+        font-size: 25px;
+        line-height: 25px;
     }
 
     h2 {
-        font-size: 50px;
+        font-size: 40px;
+        line-height: 45px;
 
         &.big {
             font-size: 70px;
@@ -854,13 +855,131 @@ footer {
         line-height: 35px;
     }
 
-    header.burger.is-scrolled .button-menu {
-        padding: 0;
-        padding-top: 20px;
+    .container-slider-cards .swiper .card-slide .text{
+        padding: 30px;
     }
 
-    header.burger.is-scrolled .logo-scroll {
-        margin-top: 0;
+    .container-slider-cards .swiper .card-slide .text img{
+        width: 40px;
+        height: 40px;
+    }
+
+    .swiper .swiper-pagination{
+        display: none;
+    }
+
+    .two-cols:after{
+        display: none;
+    }
+
+    .header{
+        .logo{
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .button{
+            display: none;
+        }
+
+        .main-menu{
+            position: fixed;
+            width: 100%;
+            display: none;
+            padding-top: 20px;
+            height: auto;
+            max-height: calc(100vh - 180px);
+            overflow: auto;
+            top: 66px;
+            background: rgba(255,255,255,.98);
+            backdrop-filter: blur(5px);
+            left: 0;
+            padding-bottom: 30px;
+        }
+    }
+
+    .header .main-menu li{
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid rgba(14, 68, 95, .05);
+        max-width: 100%;
+        height: auto;
+        padding: 15px 45px 15px 15px;
+        text-align: left;
+        position: relative;
+
+        .arrow-sub{
+            width: 25px;
+            height: 25px;
+            background-image: url(img/drop-down.svg);
+            background-position: center;
+            display: block;
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            right: 15px;
+            top: 16px;
+        }
+    }
+
+    .header .main-menu li:hover ul{
+        display: none;
+    }
+
+
+
+    .header .main-menu li:last-child{
+        border: 0;
+    }
+
+    .header .main-menu li a{
+        font-size: 18px;
+        transform: translateY(0px);
+    }
+
+    .header .burger-menu{
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        .barre{
+            width: 40px;
+            height: 3px;
+            background: #224761;
+            margin: 5px 0;
+        }
+    }
+
+    .header .main-menu li .submenu{
+        width: 100%;
+        position: relative;
+        max-width: 100%;
+        display: none;
+        background: transparent;
+        padding-left: 0;
+
+        .image{
+            display: none;
+        }
+
+        .links{
+            width: 100%;
+            .intro-link{
+                display: none;
+            }
+
+            .link-sub{
+                width: 100%;
+                max-width: 100%;
+                text-align: left;
+                border: 0;
+
+            }
+        }
+    }
+
+    .header .main-menu .submenu li a{
+        font-size: 13px;
+        font-weight: 500;
     }
 
     .strate-hero .strate-hero_inner h1.big {
@@ -868,12 +987,13 @@ footer {
         line-height: 80px;
     }
 
+
     .strate-hero h4 {
         font-size: 20px;
     }
 
     .strate {
-        padding: 15px 0;
+        padding: 40px 0;
     }
 
     footer {
@@ -896,3 +1016,5 @@ footer {
         }
     }
 }
+
+

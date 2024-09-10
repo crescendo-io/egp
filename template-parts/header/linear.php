@@ -7,10 +7,17 @@
         <div class="row">
             <div class="col-sm-1">
                 <div class="logo">
-                    <img src="<?= get_stylesheet_directory_uri(); ?>/styles/img/logo.svg" alt="">
+                    <a href="<?= get_site_url(); ?>">
+                        <img src="<?= get_stylesheet_directory_uri(); ?>/styles/img/logo.svg" alt="">
+                    </a>
                 </div>
             </div>
             <div class="col-sm-9">
+                <div class="burger-menu">
+                    <div class="barre"></div>
+                    <div class="barre"></div>
+                    <div class="barre"></div>
+                </div>
                 <ul class="main-menu">
                     <?php
                     foreach ($menu as $menu_item):
@@ -30,6 +37,7 @@
                         <li>
                             <a href="<?= $link; ?>"><?= $title; ?></a>
                             <?php if($haveSub && $subMenu): ?>
+                                <div class="arrow-sub"></div>
                                 <ul class="submenu">
                                     <?php if(isset($imageSubMenuUrl['url']) && $imageSubMenuUrl['url']): ?>
                                         <div class="image">
