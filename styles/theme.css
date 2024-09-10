@@ -822,6 +822,29 @@ footer {
         width: 100%;
     }
 
+    .strate-hero.large{
+        height: 50vh;
+    }
+    .strate-hero.large h1{
+        font-size: 50px;
+        line-height: 50px;
+    }
+
+    .strate-hero .strate-hero_inner{
+        width: 100%;
+        left: 0;
+        padding: 0 15px;
+    }
+
+    .strate-hero .strate-hero_inner p{
+        font-size: 15px;
+    }
+
+    .container-text-only.text-intro p{
+        width: 100%;
+        max-width: 100%;
+    }
+
     .button {
         padding: 8px 30px;
     }
