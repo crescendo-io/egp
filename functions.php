@@ -80,6 +80,40 @@ function egp_custom_post_type() {
     );
 
     register_post_type( 'product', $args );
+
+
+    $labels = array(
+        'name'                => __( 'Articles', 'lsd_lang'),
+        'singular_name'       => __( 'Article', 'lsd_lang'),
+        'menu_name'           => __( 'Articles', 'lsd_lang'),
+        'all_items'           => __( 'Tous les types de Articles', 'lsd_lang'),
+        'view_item'           => __( 'Voir tous les types de Articles', 'lsd_lang'),
+        'add_new_item'        => __( 'Ajouter un Article', 'lsd_lang'),
+        'add_new'             => __( 'Ajouter', 'lsd_lang'),
+        'edit_item'           => __( 'Editer un type la Article', 'lsd_lang'),
+        'update_item'         => __( 'Modifier un type la Article', 'lsd_lang'),
+        'not_found'           => __( 'Non trouvée', 'lsd_lang'),
+        'not_found_in_trash'  => __( 'Non trouvée dans la corbeille', 'lsd_lang'),
+    );
+
+    $args = array(
+        'label'               => __( 'Article', 'lsd_lang'),
+        'description'         => __( 'Article', 'lsd_lang'),
+        'labels'              => $labels,
+        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields', 'page-attributes' ),
+        'show_in_rest'        => false,
+        'menu_icon'           => 'dashicons-admin-home',
+        'hierarchical'        => true,
+        'public'              => true,
+        'publicly_queryable' => true,
+        'has_archive'         => true,
+        'rewrite' => array(
+            'with_front' => true
+        )
+    );
+
+    register_post_type( 'articles', $args );
+
 }
 
 add_action( 'init', 'egp_custom_post_type', 0 );
@@ -125,3 +159,24 @@ add_action( 'init', 'egp_taxonomy');
 
 
 add_image_size('600_600', 600, 600, true);
+
+
+// Hide native post type
+function hide_post_type_from_admin_menu() {
+    // Pour masquer les articles (post)
+    remove_menu_page('edit.php');
+    // Pour masquer les pages
+    // remove_menu_page('edit.php?post_type=page');
+}
+add_action('admin_menu', 'hide_post_type_from_admin_menu');
+
+function hide_post_type_from_frontend($args, $post_type) {
+    if ($post_type === 'post') {  // Remplacez 'post' par le post type que vous voulez masquer
+        $args['public'] = false;  // Rend le post type privé
+        $args['publicly_queryable'] = false;  // Empêche les requêtes sur le front-end
+        $args['show_ui'] = false;  // Masque du menu d'administration
+        $args['exclude_from_search'] = true;  // Exclut des résultats de recherche
+    }
+    return $args;
+}
+add_filter('register_post_type_args', 'hide_post_type_from_frontend', 10, 2);
