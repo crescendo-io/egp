@@ -1,5 +1,33 @@
 <?php
 
+
+function add_hreflang_tags() {
+    // Définir l'URL de la version par défaut (x-default) du site
+    $default_url = get_home_url(); // ou mettre une URL spécifique
+
+    // Obtenir l'URL actuelle
+    $current_url = home_url( add_query_arg( NULL, NULL ) );
+
+    // Si la langue est française
+    if ( get_locale() == 'fr_FR' ) {
+        echo '<link rel="alternate" hreflang="fr" href="' . esc_url( $current_url ) . '" />' . "\n";
+    }
+
+    // Pour la version x-default
+    echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $default_url ) . '" />' . "\n";
+}
+add_action( 'wp_head', 'add_hreflang_tags' );
+
+
+function add_self_canonical_tag() {
+    // Obtenir l'URL de la page actuelle
+    $current_url = home_url( add_query_arg( NULL, NULL ) );
+
+    // Ajouter la balise canonical
+    echo '<link rel="canonical" href="' . esc_url( $current_url ) . '" />' . "\n";
+}
+add_action( 'wp_head', 'add_self_canonical_tag' );
+
 add_action( 'wp_enqueue_scripts', 'wpm_enqueue_styles' );
 function wpm_enqueue_styles(){
     //wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/styles/theme.css' );

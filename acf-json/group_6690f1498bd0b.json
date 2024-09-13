@@ -195,46 +195,6 @@
             ]
         },
         {
-            "key": "field_6690f255b770f",
-            "label": "Contenu",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_6690f162b7708",
-            "label": "Contenu de la page",
-            "name": "product_content",
-            "aria-label": "",
-            "type": "clone",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "clone": [
-                "group_65d31528dd621"
-            ],
-            "display": "seamless",
-            "layout": "block",
-            "prefix_label": 0,
-            "prefix_name": 0
-        },
-        {
             "key": "field_6690f3880afe4",
             "label": "Crosslink",
             "name": "",
@@ -267,7 +227,7 @@
                 "id": ""
             },
             "post_type": [
-                "product"
+                "page"
             ],
             "post_status": "",
             "taxonomy": "",
@@ -289,14 +249,7 @@
             {
                 "param": "post_type",
                 "operator": "==",
-                "value": "product"
-            }
-        ],
-        [
-            {
-                "param": "page_template",
-                "operator": "==",
-                "value": "page-product.php"
+                "value": "page"
             }
         ]
     ],
@@ -309,5 +262,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1726231019
+    "modified": 1726253930
 }

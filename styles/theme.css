@@ -28,6 +28,10 @@ body{
     content: "- ";
 }
 
+a{
+    color: #0E445F;
+}
+
 .container-image-on-text{
     padding: 200px 0;
 }
