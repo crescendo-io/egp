@@ -79,7 +79,7 @@ function egp_custom_post_type() {
         )
     );
 
-    register_post_type( 'product', $args );
+    //register_post_type( 'product', $args );
 
 
     $labels = array(
