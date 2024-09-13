@@ -180,3 +180,96 @@ function hide_post_type_from_frontend($args, $post_type) {
     return $args;
 }
 add_filter('register_post_type_args', 'hide_post_type_from_frontend', 10, 2);
+
+
+function migrate_products_to_pages() {
+    // Vérifier que la fonction ACF existe
+    if ( ! function_exists('get_field') || ! function_exists('update_field') ) {
+        return;
+    }
+
+    // Récupérer tous les posts de type "product" y compris les brouillons
+    $products = new WP_Query( array(
+        'post_type' => 'product',
+        'posts_per_page' => -1, // Pour tout récupérer
+        'post_status' => array('publish', 'draft') // Inclure les brouillons
+    ) );
+
+    // Tableau pour stocker les ID des pages créées
+    $created_pages = array();
+
+    if ( $products->have_posts() ) {
+        while ( $products->have_posts() ) {
+            $products->the_post();
+
+            // Récupérer l'ID du produit et son titre
+            $product_id = get_the_ID();
+            $product_title = get_the_title( $product_id );
+
+            // Vérifier si la page existe déjà
+            $existing_page_query = new WP_Query( array(
+                'post_type' => 'page',
+                'title'     => $product_title,
+                'posts_per_page' => 1
+            ) );
+
+            if ( $existing_page_query->have_posts() ) {
+                // Ajouter un message dans le log si la page existe déjà
+                error_log( "La page pour le produit ID: $product_id existe déjà" );
+                continue; // Passer au produit suivant
+            }
+
+            // Récupérer les champs ACF du produit
+            $acf_fields = get_fields( $product_id );
+
+            // Créer une nouvelle page avec le template "Page Produit"
+            $new_page_id = wp_insert_post( array(
+                'post_title'   => $product_title,
+                'post_content' => get_the_content( $product_id ),
+                'post_status'  => 'publish', // Mettre en statut 'publish' pour toutes les nouvelles pages
+                'post_type'    => 'page',
+                'page_template' => 'page-product.php', // Assurez-vous que le template est correct
+            ) );
+
+            // Vérifier si la page a bien été créée
+            if ( $new_page_id && ! is_wp_error( $new_page_id ) ) {
+                // Réassigner les champs ACF à la nouvelle page
+                if ( $acf_fields ) {
+                    foreach ( $acf_fields as $field_key => $field_value ) {
+                        update_field( $field_key, $field_value, $new_page_id );
+                    }
+                }
+
+                // Ajouter l'ID de la page créée au tableau
+                $created_pages[$product_id] = $new_page_id;
+
+                // Ajouter un message dans le log pour chaque page créée
+                error_log( "Page créée pour le produit ID: $product_id avec la nouvelle page ID: $new_page_id" );
+            } else {
+                // Ajouter un message d'erreur dans le log
+                error_log( "Erreur lors de la création de la page pour le produit ID: $product_id" );
+            }
+        }
+        // Remettre la requête principale
+        wp_reset_postdata();
+
+        // Réaffecter les pages enfants
+        foreach ( $created_pages as $product_id => $new_page_id ) {
+            // Récupérer l'ID de la page parent (si elle existe)
+            $parent_id = get_post_meta( $product_id, '_product_parent_page', true );
+
+            if ( $parent_id && isset( $created_pages[$parent_id] ) ) {
+                // Définir la page créée comme enfant de la page parent
+                wp_update_post( array(
+                    'ID' => $new_page_id,
+                    'post_parent' => $created_pages[$parent_id]
+                ) );
+            }
+        }
+    } else {
+        // Ajouter un message dans le log si aucun produit trouvé
+        error_log( "Aucun produit trouvé pour migration" );
+    }
+}
+//add_action( 'init', 'migrate_products_to_pages' );
+

@@ -291,6 +291,13 @@
                 "operator": "==",
                 "value": "product"
             }
+        ],
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "page-product.php"
+            }
         ]
     ],
     "menu_order": 0,
@@ -302,5 +309,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1720962196
+    "modified": 1726231019
 }
