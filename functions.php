@@ -271,5 +271,5 @@ function migrate_products_to_pages() {
         error_log( "Aucun produit trouvé pour migration" );
     }
 }
-//add_action( 'init', 'migrate_products_to_pages' );
+add_action( 'init', 'migrate_products_to_pages' );
 
