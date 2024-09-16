@@ -73,9 +73,8 @@
             <div class="col-sm-2 text-right">
                 <a href="" class="button">Demander un devis</a>
             </div>
-
         </div>
     </div>
-
 </div>
 
+<?php custom_breadcrumb(); ?>

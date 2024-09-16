@@ -301,3 +301,52 @@ function migrate_products_to_pages() {
 }
 //add_action( 'init', 'migrate_products_to_pages' );
 
+
+
+// Fil d'ariane
+
+function custom_breadcrumb() {
+    // Start the breadcrumb with a link to the home page
+    if(!is_front_page()){
+        echo '<nav class="breadcrumb">';
+        echo '<a href="' . home_url() . '">Accueil</a>';
+
+        if (is_home() || is_front_page()) {
+            // If we're on the home or front page, no need for further breadcrumbs
+            echo '</nav>'; // Close nav here for home/front page
+            return;
+        }
+    }
+
+
+    // For singular pages
+    if ((is_singular()) && (!is_front_page())) {
+        global $post;
+
+        // Get the post type object
+        $post_type = get_post_type_object(get_post_type());
+        // Get ancestors of the current post to show hierarchy
+        $ancestors = array_reverse(get_post_ancestors($post));
+
+        foreach ($ancestors as $ancestor) {
+            echo '<a href="' . get_permalink($ancestor) . '">' . get_the_title($ancestor) . '</a>  ';
+        }
+
+        // Finally, the current post title
+        echo '<span>' . get_the_title() . '</span>';
+    }
+
+    // For custom taxonomies
+
+
+    // For 404 pages
+    elseif (is_404()) {
+        echo '<span>Erreur 404</span>';
+    }
+
+    // Close nav tag
+    echo '</nav>';
+}
+
+
+
