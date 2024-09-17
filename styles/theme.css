@@ -660,6 +660,79 @@ footer {
     line-height: 6vw;
 }
 
+.container-hero-slider.strate{
+    padding-top: 0;
+}
+
+.container-hero-slider img{
+    max-width: 60%;
+    margin-left: auto;
+    display: block;
+}
+
+.container-hero-slider{
+    .swiper .swiper-wrapper{
+        padding-bottom: 0;
+    }
+}
+
+.container-hero-slider .card-slide{
+    position: relative;
+    &:after{
+        content: '';
+        width: 25vw;
+        height: 25vw;
+        position: absolute;
+        background: url(img/picto-white.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        bottom: 0;
+    }
+}
+
+.container-hero-slider .swiper-button-next,
+.container-hero-slider .swiper-button-prev{
+    width: 50px;
+    height: 45px;
+    background-image: url(img/arrow-slide.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    bottom: 50px;
+    position: absolute;
+    top: auto;
+    &:after{
+        display: none;
+    }
+}
+
+.container-hero-slider .swiper-button-next{
+    left: calc(40% - 100px);
+    transform: rotate(180deg);
+}
+.container-hero-slider .swiper-button-prev{
+    left: calc(40% - 160px);
+}
+
+.container-hero-slider .content{
+    width: 60%;
+    text-align: left;
+    color: #FFF;
+}
+
+.container-hero-slider .content h1,
+.container-hero-slider .content h2
+{
+    font-size: 6vw;
+    text-transform: uppercase;
+    font-weight: 800;
+    line-height: 6vw;
+}
+
+.container-hero-slider .content .button{
+    background-color: #FFF;
+    color: #0E445F;
+}
+
 .container-text-only.text-intro p{
     max-width: 70%;
     width: 100%;
@@ -869,6 +942,25 @@ footer {
 @media (max-width: 768px) {
     .container {
         width: 100%;
+    }
+
+    .container-hero-slider img{
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .container-hero-slider .content{
+        width: 100%;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .container-hero-slider .swiper .card-slide{
+        height: 80vh;
+    }
+
+    .container-hero-slider .swiper-button-next, .container-hero-slider .swiper-button-prev{
+        bottom: 15px;
     }
 
     .strate-hero.large{
