@@ -41,7 +41,7 @@
                                 <ul class="submenu">
                                     <?php if(isset($imageSubMenuUrl['url']) && $imageSubMenuUrl['url']): ?>
                                         <div class="image">
-                                            <img src="<?= $imageSubMenuUrl['url']; ?>" class="img" alt="">
+                                            <img src="<?= $imageSubMenuUrl['url']; ?>" width="<?= $imageSubMenuUrl['width']; ?>" height="<?= $imageSubMenuUrl['height']; ?>" class="img" alt="<?= $imageSubMenuUrl['alt']; ?>">
                                         </div>
                                     <?php endif; ?>
 

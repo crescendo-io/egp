@@ -17,7 +17,7 @@ if($product_image){
                 <?php if($product_image_array): ?>
                 <div class="container-img-introduction">
                     <div class="image-item">
-                        <img src="<?= $product_image_array['url']; ?>" alt="">
+                        <img src="<?= $product_image_array['url']; ?>" width="<?= $product_image_array['width']; ?>" height="<?= $product_image_array['height']; ?>" alt="<?= $product_image_array['alt']; ?>">
                     </div>
                 </div>
                 <?php endif; ?>
@@ -76,7 +76,7 @@ if($product_image){
                             <div class="col-sm-6">
                                 <?php if($contentSlideImgArray): ?>
                                 <div class="container-image-slide">
-                                    <img src="<?= $contentSlideImgArray['url']; ?>" alt="">
+                                    <img src="<?= $contentSlideImgArray['url']; ?>" width="<?= $contentSlideImgArray['width']; ?>" height="<?= $contentSlideImgArray['height']; ?>" alt="<?= $product_image_array['alt']; ?>">
                                 </div>
                                 <?php endif; ?>
                             </div>
@@ -128,7 +128,7 @@ if($products_items):
                     <div class="col-sm-3">
                         <a href="<?= $product_link; ?>" class="article-linked">
                             <?php if($product_image_array): ?>
-                            <img src="<?= $product_image_array['url']; ?>" alt="">
+                            <img src="<?= $product_image_array['url']; ?>" width="<?= $product_image_array['width']; ?>" height="<?= $product_image_array['height']; ?>" alt="<?= $product_image_array['alt']; ?>">
                             <?php endif; ?>
                             <h3>
                                 <?= $product_title; ?>
