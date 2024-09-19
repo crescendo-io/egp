@@ -717,6 +717,7 @@ footer {
     width: 60%;
     text-align: left;
     color: #FFF;
+    z-index: 50;
 }
 
 .container-hero-slider .content h1,
