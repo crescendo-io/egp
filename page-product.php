@@ -162,5 +162,30 @@ endif;
 ?>
 
 
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "<?= get_the_title(); ?>",
+        "description": "<?= $product_intro; ?>",
+        "image": [
+            "<?= $product_image_array['url']; ?>"
+        ],
+        "brand": {
+            "@type": "Brand",
+            "name": "Atelier Gambetta"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "<?= $product_price; ?>",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock",
+            "url": "<?= get_the_permalink(); ?>"
+        }
+    }
+</script>
+
+
+
 
 <?php get_footer();
