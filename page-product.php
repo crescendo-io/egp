@@ -18,7 +18,7 @@ if($product_image){
                 <?php if($product_image_array): ?>
                 <div class="container-img-introduction">
                     <div class="image-item">
-                        <img src="<?= $product_image_array['url']; ?>" width="<?= $product_image_array['width']; ?>" height="<?= $product_image_array['height']; ?>" alt="<?= $product_image_array['alt']; ?>>
+                        <img src="<?= $product_image_array['url']; ?>" width="<?= $product_image_array['width']; ?>" height="<?= $product_image_array['height']; ?>" alt="<?= $product_image_array['alt']; ?>">
                     </div>
                 </div>
                 <?php endif; ?>
