@@ -62,7 +62,7 @@ function egp_custom_post_type() {
         'description'         => __( 'Toutes les Galerie', 'lsd_lang'),
         'labels'              => $labels,
         'supports'            => array( 'title', 'author', 'revisions', 'custom-fields' ),
-        'show_in_rest'        => false,
+        'show_in_rest'        => true,
         'menu_icon'           => 'dashicons-admin-home',
         'hierarchical'        => true,
         'public'              => true,
