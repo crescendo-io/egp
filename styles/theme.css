@@ -976,9 +976,6 @@ footer {
 
 .filters-form{
     padding: 15px;
-    position: sticky;
-    top: 100px;
-    max-height: calc(100vh - 100px);
     overflow: auto;
     padding-bottom: 80px;
 
