@@ -98,6 +98,7 @@ p {
     font-size: 15px;
     font-weight: 700;
     transition: 0.3s;
+    border: 2px solid #0E445F;
 
     &.primary {
         background: #0E445F;
@@ -111,19 +112,19 @@ p {
 
     &.yellow-border{
         background: transparent;
-        border: 1px solid #F0B542;
+        border: 2px solid #F0B542;
         color: #F0B542;
     }
 
     &.yellow-background{
         background: #F0B542;
-        border: 1px solid #F0B542;
+        border: 2px solid #F0B542;
         color: #FAEC70;
     }
 
     &.red-border{
         background: transparent;
-        border: 1px solid #D64B45;
+        border: 2px solid #D64B45;
         color: #D64B45;
     }
 
@@ -131,6 +132,7 @@ p {
         background: #FFF;
         color: #000;
         text-decoration: none;
+        border: 2px solid #0E445F;
     }
 }
 
@@ -972,6 +974,18 @@ footer {
 
 .filter-group label{
     display: block;
+}
+
+.strate ul{
+    padding-left: 15px;
+}
+
+.strate p a{
+    text-decoration: underline;
+}
+
+.strate p .button{
+    text-decoration: none;
 }
 
 .filters-form{

@@ -68,6 +68,11 @@
                     <?php
                     endforeach;
                     ?>
+                    <li>
+                        <a href="<?= get_site_url(); ?>/galerie/">
+                            Galerie
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="col-sm-2 text-right">
