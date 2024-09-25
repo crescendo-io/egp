@@ -987,6 +987,11 @@ footer {
         width: 100%;
         border: 0;
     }
+
+    .list-group{
+        max-height: 27vh;
+        overflow: auto;
+    }
 }
 
 #galerie{

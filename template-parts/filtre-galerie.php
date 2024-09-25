@@ -2,6 +2,7 @@
     <!-- Checkbox pour typo_client -->
     <div class="filter-group">
         <h4><?php _e('Client', 'textdomain'); ?></h4>
+        <div class="list-group">
         <?php
         // Fonction récursive pour afficher les termes et leurs enfants
         function display_terms_recursive($terms, $selected, $taxonomy, $level = 0) {
@@ -40,11 +41,13 @@
             display_terms_recursive($typo_clients, $selected_clients, 'typo_client');
         }
         ?>
+        </div>
     </div>
 
     <!-- Checkbox pour typo_product -->
     <div class="filter-group">
         <h4><?php _e('Product', 'textdomain'); ?></h4>
+        <div class="list-group">
         <?php
         // Obtenir tous les termes parents de la taxonomy 'typo_product'
         $typo_products = get_terms(array(
@@ -61,11 +64,13 @@
             display_terms_recursive($typo_products, $selected_products, 'typo_product');
         }
         ?>
+        </div>
     </div>
 
     <!-- Checkbox pour typo_materiaux -->
     <div class="filter-group">
         <h4><?php _e('Materials', 'textdomain'); ?></h4>
+        <div class="list-group">
         <?php
         // Obtenir tous les termes parents de la taxonomy 'typo_materiaux'
         $typo_materiaux = get_terms(array(
@@ -82,6 +87,7 @@
             display_terms_recursive($typo_materiaux, $selected_materiaux, 'typo_materiaux');
         }
         ?>
+        </div>
     </div>
 
     <input type="submit" class="button" value="<?php _e('Filter', 'textdomain'); ?>" />
