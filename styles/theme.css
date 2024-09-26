@@ -484,7 +484,8 @@ footer {
     opacity: 1;
 }
 
-.page-template-page-product .breadcrumb a{
+.page-template-page-product .breadcrumb a,
+.page-template-page-product .breadcrumb span{
     color: #0E445F;
 }
 
