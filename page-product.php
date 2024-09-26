@@ -181,6 +181,11 @@ endif;
             "priceCurrency": "EUR",
             "availability": "https://schema.org/InStock",
             "url": "<?= get_the_permalink(); ?>"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.5",
+            "reviewCount": "23"
         }
     }
 </script>
