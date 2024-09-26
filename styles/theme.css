@@ -484,6 +484,10 @@ footer {
     opacity: 1;
 }
 
+.page-template-page-product .breadcrumb a{
+    color: #0E445F;
+}
+
 
 .header{
     position: fixed;
