@@ -1343,6 +1343,22 @@ footer {
             }
         }
     }
+
+    #galerie{
+        padding-top: 80px;
+    }
+
+    .breadcrumb{
+        display: none;
+    }
+
+    .filters-form{
+        display: none;
+    }
+
+    .filter-buttons-toggle{
+        width: 100%;
+    }
 }
 
 

@@ -8,7 +8,7 @@
 <article id="post-<?php the_ID(); ?>" class="post-galerie col-sm-3">
     <header class="entry-header">
         <?php if ($galerie_photo) : ?>
-            <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+            <a href="<?= $galerie_photo_array['url']; ?>"  data-lightbox="lightbox" title="<?php the_title_attribute(); ?>">
                 <img src="<?= $galerie_photo_array['url']; ?>" width="<?= $galerie_photo_array['width']; ?>" height="<?= $galerie_photo_array['height']; ?>" class="img-galerie" alt="<?= $galerie_photo_array['alt']; ?>">
                 <div class="entry-title">
                     <?php the_title(); ?>

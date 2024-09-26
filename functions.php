@@ -31,7 +31,16 @@ add_action( 'wp_head', 'add_self_canonical_tag' );
 add_action( 'wp_enqueue_scripts', 'wpm_enqueue_styles' );
 function wpm_enqueue_styles(){
     //wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/styles/theme.css' );
+    wp_enqueue_style('lightbox', get_stylesheet_directory_uri() . '/styles/lightbox.css', array(), filemtime(get_template_directory() . '/styles/theme.css'));
     wp_enqueue_style('theme', get_stylesheet_directory_uri() . '/styles/theme.css', array(), filemtime(get_template_directory() . '/styles/theme.css'));
+    wp_enqueue_script(
+        'lightbox', // Identifiant unique du script
+        get_stylesheet_directory_uri() . '/js/lightbox.min.js', // URL du fichier JS
+        array( 'jquery' ), // Dépendances (si besoin, ici 'jquery')
+        null, // Version du script (null pour désactiver la gestion des versions)
+        true // Charger dans le footer (true) ou dans le header (false)
+    );
+
     wp_enqueue_script(
         'script', // Identifiant unique du script
         get_stylesheet_directory_uri() . '/js/script.js', // URL du fichier JS
@@ -145,6 +154,15 @@ function egp_custom_post_type() {
 }
 
 add_action( 'init', 'egp_custom_post_type', 0 );
+
+
+function desactiver_single_cpt() {
+    if (is_singular('galerie')) {
+        wp_redirect(home_url());  // Redirige vers la page d'accueil ou une autre page de ton choix.
+        exit;
+    }
+}
+add_action('template_redirect', 'desactiver_single_cpt');
 
 
 

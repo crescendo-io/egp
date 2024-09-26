@@ -1,3 +1,6 @@
+<div class="visible-xs">
+    <button class="button filter-buttons-toggle">Filtres</button>
+</div>
 <form method="GET" action="<?= get_site_url(); ?>/galerie/" class="filters-form">
     <!-- Checkbox pour typo_client -->
     <div class="filter-group">

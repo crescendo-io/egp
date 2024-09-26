@@ -8,4 +8,13 @@ $(window).on('load',function(){
 
         el.parent().find('.submenu').slideToggle(100);
     })
+
+    $('.filter-buttons-toggle').click(function(){
+       $('.filters-form').slideToggle();
+    });
+
+    $('.filters-form').on('change', function(){
+        $('.filters-form').submit();
+    });
+
 });
