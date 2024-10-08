@@ -257,6 +257,11 @@ p {
     max-width: 100%;
 }
 
+.post-type-archive-galerie .breadcrumb a,
+.post-type-archive-galerie .breadcrumb span{
+    color: #0E445F;
+}
+
 .swiper-pagination-bullet{
     background: #0E445F;
     transition: .3s;

@@ -104,7 +104,7 @@ function egp_custom_post_type() {
         'label'               => __( 'Produit', 'lsd_lang'),
         'description'         => __( 'Produits', 'lsd_lang'),
         'labels'              => $labels,
-        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields', 'page-attributes' ),
+        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields', 'page-attributes'),
         'show_in_rest'        => false,
         'menu_icon'           => 'dashicons-admin-home',
         'hierarchical'        => true,
@@ -137,7 +137,7 @@ function egp_custom_post_type() {
         'label'               => __( 'Article', 'lsd_lang'),
         'description'         => __( 'Article', 'lsd_lang'),
         'labels'              => $labels,
-        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields', 'page-attributes' ),
+        'supports'            => array( 'title', 'author', 'revisions', 'custom-fields', 'thumbnail'),
         'show_in_rest'        => false,
         'menu_icon'           => 'dashicons-admin-home',
         'hierarchical'        => true,
@@ -145,7 +145,7 @@ function egp_custom_post_type() {
         'publicly_queryable' => true,
         'has_archive'         => true,
         'rewrite' => array(
-            'with_front' => true
+            'with_front' => true,
         )
     );
 
@@ -325,41 +325,60 @@ function migrate_products_to_pages() {
 
 function custom_breadcrumb() {
     // Start the breadcrumb with a link to the home page
-    if(!is_front_page()){
+    if (!is_front_page()) {
         echo '<nav class="breadcrumb">';
-        echo '<a href="' . home_url() . '">Accueil</a>';
+        echo '<a href="' . home_url() . '">Accueil</a> ';
 
-        if (is_home() || is_front_page()) {
-            // If we're on the home or front page, no need for further breadcrumbs
-            echo '</nav>'; // Close nav here for home/front page
-            return;
+        // If we're on a single post, custom post type or page
+        if (is_singular()) {
+            global $post;
+            $post_type = get_post_type_object(get_post_type());
+
+            // If the post type is not 'post', show the post type archive link
+            if ($post_type && $post_type->has_archive) {
+                echo '<a href="' . get_post_type_archive_link($post_type->name) . '">' . $post_type->labels->name . '</a> ';
+            }
+
+            // Get ancestors of the current post to show hierarchy
+            $ancestors = array_reverse(get_post_ancestors($post));
+
+            foreach ($ancestors as $ancestor) {
+                echo '<a href="' . get_permalink($ancestor) . '">' . get_the_title($ancestor) . '</a> ';
+            }
+
+            // Finally, the current post title
+            echo '<span>' . get_the_title() . '</span>';
         }
-    }
-
-
-    // For singular pages
-    if ((is_singular()) && (!is_front_page())) {
-        global $post;
-
-        // Get the post type object
-        $post_type = get_post_type_object(get_post_type());
-        // Get ancestors of the current post to show hierarchy
-        $ancestors = array_reverse(get_post_ancestors($post));
-
-        foreach ($ancestors as $ancestor) {
-            echo '<a href="' . get_permalink($ancestor) . '">' . get_the_title($ancestor) . '</a>  ';
+        // If we're on a post type archive page
+        elseif (is_post_type_archive()) {
+            $post_type = get_post_type_object(get_post_type());
+            if ($post_type) {
+                echo '<span>' . $post_type->labels->name . '</span>';
+            }
         }
-
-        // Finally, the current post title
-        echo '<span>' . get_the_title() . '</span>';
-    }
-
-    // For custom taxonomies
-
-
-    // For 404 pages
-    elseif (is_404()) {
-        echo '<span>Erreur 404</span>';
+        // If we're on a category or custom taxonomy archive page
+        elseif (is_category() || is_tag() || is_tax()) {
+            $term = get_queried_object();
+            echo '<span>' . $term->name . '</span>';
+        }
+        // If we're on an archive page like date, author, etc.
+        elseif (is_archive()) {
+            if (is_date()) {
+                if (is_day()) {
+                    echo '<span>' . get_the_date() . '</span>';
+                } elseif (is_month()) {
+                    echo '<span>' . get_the_date('F Y') . '</span>';
+                } elseif (is_year()) {
+                    echo '<span>' . get_the_date('Y') . '</span>';
+                }
+            } elseif (is_author()) {
+                echo '<span>' . get_the_author() . '</span>';
+            }
+        }
+        // For 404 pages
+        elseif (is_404()) {
+            echo '<span>Erreur 404</span>';
+        }
     }
 
     // Close nav tag

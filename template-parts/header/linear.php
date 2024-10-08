@@ -73,10 +73,15 @@
                             Galerie
                         </a>
                     </li>
+                    <li>
+                        <a href="<?= get_site_url(); ?>/articles/">
+                            Blog
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="col-sm-2 text-right">
-                <a href="" class="button">Demander un devis</a>
+                <a href="<?= get_site_url(); ?>/demande-de-devis/" class="button">Demander un devis</a>
             </div>
         </div>
     </div>
