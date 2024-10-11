@@ -868,7 +868,7 @@ footer {
     border: 0;
 }
 .introduction-product{
-    margin-top: 150px;
+    margin-top: 170px;
     padding-bottom: 5vw;
 
     .container-pricing-product{
@@ -930,7 +930,7 @@ footer {
     .container-img-introduction{
         position: sticky;
         top: 5vh;
-        height: 90vh;
+        height: calc(100% - 200px);
         padding: 40px;
 
         &:before{
