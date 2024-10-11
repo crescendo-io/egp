@@ -1185,7 +1185,8 @@ footer {
     }
 
     .cky-consent-bar{
-        width: 600px;
+        max-width: 600px;
+        width: 100%;
         position: absolute;
         left: 50% !important;
         top: 50% !important;
