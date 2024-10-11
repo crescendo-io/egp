@@ -20,7 +20,7 @@ body{
 
 .strate ul li,
 .strate ol li{
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .strate ul li:before,
@@ -66,7 +66,7 @@ h2 {
 
 h3 {
     font-size: 1.9vw;
-    line-height: 1.5vw;
+    line-height: 2vw;
     font-weight: 700;
     text-transform: uppercase;
 }
@@ -604,6 +604,22 @@ footer {
     }
 }
 
+
+@media (max-width: 1440px) and (min-width: 768px) {
+    .header .logo img{
+        max-width: 100%;
+    }
+
+    .header {
+        .logo {
+            width: 170%;
+            top: 50%;
+            transform: translateY(-50%);
+            position: relative;
+        }
+    }
+}
+
 .header a:hover{
     text-decoration: none;
 }
@@ -810,6 +826,12 @@ footer {
         background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.13071165966386555) 80%);
         width: 100%;
         height: 100%;
+    }
+
+    &.no-bg{
+        &:before{
+            display: none;
+        }
     }
     .pushs-article-image{
         margin-bottom: 0;
