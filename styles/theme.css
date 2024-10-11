@@ -1199,7 +1199,24 @@ footer {
         width: 100%;
     }
 
-    .container-hero-slider img{
+    .container-hero-slider .content h1,
+    .container-hero-slider .content h2
+    {
+        font-size: 50px;
+        line-height: 50px;
+    }
+
+    .container-hero-slider .swiper .card-slide img{
+        opacity: .5;
+    }
+
+    .container-slider-cards {
+        .swiper-button-next, .swiper-button-prev{
+            display: none;
+        }
+    }
+
+        .container-hero-slider img{
         width: 100%;
         max-width: 100%;
     }
