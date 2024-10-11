@@ -930,7 +930,7 @@ footer {
     .container-img-introduction{
         position: sticky;
         top: 5vh;
-        height: calc(100% - 200px);
+        height: calc(100vh - 200px);
         padding: 40px;
 
         &:before{
