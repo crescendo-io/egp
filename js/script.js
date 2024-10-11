@@ -17,4 +17,8 @@ $(window).on('load',function(){
         $('.filters-form').submit();
     });
 
+    setTimeout(function(){
+        $('.loader').fadeOut();
+    },500);
+
 });
