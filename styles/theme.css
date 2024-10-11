@@ -1114,6 +1114,10 @@ footer {
     border-color: #0E445F !important;
 }
 
+.cky-btn-revisit-wrapper{
+    background: #0E445F !important;
+}
+
 .cky-consent-container{
     left: 50% !important;
     top: 50% !important;
