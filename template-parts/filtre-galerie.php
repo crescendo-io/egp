@@ -4,7 +4,7 @@
 <form method="GET" action="<?= get_site_url(); ?>/galerie/" class="filters-form">
     <!-- Checkbox pour typo_client -->
     <div class="filter-group">
-        <h4><?php _e('Client', 'textdomain'); ?></h4>
+        <h4><?php _e('Clients', 'textdomain'); ?></h4>
         <div class="list-group">
         <?php
         // Fonction récursive pour afficher les termes et leurs enfants
@@ -49,7 +49,7 @@
 
     <!-- Checkbox pour typo_product -->
     <div class="filter-group">
-        <h4><?php _e('Product', 'textdomain'); ?></h4>
+        <h4><?php _e('Produits', 'textdomain'); ?></h4>
         <div class="list-group">
         <?php
         // Obtenir tous les termes parents de la taxonomy 'typo_product'
@@ -72,7 +72,7 @@
 
     <!-- Checkbox pour typo_materiaux -->
     <div class="filter-group">
-        <h4><?php _e('Materials', 'textdomain'); ?></h4>
+        <h4><?php _e('Matériels', 'textdomain'); ?></h4>
         <div class="list-group">
         <?php
         // Obtenir tous les termes parents de la taxonomy 'typo_materiaux'

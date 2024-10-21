@@ -78,16 +78,6 @@
                     <?php
                     endforeach;
                     ?>
-                    <li>
-                        <a href="<?= get_site_url(); ?>/galerie/">
-                            Galerie
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?= get_site_url(); ?>/articles/">
-                            Blog
-                        </a>
-                    </li>
                 </ul>
             </div>
             <div class="col-sm-2 text-right">

@@ -108,24 +108,47 @@ p {
         background: #fff;
         color: #0E445F;
         border: 2px solid #0E445F;
+
+        &:hover{
+            background: #0E445F;
+            color: #FFF;
+        }
     }
 
     &.yellow-border{
         background: transparent;
         border: 2px solid #F0B542;
         color: #F0B542;
+
+        &:hover{
+            background: #F0B542;
+            border-color: #F0B542;
+            color: #FFF;
+        }
     }
 
     &.yellow-background{
         background: #F0B542;
         border: 2px solid #F0B542;
         color: #FAEC70;
+
+        &:hover{
+            background: transparent;
+            border: 2px solid #F0B542;
+            color: #F0B542;
+        }
     }
 
     &.red-border{
         background: transparent;
         border: 2px solid #D64B45;
         color: #D64B45;
+
+        &:hover{
+            background: #D64B45;
+            color: #FFF;
+            border: 2px solid #D64B45;
+        }
     }
 
     &:hover {
@@ -684,6 +707,7 @@ footer {
         width: 70%;
         right: 0;
         z-index: 5;
+        background: rgba(0, 0, 0, 0.25);
     }
 
     .strate-hero_image{
@@ -780,8 +804,13 @@ footer {
 }
 
 .container-hero-slider .content .button{
-    background-color: #FFF;
-    color: #0E445F;
+    border-color: #FFF;
+    color: #fff;
+    background: transparent;
+
+    &:hover{
+        background: rgba(255,255,255,.2);
+    }
 }
 
 .container-text-only.text-intro p{
@@ -1012,6 +1041,8 @@ footer {
         background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.0) 100%);
         color: #FFF;
         width: 100%;
+        text-transform: uppercase;
+        font-weight: 800;
         font-size: 18px;
     }
 
@@ -1074,6 +1105,8 @@ footer {
     font-size: 30px;
     border-bottom: 1px solid #F7F7F7;
     padding:  15px 0;
+    text-transform: uppercase;
+    font-weight: 800;
 }
 
 .navigation.pagination{

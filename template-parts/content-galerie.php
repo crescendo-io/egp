@@ -13,12 +13,6 @@
                 <div class="entry-title">
                     <?php the_title(); ?>
 
-                    <div class="sub-info">
-                        <span class="posted-on">
-                            <?php echo __('Published on:', 'textdomain') . ' ' . get_the_date(); ?>
-                        </span>
-
-                    </div>
                 </div>
             </a>
         <?php endif; ?>
