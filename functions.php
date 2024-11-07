@@ -204,7 +204,7 @@ function egp_taxonomy() {
 add_action( 'init', 'egp_taxonomy');
 
 function redirect_single_terms() {
-    if (is_tax('typo_client') || is_tax('typo_product') || is_tax('typo_materiaux')) {
+    if (is_tax('typo_client') || is_tax('typo_product') || is_tax('typo_materiaux') || is_category()) {
         wp_redirect(home_url());
         exit;
     }
