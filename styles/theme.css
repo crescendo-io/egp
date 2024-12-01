@@ -839,6 +839,11 @@ footer {
     }
 }
 
+
+.swiper-button-lock{
+    display: flex !important;
+}
+
 .container-pushs-articles .container-pushs-article{
     position: relative;
     border: 0;
