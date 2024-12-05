@@ -656,7 +656,6 @@ footer {
     .header .logo img{
         max-width: 100%;
     }
-
     .header {
         .logo {
             width: 170%;
@@ -1281,6 +1280,10 @@ footer a{
 @media (max-width: 1280px) {
     .container {
         width: 100%;
+    }
+
+    .container-iframe iframe{
+        height: 65vw;
     }
 
     .phone-call{
