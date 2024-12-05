@@ -98,3 +98,7 @@
 
     get_template_part('template-parts/header/' . $optionMenu);
 ?>
+
+<a href="<?= get_site_url(); ?>/demande-de-devis/" class="phone-call">
+
+</a>
