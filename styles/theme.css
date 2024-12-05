@@ -453,7 +453,7 @@ header.burger.is-scrolled .social svg path{
 }
 
 .page-id-5517 .strate-hero:before{
-    width: 100%;
+    width: 100% !important;
 }
 
 /* Footer */
