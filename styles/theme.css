@@ -448,6 +448,14 @@ header.burger.is-scrolled .social svg path{
     fill: #154a73 !important;
 }
 
+.page-id-5517 .strate-hero .strate-hero_image{
+    width: 100%;
+}
+
+.page-id-5517 .strate-hero:before{
+    width: 100%;
+}
+
 /* Footer */
 
 footer p{
