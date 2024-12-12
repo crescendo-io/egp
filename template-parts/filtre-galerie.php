@@ -92,7 +92,5 @@
         ?>
         </div>
     </div>
-
-    <a href="<?= get_site_url(); ?>/galerie/" style="display: block; text-align: center; text-decoration: underline; font-size: 16px;">Supprimer les filtres</a>
-    <input type="submit" class="button" value="<?php _e('Filter', 'textdomain'); ?>" />
+    <a href="<?= get_site_url(); ?>/galerie/" class="button secondary" style="text-align: center; border: 2px solid #0E445F">Supprimer les filtres</a>
 </form>
