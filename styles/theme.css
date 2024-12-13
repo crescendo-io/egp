@@ -830,6 +830,7 @@ footer {
 .container-slider-quotes .swiper-button-next,
 .container-slider-quotes .swiper-button-prev{
     top: calc(50% - 22px);
+    background: url(../images/prev-dark.svg);
 }
 
 .container-hero-slider .swiper-button-next{
