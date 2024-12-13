@@ -201,6 +201,25 @@ p {
     }
 }
 
+.container-slider-logo{
+    .swiper-button-next, .swiper-button-prev{
+        width: 60px;
+        height: 60px;
+        &:after{
+            content: '';
+            background: url(../images/prev-dark.svg);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+        }
+
+    }
+
+    .swiper-button-next{
+        transform: rotate(180deg);
+    }
+}
 
 
 .container-slider-cards .swiper .card-slide .text:after{
@@ -418,6 +437,8 @@ header.burger.is-scrolled {
     .swiper .card-slide{
         padding: 0 2vw;
     }
+
+
 }
 
 .container-pushs-articles .container-pushs-article{
@@ -478,11 +499,11 @@ footer:before{
     content: '';
     width: 100%;
     height: 100%;
-    background: url('img/pattern.png');
-    background-size: 450px;
+    background: url('img/pattern-head-white.svg');
+    background-size: 150%;
     left: 0;
     position: absolute;
-    opacity: .4;
+    opacity: .03;
     top: 0;
 }
 footer {
@@ -718,13 +739,14 @@ footer {
 .strate-hero{
     &:after{
         content: '';
-        width: 25vw;
-        height: 25vw;
+        width: 30vw;
+        height: 100%;
         position: absolute;
-        background: url(img/picto-white.svg);
-        background-size: contain;
-        background-repeat: no-repeat;
+        background: url(img/pattern-head-white.svg);
+        background-size: 900%;
+        background-repeat: repeat;
         bottom: 0;
+        opacity: .035;
     }
     &.dark:before{
         width: 70%;
@@ -777,18 +799,21 @@ footer {
     position: relative;
     &:after{
         content: '';
-        width: 25vw;
-        height: 25vw;
+        width: 40%;
+        height: 100%;
         position: absolute;
-        background: url(img/picto-white.svg);
-        background-size: contain;
-        background-repeat: no-repeat;
+        background: url('img/pattern-head-white.svg');
+        background-size: 800%;
+        background-repeat: repeat;
         bottom: 0;
+        opacity: .035;
     }
 }
 
 .container-hero-slider .swiper-button-next,
-.container-hero-slider .swiper-button-prev{
+.container-hero-slider .swiper-button-prev,
+.container-slider-quotes .swiper-button-next,
+.container-slider-quotes .swiper-button-prev{
     width: 50px;
     height: 45px;
     background-image: url(img/arrow-slide.svg);
@@ -802,6 +827,11 @@ footer {
     }
 }
 
+.container-slider-quotes .swiper-button-next,
+.container-slider-quotes .swiper-button-prev{
+    top: calc(50% - 22px);
+}
+
 .container-hero-slider .swiper-button-next{
     left: calc(40% - 100px);
     transform: rotate(180deg);
@@ -810,6 +840,9 @@ footer {
     left: calc(40% - 160px);
 }
 
+.container-slider-quotes .swiper-button-next{
+    transform: rotate(180deg);
+}
 .container-hero-slider .content{
     width: 60%;
     text-align: left;
@@ -1282,6 +1315,12 @@ footer a{
         width: 100%;
     }
 
+    .container-hero-slider .card-slide{
+        &:after{
+            display: none;
+        }
+    }
+
     .container-iframe iframe{
         height: 65vw;
     }
@@ -1295,6 +1334,12 @@ footer a{
         border-radius: 50%;
         height: 45px;
         background: #0E445F;
+    }
+
+    .container-slider-quotes .swiper-button-next,
+    .container-slider-quotes .swiper-button-prev{
+        top: auto;
+        bottom: 0;
     }
 
     .phone-call:after{
@@ -1343,7 +1388,32 @@ footer a{
     }
 
     .container-hero-slider .swiper-button-next, .container-hero-slider .swiper-button-prev{
+        top: auto;
         bottom: 15px;
+    }
+
+    .container-hero-slider .swiper-button-next{
+        left: 70px;
+    }
+    .container-hero-slider .swiper-button-prev{
+        left: 15px;
+    }
+
+    .strate-hero {
+
+        &:before{
+            width: 100%!important;
+        }
+        .strate-hero_image {
+            width: 100%;
+        }
+    }
+
+    .strate.container-image-text{
+        text-align: center;
+    }
+    .container-slider-cards{
+        text-align: center;
     }
 
     .strate-hero.large{
