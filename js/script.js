@@ -1,8 +1,10 @@
 $(window).on('load',function(){
     $('.burger-menu').click(function(){
        $('.main-menu').slideToggle(100);
-        $('html, body').animate({ scrollTop: 0 }, 'slow');
-        $('html, body').toggleClass('open');
+       $(this).toggleClass('open');
+
+       $('html, body').animate({ scrollTop: 0 }, 'slow');
+       $('html, body').toggleClass('open');
     });
 
 
@@ -10,6 +12,7 @@ $(window).on('load',function(){
         var el = $(this);
 
         el.parent().find('.submenu').slideToggle(100);
+        el.toggleClass('open');
     })
 
     $('.filter-buttons-toggle').click(function(){
