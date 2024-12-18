@@ -227,9 +227,23 @@ p {
     display: block;
     font-size: 14px;
     font-weight: 600;
-    text-decoration: underline;
     text-transform: uppercase;
+    border: 2px solid #0E445F;
+    padding: 10px;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    transition: .3s;
 }
+
+.container-slider-cards .swiper .card-slide .text:hover{
+    &:after{
+        background: #0E445F;
+        color: #FFF;
+    }
+}
+
+
 .container-slider-cards .swiper .card-slide a{
     position: relative;
     display: block;
