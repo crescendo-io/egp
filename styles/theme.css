@@ -224,12 +224,12 @@ p {
 
 .container-slider-cards .swiper .card-slide .text:after{
     content: 'En savoir +';
-    display: block;
+    display: inline-block;
     font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
     border: 2px solid #0E445F;
-    padding: 10px;
+    padding: 10px 30px;
     border-radius: 30px;
     text-decoration: none;
     text-align: center;
