@@ -7,6 +7,8 @@ $product_intro = get_field('product_intro');
 $product_image = get_field('product_image');
 $product_embed = get_field('product_embed');
 
+$product_price_json = preg_replace('/[^0-9]/', '', $product_price);
+
 if($product_image){
     $product_image_array = get_custom_thumb($product_image, 'full');
 }
@@ -177,7 +179,7 @@ endif;
         },
         "offers": {
             "@type": "Offer",
-            "price": "<?= $product_price; ?>",
+            "price": "<?= $product_price_json; ?>",
             "priceCurrency": "EUR",
             "availability": "https://schema.org/InStock",
             "url": "<?= get_the_permalink(); ?>"
