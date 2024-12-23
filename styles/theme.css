@@ -716,7 +716,7 @@ footer {
     position: relative;
     top: 50%;
     transform: translateY(-48%);
-    display: inline-block;
+    display: block;
 }
 
 .header .main-menu .submenu li{
