@@ -156,6 +156,15 @@ function egp_custom_post_type() {
 add_action( 'init', 'egp_custom_post_type', 0 );
 
 
+function disable_rss_for_cpt() {
+    if (is_feed()) {
+        wp_redirect(home_url()); 
+        exit;
+    }
+}
+add_action('template_redirect', 'disable_rss_for_cpt');
+
+
 function desactiver_single_cpt() {
     if (is_singular('galerie')) {
         wp_redirect(home_url());  // Redirige vers la page d'accueil ou une autre page de ton choix.
