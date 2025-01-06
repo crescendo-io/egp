@@ -77,7 +77,9 @@ function egp_custom_post_type() {
         'public'              => true,
         'publicly_queryable' => true,
         'has_archive'         => 'galerie',
-        'rewrite' => false
+        'rewrite' => array(
+            'with_front' => true
+        )
     );
 
     register_post_type( 'galerie', $args );
