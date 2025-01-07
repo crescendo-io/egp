@@ -23,10 +23,8 @@
     
     <?php
         $pageTitle = (is_front_page() ? get_bloginfo('description') : wp_title('', false)) . ' | ' . get_bloginfo('name') ;
-        $siteDescription = 'description';
     ?>
     <title><?php echo $pageTitle; ?></title>
-    <meta name="description" content="<?php echo $siteDescription; ?>">
 
     <?php
         $favicon = get_field('option_logo_favicon', 'option');
