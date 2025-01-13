@@ -1307,6 +1307,7 @@ footer a {
         position: absolute;
         right: 20px;
         top: 50%;
+        z-index: 3;
         transform: translateY(-50%);
     }
     .header .burger-menu .barre {
