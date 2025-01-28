@@ -1384,10 +1384,18 @@ footer a {
     .breadcrumb {
         display: none;
     }
-    .filters-form {
-        display: none;
+
+    .filter-group h4{
+        font-size: 20px;
     }
     .filter-buttons-toggle {
         width: 100%;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .filters-form {
+        display: none;
     }
 }
