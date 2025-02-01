@@ -1075,6 +1075,40 @@ footer .social {
 footer a {
     text-decoration: underline;
 }
+
+
+#upload-image-form input{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+}
+
+#upload-image-form #images{
+    border: 2px #ccc dotted;
+    padding: 40px;
+    text-align: center;
+}
+
+#upload-image-form #images::file-selector-button{
+    margin-right: 8px;
+    border: none;
+    background: #0e445f;
+    padding: 8px 12px;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+#upload-image-form label{
+    display: block;
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+
 @media (max-width: 1280px) {
     .container {
         width: 100%;

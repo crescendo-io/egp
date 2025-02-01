@@ -594,9 +594,6 @@ function add_opportunity() {
         error_log('Erreur : réponse vide ou invalide.');
     }
 
-
-
-
     if (is_wp_error($response)) {
         echo 'Erreur : ' . $response->get_error_message();
     } else {
@@ -619,4 +616,4 @@ function exclude_hidden_media_from_library($query) {
         $query->set('meta_query', $meta_query);
     }
 }
-//add_action('pre_get_posts', 'exclude_hidden_media_from_library');
+add_action('pre_get_posts', 'exclude_hidden_media_from_library');

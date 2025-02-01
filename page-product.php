@@ -72,10 +72,10 @@ if($product_image){
 
                         <label>
                             Ajouter jusqu'à 3 images *
-                            <input type="file" name="images[]" id="images" accept="image/*" multiple required>
+                            <input type="file" name="images[]" id="images" accept="image/*" multiple>
                         </label>
 
-                        <button type="submit">Envoyer</button>
+                        <button type="submit" class="button">Envoyer</button>
                     </form>
 
 
