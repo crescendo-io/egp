@@ -416,6 +416,7 @@ function custom_breadcrumb() {
 
 function add_opportunity() {
 
+    // POST
     $societyName    = isset($_POST['society-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-name'])) : '';
     $societyAddress = isset($_POST['society-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-address'])) : '';
     $projectAddress = isset($_POST['project-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['project-address'])) : '';
@@ -423,6 +424,15 @@ function add_opportunity() {
     $secondName     = isset($_POST['second-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['second-name'])) : '';
     $email          = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
     $phone          = isset($_POST['phone']) ? preg_replace('/[^0-9+]/', '', $_POST['phone']) : '';
+
+    // SESSION
+    $utm_source = isset($_SESSION['utm_source']) ? $_SESSION['utm_source'] : null;
+    $utm_medium = isset($_SESSION['utm_medium']) ? $_SESSION['utm_medium'] : null;
+    $utm_campaign = isset($_SESSION['utm_campaign']) ? $_SESSION['utm_campaign'] : null;
+    $utm_content = isset($_SESSION['utm_content']) ? $_SESSION['utm_content'] : null;
+    $utm_term = isset($_SESSION['utm_term']) ? $_SESSION['utm_term'] : null;
+    $gclid = isset($_SESSION['gclid']) ? $_SESSION['gclid'] : null;
+    $wbraid = isset($_SESSION['wbraid']) ? $_SESSION['wbraid'] : null;
 
 
     if (isset($_FILES['images'])) {
@@ -492,13 +502,14 @@ function add_opportunity() {
         'title' => "Opportunité depuis ateliergambetta.com",
         'ref' => time(),
         "pipelinecol" => 1,
-        "utm_source" => "google",
-        "utm_medium" => "cpc",
-        "utm_campaign" => "promo-ete",
-        "utm_content" => "banniere-1",
-        "utm_term" => "achat lampe",
-        "gclid_wbraid" => "abc123xyz"
+        "utm_source" => $utm_source,
+        "utm_medium" => $utm_medium,
+        "utm_campaign" => $utm_campaign,
+        "utm_content" => $utm_content,
+        "utm_term" => $utm_term,
+        "gclid_wbraid" => $gclid . $wbraid
     ];
+
 
     if(isset($mediasHtml) && $mediasHtml){
         $opp['description'] = 'description de lopportunite' . '<br/> liste des fichiers : ' . $mediasHtml;
@@ -616,4 +627,21 @@ function exclude_hidden_media_from_library($query) {
         $query->set('meta_query', $meta_query);
     }
 }
-//add_action('pre_get_posts', 'exclude_hidden_media_from_library');
+add_action('pre_get_posts', 'exclude_hidden_media_from_library');
+
+
+// UTM
+
+session_start();
+function insert_utm_parameters() {
+    $params = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'wbraid'];
+
+    foreach ($params as $param) {
+        if (isset($_GET[$param])) {
+            $_SESSION[$param] = htmlspecialchars($_GET[$param], ENT_QUOTES, 'UTF-8');
+        }
+    }
+}
+
+// Appel de la fonction lors du chargement de la page
+insert_utm_parameters();

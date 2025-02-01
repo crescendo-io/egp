@@ -66,14 +66,16 @@ if($product_image){
                             <input type="email" name="email">
                         </label>
                         <label>
-                            Numéro de portable
+                            Numéro de portable *
                             <input type="tel" name="phone">
                         </label>
 
                         <label>
-                            Ajouter jusqu'à 3 images *
+                            Ajouter jusqu'à 3 images
                             <input type="file" name="images[]" id="images" accept="image/*" multiple>
                         </label>
+                        
+                        <div id="message"></div>
 
                         <button type="submit" class="button">Envoyer</button>
                     </form>
