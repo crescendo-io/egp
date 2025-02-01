@@ -40,10 +40,75 @@ if($product_image){
                             </div>
                         </div>
                     </div>
-                    <?php if($product_embed): ?>
-                        <?= $product_embed; ?>
-                    <?php endif; ?>
-                    </div>
+                    <form id="upload-image-form" enctype="multipart/form-data">
+                        <label>
+                            Nom de la société *
+                            <input type="text" name="society-name">
+                        </label>
+                        <label>
+                            Adresse complète de votre société *
+                            <input type="text" name="society-address">
+                        </label>
+                        <label>
+                            Adresse de votre projet (si différente)
+                            <input type="text" name="project-address">
+                        </label>
+                        <label>
+                            Votre Prénom *
+                            <input type="text" name="first-name">
+                        </label>
+                        <label>
+                            Votre Nom *
+                            <input type="text" name="second-name">
+                        </label>
+                        <label>
+                            Votre Email *
+                            <input type="email" name="email">
+                        </label>
+                        <label>
+                            Numéro de portable
+                            <input type="tel" name="phone">
+                        </label>
+
+                        <label>
+                            Ajouter jusqu'à 3 images *
+                            <input type="file" name="images[]" id="images" accept="image/*" multiple required>
+                        </label>
+
+                        <button type="submit">Envoyer</button>
+                    </form>
+
+
+                    <div id="message"></div>
+
+                    <script>
+                        document.getElementById("upload-image-form").addEventListener("submit", function(e) {
+                            e.preventDefault();
+
+                            let formData = new FormData(this);
+                            let files = document.getElementById("images").files;
+
+                            if (files.length > 3) {
+                                document.getElementById("message").innerHTML = "Vous ne pouvez envoyer que 3 images maximum.";
+                                return;
+                            }
+
+                            formData.append("action", "add_opportunity");
+
+                            fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                                method: "POST",
+                                body: formData,
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    document.getElementById("message").innerHTML = data.message;
+                                })
+                                .catch(error => {
+                                    document.getElementById("message").innerHTML = "Erreur lors de l'envoi.";
+                                });
+                        });
+                    </script>
+                </div>
             </div>
         </div>
     </div>

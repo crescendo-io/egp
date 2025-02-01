@@ -414,3 +414,209 @@ function custom_breadcrumb() {
 }
 
 
+function add_opportunity() {
+
+    $societyName    = isset($_POST['society-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-name'])) : '';
+    $societyAddress = isset($_POST['society-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-address'])) : '';
+    $projectAddress = isset($_POST['project-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['project-address'])) : '';
+    $firstName      = isset($_POST['first-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['first-name'])) : '';
+    $secondName     = isset($_POST['second-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['second-name'])) : '';
+    $email          = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $phone          = isset($_POST['phone']) ? preg_replace('/[^0-9+]/', '', $_POST['phone']) : '';
+
+
+    if (isset($_FILES['images'])) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+
+
+        $files = $_FILES['images'];
+        $uploaded_images = [];
+
+        // Limite à 3 fichiers
+        if (count($files['name']) > 3) {
+            wp_send_json_error(['message' => 'Vous ne pouvez envoyer que 3 images maximum.']);
+            wp_die();
+        }
+
+        foreach ($files['name'] as $key => $value) {
+
+            if ($files['error'][$key] !== UPLOAD_ERR_OK) {
+                continue;
+            }
+
+            $file = [
+                'name' => $files['name'][$key],
+                'type' => $files['type'][$key],
+                'tmp_name' => $files['tmp_name'][$key],
+                'error' => $files['error'][$key],
+                'size' => $files['size'][$key]
+            ];
+
+            $upload = wp_handle_upload($file, ['test_form' => false]);
+
+
+            if (isset($upload['error'])) {
+                continue;
+            }
+
+            // Insérer le média avec post_status "private" pour le masquer en BO
+            $attachment_id = wp_insert_attachment([
+                'post_mime_type' => $upload['type'],
+                'post_title' => sanitize_file_name($file['name']),
+                'post_content' => '',
+                'post_status' => 'private'
+            ], $upload['file']);
+
+
+            if (!is_wp_error($attachment_id)) {
+                update_post_meta($attachment_id, '_is_hidden_media', '1');
+                $uploaded_images[] = $attachment_id;
+            }
+        }
+
+        if (!empty($uploaded_images)) {
+            $mediasHtml = '';
+            $key = 1;
+            foreach ($uploaded_images as $uploaded_image){
+                $mediasHtml .= "<br/><a href='" . wp_get_attachment_url($uploaded_image) . "' download>Document " . $key ."</a>";
+                $key++;
+            }
+        }
+    }
+
+
+    //OBJ
+    $opp = [
+        'title' => "Opportunité depuis ateliergambetta.com",
+        'ref' => time(),
+        "pipelinecol" => 1,
+        "utm_source" => "google",
+        "utm_medium" => "cpc",
+        "utm_campaign" => "promo-ete",
+        "utm_content" => "banniere-1",
+        "utm_term" => "achat lampe",
+        "gclid_wbraid" => "abc123xyz"
+    ];
+
+    if(isset($mediasHtml) && $mediasHtml){
+        $opp['description'] = 'description de lopportunite' . '<br/> liste des fichiers : ' . $mediasHtml;
+    }else{
+        $opp['description'] = 'description de lopportunite';
+    }
+
+    $tiers = [
+        "name" => "Gambetta Industries",
+        "address" => $projectAddress,
+        "phone" => $phone,
+        "note_private" => "Informations internes sur le client."
+    ];
+
+    $contact = [
+        "firstname" => $firstName,
+        "lastname" => $secondName,
+        "phone"=> $phone,
+        "email"=> $email,
+        "country_id"=> 1,
+        "note_private"=> "Généré par le formulaire Atelier Gambetta",
+        "phone_pro"=> $phone,
+        "address"=> $societyAddress
+    ];
+
+    $objSender['opp'] = $opp;
+    $objSender['tiers'] = $tiers;
+    $objSender['contact'] = $contact;
+
+
+    // Token API CALL
+    $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/login';
+    $args = [
+        'body'      => [
+            'login'    => 'support_api',
+            'password' => 'X7oTJGhdfINP'
+        ],
+        'timeout'   => 10,
+        'redirection' => 10,
+        'blocking'  => true,
+        'headers'   => [
+            'Content-Type' => 'application/x-www-form-urlencoded'
+        ],
+    ];
+
+    $response = wp_remote_post($url, $args);
+
+    // Vérification des erreurs
+    if (is_wp_error($response)) {
+        error_log('Erreur API FreshProcess : ' . $response->get_error_message());
+        return;
+    }
+
+    // Récupération et décodage du corps de la réponse
+    $response_body = wp_remote_retrieve_body($response);
+    $response_data = json_decode($response_body, true);
+
+    // Vérification de la présence du token
+    $token_api = $response_data['success']['token'] ?? null;
+
+    // POST DATAS API CALL
+    $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/gambetta/create-opportunity';
+
+    $body = json_encode($objSender);
+
+
+// Arguments de la requête
+    $args = [
+        'body'        => $body,
+        'timeout'     => 10,
+        'redirection' => 10,
+        'blocking'    => true,
+        'headers'     => [
+            'Content-Type' => 'application/json',
+            'DOLAPIKEY'    => $token_api,
+        ],
+    ];
+
+    $response = wp_remote_post($url, $args);
+
+    if (is_wp_error($response)) {
+        error_log('Erreur API FreshProcess : ' . $response->get_error_message());
+        return;
+    }
+
+// Récupération de la réponse
+    $response_body = wp_remote_retrieve_body($response);
+    $response_data = json_decode($response_body, true);
+
+    if ($response_data) {
+        error_log('Réponse API : ' . print_r($response_data, true));
+    } else {
+        error_log('Erreur : réponse vide ou invalide.');
+    }
+
+
+
+
+    if (is_wp_error($response)) {
+        echo 'Erreur : ' . $response->get_error_message();
+    } else {
+        echo wp_remote_retrieve_body($response);
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_add_opportunity', 'add_opportunity');
+add_action('wp_ajax_nopriv_add_opportunity', 'add_opportunity');
+
+function exclude_hidden_media_from_library($query) {
+    if (is_admin() && $query->get('post_type') === 'attachment') {
+        $meta_query = $query->get('meta_query') ?: [];
+        $meta_query[] = [
+            'key'     => '_is_hidden_media',
+            'compare' => 'NOT EXISTS'
+        ];
+        $query->set('meta_query', $meta_query);
+    }
+}
+//add_action('pre_get_posts', 'exclude_hidden_media_from_library');
