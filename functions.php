@@ -426,13 +426,19 @@ function add_opportunity() {
     $phone          = isset($_POST['phone']) ? preg_replace('/[^0-9+]/', '', $_POST['phone']) : '';
 
     // SESSION
-    $utm_source = isset($_SESSION['utm_source']) ? $_SESSION['utm_source'] : null;
-    $utm_medium = isset($_SESSION['utm_medium']) ? $_SESSION['utm_medium'] : null;
-    $utm_campaign = isset($_SESSION['utm_campaign']) ? $_SESSION['utm_campaign'] : null;
-    $utm_content = isset($_SESSION['utm_content']) ? $_SESSION['utm_content'] : null;
-    $utm_term = isset($_SESSION['utm_term']) ? $_SESSION['utm_term'] : null;
-    $gclid = isset($_SESSION['gclid']) ? $_SESSION['gclid'] : null;
-    $wbraid = isset($_SESSION['wbraid']) ? $_SESSION['wbraid'] : null;
+
+    if(isset($_COOKIE["cookieyes-consent"])){
+        $cookieConsent = $_COOKIE["cookieyes-consent"];
+        $searchConsent = strpos($cookieConsent, 'analytics:yes');
+    }
+
+    $utm_source = $searchConsent ? (isset($_SESSION['utm_source']) ? $_SESSION['utm_source'] : null) : null;
+    $utm_medium = $searchConsent ? (isset($_SESSION['utm_medium']) ? $_SESSION['utm_medium'] : null) : null;
+    $utm_campaign = $searchConsent ? (isset($_SESSION['utm_campaign']) ? $_SESSION['utm_campaign'] : null) : null;
+    $utm_content = $searchConsent ? (isset($_SESSION['utm_content']) ? $_SESSION['utm_content'] : null) : null;
+    $utm_term = $searchConsent ? (isset($_SESSION['utm_term']) ? $_SESSION['utm_term'] : null) : null;
+    $gclid = $searchConsent ? (isset($_SESSION['gclid']) ? $_SESSION['gclid'] : null) : null;
+    $wbraid = $searchConsent ? (isset($_SESSION['wbraid']) ? $_SESSION['wbraid'] : null) : null;
 
 
     if (isset($_FILES['images'])) {
@@ -511,6 +517,7 @@ function add_opportunity() {
     ];
 
 
+    
     if(isset($mediasHtml) && $mediasHtml){
         $opp['description'] = 'description de lopportunite' . '<br/> liste des fichiers : ' . $mediasHtml;
     }else{
