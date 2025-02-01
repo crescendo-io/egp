@@ -78,7 +78,6 @@ if($product_image){
                         <button type="submit" class="button">Envoyer</button>
                     </form>
 
-
                     <div id="message"></div>
 
                     <script>
@@ -88,9 +87,19 @@ if($product_image){
                             let formData = new FormData(this);
                             let files = document.getElementById("images").files;
 
+                            // Limiter à 3 fichiers
                             if (files.length > 3) {
                                 document.getElementById("message").innerHTML = "Vous ne pouvez envoyer que 3 images maximum.";
                                 return;
+                            }
+
+                            // Limiter la taille des fichiers à 5 Mo par fichier (en octets)
+                            const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+                            for (let i = 0; i < files.length; i++) {
+                                if (files[i].size > MAX_FILE_SIZE) {
+                                    document.getElementById("message").innerHTML = "Les fichiers ne doivent pas dépasser 5 Mo.";
+                                    return;
+                                }
                             }
 
                             formData.append("action", "add_opportunity");
