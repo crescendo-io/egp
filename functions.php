@@ -416,6 +416,16 @@ function custom_breadcrumb() {
 
 function add_opportunity() {
 
+    // Vérification des champs obligatoires
+    $required_fields = ['society-name', 'society-address', 'first-name', 'second-name', 'email', 'phone'];
+    foreach ($required_fields as $field) {
+        if (empty($_POST[$field])) {
+            wp_send_json_error(['message' => 'Tous les champs sont obligatoires.']);
+            wp_die();
+        }
+    }
+
+
     // POST
     $societyName    = isset($_POST['society-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-name'])) : '';
     $societyAddress = isset($_POST['society-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-address'])) : '';
@@ -454,66 +464,72 @@ function add_opportunity() {
     $wbraid = $searchConsent ? (isset($_SESSION['wbraid']) ? $_SESSION['wbraid'] : null) : null;
 
 
+    $uploaded_files = [];
     if (isset($_FILES['images'])) {
         require_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/image.php';
         require_once ABSPATH . 'wp-admin/includes/media.php';
 
-
         $files = $_FILES['images'];
-        $uploaded_images = [];
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
+        $allowed_ext   = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+        $max_size      = 5 * 1024 * 1024; // 5 Mo
 
         // Limite à 3 fichiers
         if (count($files['name']) > 3) {
-            wp_send_json_error(['message' => 'Vous ne pouvez envoyer que 3 images maximum.']);
+            wp_send_json_error(['message' => 'Vous ne pouvez envoyer que 3 fichiers maximum.']);
             wp_die();
         }
 
-        foreach ($files['name'] as $key => $value) {
+        $upload_dir = wp_upload_dir();
+        $target_dir = $upload_dir['basedir'] . '/opportunity/';
 
+        if (!file_exists($target_dir)) {
+            wp_mkdir_p($target_dir);
+        }
+
+        foreach ($files['name'] as $key => $value) {
             if ($files['error'][$key] !== UPLOAD_ERR_OK) {
                 continue;
             }
 
-            $file = [
-                'name' => $files['name'][$key],
-                'type' => $files['type'][$key],
-                'tmp_name' => $files['tmp_name'][$key],
-                'error' => $files['error'][$key],
-                'size' => $files['size'][$key]
-            ];
-
-            $upload = wp_handle_upload($file, ['test_form' => false]);
-
-
-            if (isset($upload['error'])) {
-                continue;
+            // Vérification de la taille du fichier
+            if ($files['size'][$key] > $max_size) {
+                wp_send_json_error(['message' => 'Un fichier dépasse la taille maximale de 5 Mo.']);
+                wp_die();
             }
 
-            // Insérer le média avec post_status "private" pour le masquer en BO
-            $attachment_id = wp_insert_attachment([
-                'post_mime_type' => $upload['type'],
-                'post_title' => sanitize_file_name($file['name']),
-                'post_content' => '',
-                'post_status' => 'private'
-            ], $upload['file']);
-
-
-            if (!is_wp_error($attachment_id)) {
-                update_post_meta($attachment_id, '_is_hidden_media', '1');
-                $uploaded_images[] = $attachment_id;
+            // Vérification de l'extension du fichier
+            $file_ext = strtolower(pathinfo($files['name'][$key], PATHINFO_EXTENSION));
+            if (!in_array($file_ext, $allowed_ext)) {
+                wp_send_json_error(['message' => 'Seuls les fichiers JPG, PNG, GIF et PDF sont autorisés.']);
+                wp_die();
             }
-        }
 
-        if (!empty($uploaded_images)) {
-            $mediasHtml = '';
-            $key = 1;
-            foreach ($uploaded_images as $uploaded_image){
-                $mediasHtml .= "<br/><a href='" . wp_get_attachment_url($uploaded_image) . "'>Document " . $key ."</a>";
-                $key++;
+            // Vérification du type MIME
+            $mime_type = mime_content_type($files['tmp_name'][$key]);
+            if (!in_array($mime_type, $allowed_types)) {
+                wp_send_json_error(['message' => 'Le fichier "' . $files['name'][$key] . '" n\'est pas un fichier valide.']);
+                wp_die();
+            }
+
+            // Vérification avec WordPress
+            $file_info = wp_check_filetype($files['name'][$key]);
+            if (!in_array($file_info['ext'], $allowed_ext)) {
+                wp_send_json_error(['message' => 'Le fichier contient un type non autorisé.']);
+                wp_die();
+            }
+
+            // Déplacer le fichier sécurisé
+            $filename = sanitize_file_name($files['name'][$key]);
+            $target_path = $target_dir . $filename;
+
+            if (move_uploaded_file($files['tmp_name'][$key], $target_path)) {
+                $uploaded_files[] = $upload_dir['baseurl'] . '/opportunity/' . $filename;
             }
         }
     }
+
 
     //OBJ
     $opp = [
@@ -535,6 +551,7 @@ function add_opportunity() {
     }else{
         $opp['description'] = $descriptionProject;
     }
+
 
     $tiers = [
         "name" => $societyName,

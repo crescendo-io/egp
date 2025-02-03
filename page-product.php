@@ -43,11 +43,11 @@ if($product_image){
                     <form id="upload-image-form" enctype="multipart/form-data">
                         <label>
                             Nom de la société *
-                            <input type="text" name="society-name">
+                            <input type="text" name="society-name" required>
                         </label>
                         <label>
                             Adresse complète de votre société *
-                            <input type="text" name="society-address">
+                            <input type="text" name="society-address" required>
                         </label>
                         <label>
                             Adresse de votre projet (si différente)
@@ -55,19 +55,19 @@ if($product_image){
                         </label>
                         <label>
                             Votre Prénom *
-                            <input type="text" name="first-name">
+                            <input type="text" name="first-name" required>
                         </label>
                         <label>
                             Votre Nom *
-                            <input type="text" name="second-name">
+                            <input type="text" name="second-name" required>
                         </label>
                         <label>
                             Votre Email *
-                            <input type="email" name="email">
+                            <input type="email" name="email" required>
                         </label>
                         <label>
                             Numéro de portable *
-                            <input type="tel" name="phone">
+                            <input type="tel" name="phone" required>
                         </label>
                         <label>
                             Description du projet
@@ -75,8 +75,9 @@ if($product_image){
                         </label>
 
                         <label>
-                            Ajouter jusqu'à 3 images
-                            <input type="file" name="images[]" id="images" accept="image/*" multiple>
+                            Ajouter jusqu'à 3 images<br/>
+                            <span style="font-size: 10px">(Seuls les fichiers JPG, PNG, GIF et PDF sont autorisés.) <strong>5Mo maximum</strong></span>
+                            <input type="file" name="images[]" id="images" accept="image/*,.pdf" multiple>
                         </label>
                         
                         <div id="message"></div>
@@ -87,42 +88,58 @@ if($product_image){
                     <div id="message"></div>
 
                     <script>
-                        document.getElementById("upload-image-form").addEventListener("submit", function(e) {
-                            e.preventDefault();
+                        document.addEventListener("DOMContentLoaded", function () {
+                            document.getElementById("upload-image-form").addEventListener("submit", function (e) {
+                                e.preventDefault();
 
-                            let formData = new FormData(this);
-                            let files = document.getElementById("images").files;
+                                let fileInput = document.getElementById("images");
+                                let files = fileInput.files;
+                                let maxSize = 5 * 1024 * 1024; // 5 Mo en octets
+                                let allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
+                                let errorMessages = [];
 
-                            // Limiter à 3 fichiers
-                            if (files.length > 3) {
-                                document.getElementById("message").innerHTML = "Vous ne pouvez envoyer que 3 images maximum.";
-                                return;
-                            }
-
-                            // Limiter la taille des fichiers à 5 Mo par fichier (en octets)
-                            const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-                            for (let i = 0; i < files.length; i++) {
-                                if (files[i].size > MAX_FILE_SIZE) {
-                                    document.getElementById("message").innerHTML = "Les fichiers ne doivent pas dépasser 5 Mo.";
-                                    return;
+                                // Vérifier le nombre de fichiers
+                                if (files.length > 3) {
+                                    errorMessages.push("Vous ne pouvez envoyer que 3 fichiers maximum.");
                                 }
-                            }
 
-                            formData.append("action", "add_opportunity");
+                                for (let i = 0; i < files.length; i++) {
+                                    let file = files[i];
 
-                            fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
-                                method: "POST",
-                                body: formData,
-                            })
-                                .then(response => response.json())
-                                .then(data => {
-                                    document.getElementById("message").innerHTML = data.message;
-                                })
-                                .catch(error => {
-                                    document.getElementById("message").innerHTML = "Erreur lors de l'envoi.";
-                                });
+                                    // Vérifier le type MIME
+                                    if (!allowedTypes.includes(file.type)) {
+                                        errorMessages.push(`Le fichier "${file.name}" n'est pas autorisé.`);
+                                    }
+
+                                    // Vérifier la taille du fichier
+                                    if (file.size > maxSize) {
+                                        errorMessages.push(`Le fichier "${file.name}" dépasse la taille maximale de 5 Mo.`);
+                                    }
+                                }
+
+                                if (errorMessages.length > 0) {
+                                    document.getElementById("message").innerHTML = "<p style='color:red;'>" + errorMessages.join("<br>") + "</p>";
+                                } else {
+                                    // Si tout est bon, on envoie le formulaire
+                                    let formData = new FormData(this);
+                                    formData.append("action", "add_opportunity");
+
+                                    fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                                        method: "POST",
+                                        body: formData,
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
+                                        })
+                                        .catch(error => {
+                                            document.getElementById("message").innerHTML = "<p style='color:red;'>Erreur lors de l'envoi.</p>";
+                                        });
+                                }
+                            });
                         });
                     </script>
+
                 </div>
             </div>
         </div>

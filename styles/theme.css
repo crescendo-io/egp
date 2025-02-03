@@ -1085,6 +1085,9 @@ footer a {
     border: 1px solid #ccc;
 }
 
+#upload-image-form input:invalid{
+    background-color: #FFF;
+}
 #upload-image-form #images{
     border: 2px #ccc dotted;
     padding: 40px;
