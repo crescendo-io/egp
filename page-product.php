@@ -69,6 +69,10 @@ if($product_image){
                             Numéro de portable *
                             <input type="tel" name="phone">
                         </label>
+                        <label>
+                            Description du projet
+                            <textarea name="description" id="" cols="30" rows="10"></textarea>
+                        </label>
 
                         <label>
                             Ajouter jusqu'à 3 images

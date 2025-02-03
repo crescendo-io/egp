@@ -422,8 +422,21 @@ function add_opportunity() {
     $projectAddress = isset($_POST['project-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['project-address'])) : '';
     $firstName      = isset($_POST['first-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['first-name'])) : '';
     $secondName     = isset($_POST['second-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['second-name'])) : '';
+    $ProjectInfo     = isset($_POST['description']) ? sanitize_text_field(wp_strip_all_tags($_POST['description'])) : '';
     $email          = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
     $phone          = isset($_POST['phone']) ? preg_replace('/[^0-9+]/', '', $_POST['phone']) : '';
+
+
+    $descriptionProject = '<strong>Information du projet : </strong><br/>' . $ProjectInfo;
+
+    if($projectAddress){
+        $descriptionProject .= '<br/><strong>Addresse du projet : </strong><br/>' . $projectAddress;
+    }
+    $descriptionProject .= '<br/><strong>Prénom : </strong>' . $firstName;
+    $descriptionProject .= '<br/><strong>Nom : </strong>' . $secondName;
+    $descriptionProject .= '<br/><strong>Email : </strong>' . $email;
+    $descriptionProject .= '<br/><strong>Téléphone : </strong>' . $phone;
+
 
     // SESSION
 
@@ -496,16 +509,15 @@ function add_opportunity() {
             $mediasHtml = '';
             $key = 1;
             foreach ($uploaded_images as $uploaded_image){
-                $mediasHtml .= "<br/><a href='" . wp_get_attachment_url($uploaded_image) . "' download>Document " . $key ."</a>";
+                $mediasHtml .= "<br/><a href='" . wp_get_attachment_url($uploaded_image) . "'>Document " . $key ."</a>";
                 $key++;
             }
         }
     }
 
-
     //OBJ
     $opp = [
-        'title' => "Opportunité depuis ateliergambetta.com",
+        'title' => "Site - " . $societyName, // Provenance (Site - Nom de l'entreprise
         'ref' => time(),
         "pipelinecol" => 1,
         "utm_source" => $utm_source,
@@ -519,16 +531,16 @@ function add_opportunity() {
 
     
     if(isset($mediasHtml) && $mediasHtml){
-        $opp['description'] = 'description de lopportunite' . '<br/> liste des fichiers : ' . $mediasHtml;
+        $opp['description'] = $descriptionProject . '<br/> <strong>Liste des fichiers</strong> : ' . $mediasHtml; // NOM PRENOM TEL EMAIL
     }else{
-        $opp['description'] = 'description de lopportunite';
+        $opp['description'] = $descriptionProject;
     }
 
     $tiers = [
-        "name" => "Gambetta Industries",
-        "address" => $projectAddress,
+        "name" => $societyName,
+        "address" => $societyAddress,
         "phone" => $phone,
-        "note_private" => "Informations internes sur le client."
+        "note_private" => ""
     ];
 
     $contact = [
@@ -537,7 +549,7 @@ function add_opportunity() {
         "phone"=> $phone,
         "email"=> $email,
         "country_id"=> 1,
-        "note_private"=> "Généré par le formulaire Atelier Gambetta",
+        "note_private"=> "",
         "phone_pro"=> $phone,
         "address"=> $societyAddress
     ];
