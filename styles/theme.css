@@ -834,8 +834,8 @@ footer .social {
 }
 .introduction-product .container-img-introduction {
     position: sticky;
-    top: 5vh;
-    height: calc(100vh - 200px);
+    top: 0;
+    height: 100vh;
     padding: 40px;
 }
 .introduction-product .container-img-introduction:before {
