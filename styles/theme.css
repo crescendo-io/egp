@@ -1094,6 +1094,18 @@ footer a {
     text-align: center;
 }
 
+.page-template-page-devis{
+    background: #0e445f;
+}
+
+.page-template-page-devis .container-devis-form{
+    padding: 70px 0;
+    background: #FFF;
+}
+
+.page-template-page-devis h2{
+    padding-bottom: 30px;
+}
 #upload-image-form #images::file-selector-button{
     margin-right: 8px;
     border: none;
@@ -1118,6 +1130,11 @@ footer a {
     }
     .container-hero-slider .card-slide:after {
         display: none;
+    }
+
+    .page-template-page-devis .container-devis-form{
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .container-iframe iframe {
         height: 65vw;
