@@ -442,6 +442,7 @@ function add_opportunity() {
     if($projectAddress){
         $descriptionProject .= '<br/><strong>Addresse du projet : </strong><br/>' . $projectAddress;
     }
+    $descriptionProject .= '<br/><strong>Addresse de la société : </strong><br/>' . $societyAddress;
     $descriptionProject .= '<br/><strong>Prénom : </strong>' . $firstName;
     $descriptionProject .= '<br/><strong>Nom : </strong>' . $secondName;
     $descriptionProject .= '<br/><strong>Email : </strong>' . $email;

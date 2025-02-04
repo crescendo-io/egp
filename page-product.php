@@ -79,7 +79,11 @@ if($product_image){
                             <span style="font-size: 10px">(Seuls les fichiers JPG, PNG, GIF et PDF sont autorisés.) <strong>5Mo maximum</strong></span>
                             <input type="file" name="images[]" id="images" accept="image/*,.pdf" multiple>
                         </label>
-                        
+
+                        <span style="font-size: 12px">Si vous souhaitez insérer plus de pièces jointes, vous pouvez nous les envoyer sur <a href="mailto:contact@ateliergambetta.com" style="text-decoration: underline">contact@ateliergambetta.com</a></span>
+                        <br/>
+                        <br/>
+
                         <div id="message"></div>
 
                         <button type="submit" class="button">Envoyer</button>
