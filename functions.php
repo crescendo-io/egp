@@ -515,7 +515,7 @@ function add_opportunity() {
 
             // Vérification avec WordPress
             $file_info = wp_check_filetype($files['name'][$key]);
-            if (!in_array($file_info['ext'], $allowed_ext)) {
+            if (!in_array(strtolower($file_info['ext']), $allowed_ext)) {
                 wp_send_json_error(['message' => 'Le fichier contient un type non autorisé.']);
                 wp_die();
             }
@@ -541,9 +541,22 @@ function add_opportunity() {
         "utm_campaign" => $utm_campaign,
         "utm_content" => $utm_content,
         "utm_term" => $utm_term,
-        "gclid_wbraid" => $gclid . $wbraid
+        "wbraid" => $wbraid,
+        "gclid" => $gclid
     ];
 
+
+
+
+    if (!empty($uploaded_files)) {
+        $mediasHtml = '';
+        $key = 1;
+
+        foreach ($uploaded_files as $uploaded_image) {
+            $mediasHtml .= "<br/><a href='" . $uploaded_image . "' target='_blank'>Document " . $key . "</a>";
+            $key++;
+        }
+    }
 
     
     if(isset($mediasHtml) && $mediasHtml){
