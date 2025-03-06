@@ -27,4 +27,25 @@ $(window).on('load',function(){
         $('.loader').fadeOut();
     },500);
 
+
 });
+
+
+jQuery(document).ready(function($) {
+    const floatingPhone = $('.floating-phone');
+    
+    if (floatingPhone.length) {
+        floatingPhone.on('click', function(e) {
+            e.preventDefault();
+            $(this).toggleClass('show-number');
+        });
+
+        // Fermer le numéro si on clique ailleurs sur la page
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.floating-phone').length) {
+                floatingPhone.removeClass('show-number');
+            }
+        });
+    }
+}); 
+

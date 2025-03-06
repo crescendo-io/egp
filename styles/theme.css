@@ -1453,3 +1453,76 @@ footer a {
         display: none;
     }
 }
+
+/* Bouton téléphone flottant */
+.floating-phone {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    background-color: #0e445f;
+    color: white;
+    padding: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.floating-phone:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.floating-phone .phone-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-phone .phone-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.floating-phone .phone-number {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.floating-phone.show-number .phone-number {
+    max-width: 200px;
+    opacity: 1;
+    margin-left: 10px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .floating-phone {
+        bottom: 15px;
+        right: 15px;
+        padding: 12px;
+    }
+
+    .floating-phone .phone-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .floating-phone .phone-number {
+        font-size: 14px;
+    }
+}
