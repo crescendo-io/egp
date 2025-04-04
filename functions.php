@@ -32,7 +32,7 @@ add_action( 'wp_enqueue_scripts', 'wpm_enqueue_styles' );
 function wpm_enqueue_styles(){
     //wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/styles/theme.css' );
     wp_enqueue_style('lightbox', get_stylesheet_directory_uri() . '/styles/lightbox.css', array(), filemtime(get_template_directory() . '/styles/theme.css'));
-    wp_enqueue_style('theme', get_stylesheet_directory_uri() . '/styles/theme.css', array(), filemtime(get_template_directory() . '/styles/theme.css'));
+    wp_enqueue_style('theme', get_stylesheet_directory_uri() . '/styles/theme.css?cache=34983987', array(), filemtime(get_template_directory() . '/styles/theme.css'));
     wp_enqueue_script(
         'lightbox', // Identifiant unique du script
         get_stylesheet_directory_uri() . '/js/lightbox.min.js', // URL du fichier JS
@@ -648,6 +648,8 @@ function add_opportunity() {
 // Récupération de la réponse
     $response_body = wp_remote_retrieve_body($response);
     $response_data = json_decode($response_body, true);
+
+    var_dump($response_data); die;
 
     if ($response_data) {
         error_log('Réponse API : ' . print_r($response_data, true));
