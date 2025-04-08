@@ -61,6 +61,10 @@ get_header();
                             document.getElementById("upload-image-form").addEventListener("submit", function (e) {
                                 e.preventDefault();
 
+                                $('.loader-form #loader').addClass('visible');
+
+                                $('#upload-image-form button[type="submit"]').attr('disabled', 'disabled');
+
                                 let fileInput = document.getElementById("images");
                                 let files = fileInput.files;
                                 let maxSize = 5 * 1024 * 1024; // 5 Mo en octets
@@ -102,7 +106,7 @@ get_header();
                                             window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
                                         })
                                         .catch(error => {
-                                            document.getElementById("message").innerHTML = "<p style='color:red;'>Erreur lors de l'envoi.</p>";
+                                            window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
                                         });
                                 }
                             });

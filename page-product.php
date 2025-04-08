@@ -13,6 +13,12 @@ if($product_image){
     $product_image_array = get_custom_thumb($product_image, 'full');
 }
 ?>
+
+<div class="loader-form">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div
+</div>
 <div class="introduction-product">
     <div class="container">
         <div class="row">
@@ -95,6 +101,7 @@ if($product_image){
                         document.addEventListener("DOMContentLoaded", function () {
                             document.getElementById("upload-image-form").addEventListener("submit", function (e) {
                                 e.preventDefault();
+                                $('.loader-form #loader').addClass('visible');
 
                                 let fileInput = document.getElementById("images");
                                 let files = fileInput.files;
@@ -137,7 +144,7 @@ if($product_image){
                                             window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
                                         })
                                         .catch(error => {
-                                            document.getElementById("message").innerHTML = "<p style='color:red;'>Erreur lors de l'envoi.</p>";
+                                            window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
                                         });
                                 }
                             });
