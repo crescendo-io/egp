@@ -888,12 +888,13 @@ footer .social {
     margin-bottom: 20px;
 }
 .post-galerie {
+    box-sizing: border-box;
     padding: 15px;
+    width: 25%;
 }
 .post-galerie .img-galerie {
     width: 100%;
-    height: 40vh;
-    object-fit: cover;
+    height: auto;
 }
 .post-galerie .entry-title {
     position: absolute;
@@ -916,6 +917,35 @@ footer .social {
     border-radius: 8px;
     overflow: hidden;
 }
+
+.filter-group{
+    width: 14%;
+    margin: 15px 8px;
+    display: inline-block;
+    text-align: left;
+    border: 1px solid rgba(31, 67,94,0.26);
+    vertical-align: top;
+    cursor: pointer;
+}
+
+
+
+.col-filter{
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.col-filter .intro-filter{
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 10px;
+}
+
+.col-filter a,
+.col-filter button{
+    display: inline-block;
+    width: auto;
+}
 .filter-group label {
     display: block;
 }
@@ -924,13 +954,21 @@ footer .social {
 }
 .filter-group:after {
     content: '';
-    width: 100%;
-    height: 80px;
+    width: 17px;
+    height: 14px;
     pointer-events: none;
-    background: #fff;
-    background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    background-image: url("../images/arrow.svg");
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
     position: absolute;
-    bottom: 0;
+    bottom: 50%;
+    transform: translateY(50%);
+    right: 15px;
+}
+
+.filter-group.open:after{
+    transform: rotate(180deg) translateY(-50%);
 }
 .strate ul {
     padding-left: 15px;
@@ -942,35 +980,50 @@ footer .social {
     text-decoration: none;
 }
 .filters-form {
-    padding: 15px;
-    overflow: auto;
-    padding-bottom: 80px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-top: 200px;
+    position: sticky;
+    top: calc(83px + 2vw);
+    text-align: center;
+    z-index: 300;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    max-width: 2000px;
+    width: calc(100% - 4vw);
+    margin-left: auto;
+    margin-right: auto;
 }
-.filters-form .button {
-    margin-top: 30px;
-    width: 100%;
-    border: 0;
-}
+
 .filters-form .list-group {
-    max-height: 27vh;
+    max-height: 400px;
     overflow: auto;
-    padding-bottom: 60px;
+    display: none;
+    position: absolute;
+    z-index: 30;
+    background: #FFF;
+    width: calc(100% + 2px);
+    padding: 20px;
+    border: 1px solid rgba(31, 67, 94, 0.26);
+    left: -1px;
+    top: 100%;
 }
-#galerie {
-    padding-top: 180px;
-}
+
 .filter-group label {
     font-size: 16px;
+}
+
+.filter-group.open .list-group{
+    display: block;
 }
 .filter-group input[type="checkbox"] {
     margin-right: 8px;
 }
 .filter-group h4 {
-    font-size: 30px;
-    border-bottom: 1px solid #f7f7f7;
-    padding: 15px 0;
-    text-transform: uppercase;
-    font-weight: 800;
+    font-size: 16px;
+    margin-bottom: 0;
+    padding: 15px;
+    width: 100%;
 }
 .navigation.pagination {
     width: 100%;
@@ -1439,9 +1492,7 @@ footer a {
         display: none;
     }
 
-    .filter-group h4{
-        font-size: 20px;
-    }
+
     .filter-buttons-toggle {
         width: 100%;
     }
@@ -1451,6 +1502,33 @@ footer a {
 @media (max-width: 576px) {
     .filters-form {
         display: none;
+    }
+    .post-galerie{
+        width: 100%;
+    }
+
+    .filter-buttons-toggle{
+        max-width: calc(100% - 30px);
+        margin-left: 15px;
+        margin-top: 90px;
+    }
+
+    .filters-form{
+        margin-top: 0;
+        position: relative;
+        z-index: 0;
+        top: 0;
+    }
+
+    .col-filter{
+        width: 100%;
+    }
+    .filter-group{
+        width: 100%;
+        margin: 15px 0;
+    }
+    #galerie{
+        padding-top: 0;
     }
 }
 

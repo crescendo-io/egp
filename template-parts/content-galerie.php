@@ -2,10 +2,10 @@
     $galerie_photo = get_field('galerie_photo');
 
     if($galerie_photo){
-        $galerie_photo_array = get_custom_thumb($galerie_photo, 'full');
+        $galerie_photo_array = get_custom_thumb($galerie_photo, 'large');
     }
 ?>
-<article id="post-<?php the_ID(); ?>" class="post-galerie col-sm-3">
+<article id="post-<?php the_ID(); ?>" class="post-galerie">
     <header class="entry-header">
         <?php if ($galerie_photo) : ?>
             <a href="<?= $galerie_photo_array['url']; ?>"  data-lightbox="lightbox" title="<?php the_title_attribute(); ?>">

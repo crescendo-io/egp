@@ -2,6 +2,9 @@
     <button class="button filter-buttons-toggle">Filtres</button>
 </div>
 <form method="GET" action="<?= get_site_url(); ?>/galerie/" class="filters-form">
+    <div class="col-filter">
+        <p class="intro-filter">Affinez votre recherche : </p>
+    </div>
     <!-- Checkbox pour typo_client -->
     <div class="filter-group">
         <h4><?php _e('Clients', 'textdomain'); ?></h4>
@@ -92,5 +95,8 @@
         ?>
         </div>
     </div>
-    <a href="<?= get_site_url(); ?>/galerie/" class="button secondary" style="text-align: center; border: 2px solid #0E445F">Supprimer les filtres</a>
+    <div class="col-filter">
+        <button type="submit" class="button primary">Filtrer</button>
+        <a href="<?= get_site_url(); ?>/galerie/" class="button secondary" style="text-align: center; border: 2px solid #0E445F">Supprimer les filtres</a>
+    </div>
 </form>
