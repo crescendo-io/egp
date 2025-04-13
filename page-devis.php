@@ -57,12 +57,53 @@ get_header();
                     <div id="message"></div>
 
                     <script>
+                        let fileValidationError = false; // ❗ variable globale pour bloquer le submit si erreur
+
+                        document.getElementById("images").addEventListener("change", function () {
+                            let files = this.files;
+                            let maxSize = 5 * 1024 * 1024; // 5 Mo
+                            let allowedTypes = ["image/jpeg", "image/png", "image/gif", "application/pdf"];
+                            let errorMessages = [];
+
+                            document.getElementById("message").innerHTML = ""; // reset
+
+                            // Vérifier le nombre de fichiers
+                            if (files.length > 3) {
+                                errorMessages.push("Vous ne pouvez envoyer que 3 fichiers maximum.");
+                            }
+
+                            for (let i = 0; i < files.length; i++) {
+                                let file = files[i];
+
+                                if (!allowedTypes.includes(file.type)) {
+                                    errorMessages.push(`Le fichier n'est pas autorisé.`);
+                                }
+
+                                if (file.size > maxSize) {
+                                    errorMessages.push(`Le fichier dépasse la taille maximale de 5 Mo.`);
+                                }
+                            }
+
+                            if (errorMessages.length > 0) {
+                                this.value = ""; // reset l'input file
+                                document.getElementById("message").innerHTML = "<p style='color:red;'>" + errorMessages.join("<br>") + "</p>";
+                                fileValidationError = true; // 🚫 blocage
+                            } else {
+                                fileValidationError = false; // ✅ autorisé
+                            }
+                        });
+
                         document.addEventListener("DOMContentLoaded", function () {
                             document.getElementById("upload-image-form").addEventListener("submit", function (e) {
                                 e.preventDefault();
 
-                                $('.loader-form #loader').addClass('visible');
+                                // ⚠️ Vérifie s’il y a une erreur côté fichier avant d’aller plus loin
+                                if (fileValidationError) {
+                                    document.getElementById("message").innerHTML = "<p style='color:red;'>Veuillez corriger les erreurs de fichiers avant de soumettre le formulaire.</p>";
+                                    return;
+                                }
 
+                                $('.loader-form #loader').addClass('visible');
                                 $('#upload-image-form button[type="submit"]').attr('disabled', 'disabled');
 
                                 let fileInput = document.getElementById("images");
@@ -81,38 +122,41 @@ get_header();
 
                                     // Vérifier le type MIME
                                     if (!allowedTypes.includes(file.type)) {
-                                        errorMessages.push(`Le fichier "${file.name}" n'est pas autorisé.`);
+                                        errorMessages.push(`Le fichier n'est pas autorisé.`);
                                     }
 
                                     // Vérifier la taille du fichier
                                     if (file.size > maxSize) {
-                                        errorMessages.push(`Le fichier "${file.name}" dépasse la taille maximale de 5 Mo.`);
+                                        errorMessages.push(`Le fichier dépasse la taille maximale de 5 Mo.`);
                                     }
                                 }
 
                                 if (errorMessages.length > 0) {
                                     document.getElementById("message").innerHTML = "<p style='color:red;'>" + errorMessages.join("<br>") + "</p>";
+                                    fileValidationError = true;
+                                    return;
                                 } else {
-                                    // Si tout est bon, on envoie le formulaire
-                                    let formData = new FormData(this);
-                                    formData.append("action", "add_opportunity");
-
-                                    fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
-                                        method: "POST",
-                                        body: formData,
-                                    })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
-                                        })
-                                        .catch(error => {
-                                            window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
-                                        });
+                                    fileValidationError = false;
                                 }
+
+                                // Si tout est bon, on envoie le formulaire
+                                let formData = new FormData(this);
+                                formData.append("action", "add_opportunity");
+
+                                fetch("<?php echo admin_url('admin-ajax.php'); ?>", {
+                                    method: "POST",
+                                    body: formData,
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
+                                    })
+                                    .catch(error => {
+                                        window.location.replace('<?php echo get_site_url(); ?>/demande-de-devis/confirmation-demande/');
+                                    });
                             });
                         });
                     </script>
-
                 </div>
             </div>
         </div>
