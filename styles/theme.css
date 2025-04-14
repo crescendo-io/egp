@@ -1516,7 +1516,7 @@ footer a {
     .filters-form{
         margin-top: 0;
         position: relative;
-        z-index: 0;
+        z-index: 5;
         top: 0;
     }
 
