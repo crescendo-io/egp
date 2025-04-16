@@ -928,6 +928,30 @@ footer .social {
     cursor: pointer;
 }
 
+.filters-form .selected-tags {
+    display: block;
+    text-align: center;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.filters-form .tag {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: inline-block;
+    font-size: 14px;
+    align-items: center;
+    margin: 5px;
+    margin-bottom: 15px;
+}
+
+.filters-form .tag-remove {
+    cursor: pointer;
+    color: #0e445f;
+    font-weight: bold;
+}
+
 
 
 .col-filter{
@@ -1183,6 +1207,13 @@ footer a {
     }
     .container-hero-slider .card-slide:after {
         display: none;
+    }
+
+    .selected-tags {
+        margin-top: 15px;
+    }
+    .tag{
+        margin-bottom: 5px;
     }
 
     .page-template-page-devis .container-devis-form{
