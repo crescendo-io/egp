@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tag.querySelector('.tag-remove').addEventListener('click', () => {
             checkbox.checked = false;
             tag.remove();
+            $('.filters-form').submit();
         });
 
         return tag;
