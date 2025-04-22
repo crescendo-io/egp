@@ -48,6 +48,14 @@ function wpm_enqueue_styles(){
         null, // Version du script (null pour désactiver la gestion des versions)
         true // Charger dans le footer (true) ou dans le header (false)
     );
+
+    wp_enqueue_script(
+        'masonry', // Identifiant unique du script
+        get_stylesheet_directory_uri() . '/js/masonry.js', // URL du fichier JS
+        array( 'jquery' ), // Dépendances (si besoin, ici 'jquery')
+        null, // Version du script (null pour désactiver la gestion des versions)
+        true // Charger dans le footer (true) ou dans le header (false)
+    );
 }
 
 

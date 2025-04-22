@@ -47,26 +47,28 @@ $galerie_query = new WP_Query($args);
 
 ?>
 
+<?php
+get_template_part('template-parts/filtre', 'galerie');
+?>
+
 
 <div class="container-fluid" id="galerie">
     <div class="row">
-        <div class="col-sm-2">
-            <?php
-            get_template_part('template-parts/filtre', 'galerie');
-            ?>
+        <div class="col-sm-12">
+
         </div>
 
-        <div class="col-sm-10">
-            <div class="row">
-                <?php if ($galerie_query->have_posts()) :
-
-                    // Boucle sur les posts
-                    while ($galerie_query->have_posts()) : $galerie_query->the_post();
-                        // Affichage des articles
-                        get_template_part('template-parts/content', 'galerie'); // Modifie ce template si nécessaire
-                    endwhile;
-
-                    // Pagination
+        <div class="col-sm-12">
+                <?php if ($galerie_query->have_posts()) : ?>
+                    <div id="masonry-grid">
+                        <?php // Boucle sur les posts
+                        while ($galerie_query->have_posts()) : $galerie_query->the_post();
+                            // Affichage des articles
+                            get_template_part('template-parts/content', 'galerie'); // Modifie ce template si nécessaire
+                        endwhile;
+                        ?>
+                    </div>
+                    <?php // Pagination
                     the_posts_pagination(array(
                         'mid_size' => 2,
                         'prev_text' => __('Précédent', ''),

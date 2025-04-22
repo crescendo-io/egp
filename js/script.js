@@ -8,6 +8,12 @@ $(window).on('load',function(){
     });
 
 
+    $('#masonry-grid').masonry({
+        // options
+        itemSelector: '.post-galerie',
+        columnWidth: 0
+    });
+
     $('.arrow-sub').click(function(){
         var el = $(this);
 
@@ -19,13 +25,15 @@ $(window).on('load',function(){
        $('.filters-form').slideToggle();
     });
 
-    $('.filters-form').on('change', function(){
-        $('.filters-form').submit();
-    });
-
     setTimeout(function(){
         $('.loader').fadeOut();
     },500);
+
+    $('.filter-group h4').click(function(){
+        var el = $(this);
+
+        el.parent().toggleClass('open');
+    });
 
 
 });

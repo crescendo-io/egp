@@ -2,6 +2,9 @@
     <button class="button filter-buttons-toggle">Filtres</button>
 </div>
 <form method="GET" action="<?= get_site_url(); ?>/galerie/" class="filters-form">
+    <div class="col-filter">
+        <p class="intro-filter">Affinez votre recherche : </p>
+    </div>
     <!-- Checkbox pour typo_client -->
     <div class="filter-group">
         <h4><?php _e('Clients', 'textdomain'); ?></h4>
@@ -92,5 +95,60 @@
         ?>
         </div>
     </div>
-    <a href="<?= get_site_url(); ?>/galerie/" class="button secondary" style="text-align: center; border: 2px solid #0E445F">Supprimer les filtres</a>
+    <div class="col-filter">
+        <button type="submit" class="button primary">Filtrer</button>
+        <a href="<?= get_site_url(); ?>/galerie/" class="button secondary" style="text-align: center; border: 2px solid #0E445F">Supprimer les filtres</a>
+    </div>
+
+    <div id="selected-tags" class="selected-tags"></div>
 </form>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.filters-form');
+    const tagsContainer = document.getElementById('selected-tags');
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+
+    // Fonction pour créer un tag
+    function createTag(checkbox) {
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.dataset.value = checkbox.value;
+        tag.dataset.taxonomy = checkbox.name;
+        
+        const label = checkbox.closest('label').textContent.trim();
+        tag.innerHTML = `
+            ${label}
+            <span class="tag-remove">×</span>
+        `;
+
+        tag.querySelector('.tag-remove').addEventListener('click', () => {
+            checkbox.checked = false;
+            tag.remove();
+            $('.filters-form').submit();
+        });
+
+        return tag;
+    }
+
+    // Initialiser les tags pour les checkboxes déjà cochées
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            tagsContainer.appendChild(createTag(checkbox));
+        }
+
+        // Ajouter l'écouteur d'événements pour les changements
+        checkbox.addEventListener('change', (e) => {
+            const existingTag = tagsContainer.querySelector(`[data-value="${e.target.value}"][data-taxonomy="${e.target.name}"]`);
+            
+            if (e.target.checked && !existingTag) {
+                tagsContainer.appendChild(createTag(e.target));
+            } else if (!e.target.checked && existingTag) {
+                existingTag.remove();
+            }
+        });
+    });
+});
+</script>
