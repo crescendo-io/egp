@@ -44,7 +44,6 @@ jQuery(document).ready(function($) {
     
     if (floatingPhone.length) {
         floatingPhone.on('click', function(e) {
-            e.preventDefault();
             $(this).toggleClass('show-number');
         });
 

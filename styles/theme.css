@@ -1619,6 +1619,14 @@ footer a {
     display: block;
 }
 
+.phone-number a{
+    color: #FFF;
+}
+
+.phone-number a:hover{
+    text-decoration: none;
+}
+
 
 :root {
     --loader-bg: rgba(255,255,255,0.8);       /* loading screen background color */
