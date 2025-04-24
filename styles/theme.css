@@ -1666,7 +1666,7 @@ footer a {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
     .floating-phone {
         bottom: 70px;
         right: 15px;
