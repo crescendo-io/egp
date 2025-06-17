@@ -18,6 +18,7 @@
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-5TM5LDG');</script>
     <!-- End Google Tag Manager -->
+    <script type="text/javascript" src="https://cdn.sirdata.eu/youtube-iframe.js"></script>
 
 	<meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
