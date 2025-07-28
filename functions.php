@@ -426,7 +426,7 @@ function custom_breadcrumb() {
 function add_opportunity() {
 
     // Vérification des champs obligatoires
-    $required_fields = ['society-name', 'society-address', 'first-name', 'second-name', 'email', 'phone'];
+    $required_fields = ['society-name', 'society-address', 'society-address-town', 'society-address-zip', 'first-name', 'second-name', 'email', 'phone'];
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
             wp_send_json_error(['message' => 'Tous les champs sont obligatoires.']);
@@ -438,7 +438,13 @@ function add_opportunity() {
     // POST
     $societyName    = isset($_POST['society-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-name'])) : '';
     $societyAddress = isset($_POST['society-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-address'])) : '';
+    $societyAddressTown = isset($_POST['society-address-town']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-address-town'])) : '';
+    $societyAddressZip = isset($_POST['society-address-zip']) ? sanitize_text_field(wp_strip_all_tags($_POST['society-address-zip'])) : '';
+
     $projectAddress = isset($_POST['project-address']) ? sanitize_text_field(wp_strip_all_tags($_POST['project-address'])) : '';
+    $projectAddressTown = isset($_POST['project-address-town']) ? sanitize_text_field(wp_strip_all_tags($_POST['project-address-town'])) : '';
+    $projectAddressZip = isset($_POST['project-address-zip']) ? sanitize_text_field(wp_strip_all_tags($_POST['project-address-zip'])) : '';
+
     $firstName      = isset($_POST['first-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['first-name'])) : '';
     $secondName     = isset($_POST['second-name']) ? sanitize_text_field(wp_strip_all_tags($_POST['second-name'])) : '';
     $ProjectInfo     = isset($_POST['description']) ? sanitize_text_field(wp_strip_all_tags($_POST['description'])) : '';
@@ -449,9 +455,9 @@ function add_opportunity() {
     $descriptionProject = '<strong>Information du projet : </strong><br/>' . $ProjectInfo;
 
     if($projectAddress){
-        $descriptionProject .= '<br/><strong>Addresse du projet : </strong><br/>' . $projectAddress;
+        $descriptionProject .= '<br/><strong>Addresse du projet : </strong><br/>' . $projectAddress . " " . $projectAddressTown . " " . $projectAddressZip;
     }
-    $descriptionProject .= '<br/><strong>Addresse de la société : </strong><br/>' . $societyAddress;
+    $descriptionProject .= '<br/><strong>Addresse de la société : </strong><br/>' . $societyAddress . " " . $societyAddressTown . " " . $societyAddressZip;
     $descriptionProject .= '<br/><strong>Prénom : </strong>' . $firstName;
     $descriptionProject .= '<br/><strong>Nom : </strong>' . $secondName;
     $descriptionProject .= '<br/><strong>Email : </strong>' . $email;
@@ -472,6 +478,7 @@ function add_opportunity() {
     $utm_term = $searchConsent ? (isset($_SESSION['utm_term']) ? $_SESSION['utm_term'] : null) : null;
     $gclid = $searchConsent ? (isset($_SESSION['gclid']) ? $_SESSION['gclid'] : null) : null;
     $wbraid = $searchConsent ? (isset($_SESSION['wbraid']) ? $_SESSION['wbraid'] : null) : null;
+
 
 
     $uploaded_files = [];
@@ -580,7 +587,9 @@ function add_opportunity() {
         "name" => $societyName,
         "address" => $societyAddress,
         "phone" => $phone,
-        "note_private" => ""
+        "note_private" => "",
+        "town" => $societyAddressTown,
+        "zip" => $societyAddressZip
     ];
 
     $contact = [
@@ -591,7 +600,9 @@ function add_opportunity() {
         "country_id"=> 1,
         "note_private"=> "",
         "phone_pro"=> $phone,
-        "address"=> $societyAddress
+        "address"=> $societyAddress,
+        "town" => $societyAddressTown,
+        "zip" => $societyAddressZip
     ];
 
     $objSender['opp'] = $opp;

@@ -18,8 +18,24 @@ get_header();
                             <input type="text" name="society-address" required>
                         </label>
                         <label>
+                            Ville de votre société *
+                            <input type="text" name="society-address-town" required>
+                        </label>
+                        <label>
+                            Code postal de votre société *
+                            <input type="text" name="society-address-zip" required>
+                        </label>
+                        <label>
                             Adresse de votre projet (si différente)
                             <input type="text" name="project-address">
+                        </label>
+                        <label>
+                            Ville de votre projet (si différente)
+                            <input type="text" name="project-address-town">
+                        </label>
+                        <label>
+                            Code postal de votre projet (si différente)
+                            <input type="text" name="project-address-zip">
                         </label>
                         <label>
                             Votre Prénom *
