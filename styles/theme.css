@@ -1200,6 +1200,25 @@ footer a {
     margin-bottom: 25px;
 }
 
+#upload-image-form .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#upload-image-form .checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+#upload-image-form #project-address-fields {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-left: 3px solid #0e445f;
+    background-color: #f9f9f9;
+}
+
 
 @media (max-width: 1280px) {
     .container {

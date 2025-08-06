@@ -63,18 +63,27 @@ if($product_image){
                             Code postal de votre société *
                             <input type="text" name="society-address-zip" required>
                         </label>
-                        <label>
-                            Adresse de votre projet (si différente)
-                            <input type="text" name="project-address">
+
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="different-project-address">
+                            Adresse du projet différente ?
                         </label>
-                        <label>
-                            Ville de votre projet (si différente)
-                            <input type="text" name="project-address-town">
-                        </label>
-                        <label>
-                            Code postal de votre projet (si différente)
-                            <input type="text" name="project-address-zip">
-                        </label>
+
+                        <div id="project-address-fields" style="display: none;">
+                            <label>
+                                Adresse de votre projet (si différente)
+                                <input type="text" name="project-address">
+                            </label>
+                            <label>
+                                Ville de votre projet (si différente)
+                                <input type="text" name="project-address-town">
+                            </label>
+                            <label>
+                                Code postal de votre projet (si différente)
+                                <input type="text" name="project-address-zip">
+                            </label>
+                        </div>
+
                         <label>
                             Votre Prénom *
                             <input type="text" name="first-name" required>
@@ -115,6 +124,20 @@ if($product_image){
 
                     <script>
                         let fileValidationError = false; // ❗ variable globale pour bloquer le submit si erreur
+
+                        // Gestion de l'affichage des champs d'adresse du projet
+                        document.getElementById("different-project-address").addEventListener("change", function() {
+                            const projectFields = document.getElementById("project-address-fields");
+                            const projectInputs = projectFields.querySelectorAll("input");
+                            
+                            if (this.checked) {
+                                projectFields.style.display = "block";
+                            } else {
+                                projectFields.style.display = "none";
+                                // Vider les champs quand on les cache
+                                projectInputs.forEach(input => input.value = "");
+                            }
+                        });
 
                         document.getElementById("images").addEventListener("change", function () {
                             let files = this.files;
