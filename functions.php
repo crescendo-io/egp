@@ -466,9 +466,9 @@ function add_opportunity() {
 
     // SESSION
 
-    if(isset($_COOKIE["cookieyes-consent"])){
-        $cookieConsent = $_COOKIE["cookieyes-consent"];
-        $searchConsent = strpos($cookieConsent, 'analytics:yes');
+    if(isset($_COOKIE["_ga"])){
+        $cookieConsent = $_COOKIE["_ga"];
+        $searchConsent = true;
     }
 
     $utm_source = $searchConsent ? (isset($_SESSION['utm_source']) ? $_SESSION['utm_source'] : null) : null;
