@@ -24,10 +24,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="profile" href="https://gmpg.org/xfn/11">
     
-    <?php
-        $pageTitle = (is_front_page() ? get_bloginfo('description') : wp_title('', false)) . ' | ' . get_bloginfo('name') ;
-    ?>
-    <title><?php echo $pageTitle; ?></title>
+  
 
     <?php
         $favicon = get_field('option_logo_favicon', 'option');

@@ -14,7 +14,7 @@ function add_hreflang_tags() {
     }
 
     // Pour la version x-default
-    echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $default_url ) . '" />' . "\n";
+    echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( get_the_permalink() ) . '" />' . "\n";
 }
 add_action( 'wp_head', 'add_hreflang_tags' );
 
