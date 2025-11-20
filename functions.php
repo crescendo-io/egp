@@ -717,3 +717,67 @@ function insert_utm_parameters() {
 
 // Appel de la fonction lors du chargement de la page
 insert_utm_parameters();
+
+
+
+add_action('after_setup_theme', 'child_remove_rest_security_parent', 20);
+function child_remove_rest_security_parent() {
+    remove_filter('rest_api_init', 'rest_only_for_authorized_users', 99);
+}
+
+
+
+// 1) Déclarer la route REST pour le webhook Pipedrive
+add_action('rest_api_init', function () {
+    register_rest_route('pipedrive/v1', '/webhook', [
+        'methods' => 'POST',
+        'callback' => 'handle_pipedrive_webhook',
+        'permission_callback' => '__return_true', // on gère la "sécurité" nous-mêmes
+    ]);
+});
+
+/**
+ * 2) Fonction appelée quand Pipedrive envoie le webhook
+ */
+function handle_pipedrive_webhook(WP_REST_Request $request)
+{
+
+    // Vérifier un petit "secret" dans l’URL pour éviter les appels abusifs
+    $secret = isset($_GET['secret']) ? $_GET['secret'] : '';
+    $secret_attendu = 'f1c3b8a4d7e94c29a0fb873d51e6f92c6a48e1bd2ff04d7cb5689c3e0a1df7b2'; // à changer !
+
+    if ($secret !== $secret_attendu) {
+        return new WP_REST_Response(
+            ['error' => 'Unauthorized'],
+            401
+        );
+    }
+
+    // Récupérer les données envoyées par Pipedrive (JSON)
+    $body = $request->get_json_params();
+
+    // Appeler TA fonction perso avec les données du webhook
+    // À toi de coder la logique à l’intérieur
+    my_pipedrive_action($body);
+
+    // Réponse à Pipedrive
+    return new WP_REST_Response(
+        ['status' => 'ok'],
+        200
+    );
+}
+
+/**
+ * 3) Ta fonction métier, où tu fais ce que tu veux avec les données
+ *    (création d’utilisateur, mise à jour d’un post, envoi d’email, etc.)
+ */
+function my_pipedrive_action($data)
+{
+    // Exemple : log des données dans un fichier
+
+    $log_file = __DIR__ . '/pipedrive-log.txt';
+    file_put_contents($log_file, date('Y-m-d H:i:s') . " - " . print_r($data, true) . "\n\n", FILE_APPEND);
+
+    // Ici tu mets ta vraie logique
+    // Exemple : $deal_id = $data['current']['id'] ?? null;
+}
