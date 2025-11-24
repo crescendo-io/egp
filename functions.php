@@ -781,3 +781,125 @@ function my_pipedrive_action($data)
     // Ici tu mets ta vraie logique
     // Exemple : $deal_id = $data['current']['id'] ?? null;
 }
+
+
+
+function get_pipedrive_deal( $deal_id = 3 ) {
+    $api_token = 'dc709fbe3e1fc31fa63a75c0e4099d928afd39ca';
+    $base_url = "https://api.pipedrive.com/api/v2/deals/{$deal_id}";
+
+    $args_url = array(
+        'include_fields' => 'next_activity_id,files_count,last_activity_id',
+    );
+
+    $url = add_query_arg( $args_url, $base_url );
+
+    // 1) CALL : récupération du deal
+    $response = wp_remote_get( $url, array(
+        'timeout' => 20,
+        'headers' => array(
+            'Accept'      => 'application/json',
+            'x-api-token' => $api_token,
+        ),
+    ) );
+
+    // Gestion erreurs HTTP
+    if ( is_wp_error( $response ) ) {
+        return $response;
+    }
+
+    $responseBody  = json_decode( wp_remote_retrieve_body( $response ) );
+    $responseDatas = !empty( $responseBody->data ) ? $responseBody->data : null;
+
+    if ( empty( $responseDatas ) ) {
+        return new WP_Error( 'pipedrive_no_data', 'Aucune donnée de deal retournée par Pipedrive.' );
+    }
+
+    // Champs du deal
+    $deal_id    = $responseDatas->id ?? null;
+    $person_id  = $responseDatas->person_id ?? null;
+    $org_id     = $responseDatas->org_id ?? null;
+    $stage_id   = $responseDatas->stage_id ?? null;
+    $add_time   = $responseDatas->add_time ?? null;
+    $update_time = $responseDatas->update_time ?? null;
+
+    // Custom fields (en sécurisant un minimum)
+    $budget = $responseDatas->custom_fields->d538bdd17337141f971879a961f362dbea5c5a7e->value ?? null;
+
+    $address      = $responseDatas->custom_fields->{'542d02944d09ca0fccd0bd7e239ca07613086ae2'} ?? null;
+    $projectInfo  = $responseDatas->custom_fields->{'52443409ad9636122e6596305d2ed1a3c1cb6f9d'} ?? null;
+    $gclid        = $responseDatas->custom_fields->{'72b31b6f20e15e3bec5225122f9b43539e0ca395'} ?? null;
+    $wbraid       = $responseDatas->custom_fields->{'e3bf20c1ef4989cc07eef8c87a05e46e664df071'} ?? null;
+    $utm_campaign = $responseDatas->custom_fields->{'017b423da414a8447f699f99d9012e49bd88e5ca'} ?? null;
+    $utm_content  = $responseDatas->custom_fields->{'9adf14b638e90ddf8da2796f2a44892dd2c5f2fa'} ?? null;
+    $utm_source   = $responseDatas->custom_fields->{'78313cb1c2b6733c61930eb0d0089a6f73adb107'} ?? null;
+
+
+    // 2) CALL : si on a un person_id, on va chercher la fiche personne
+    $person_data = null;
+
+    if ( !empty( $person_id ) ) {
+
+        $person_url = "https://api.pipedrive.com/api/v2/persons/{$person_id}";
+
+        $person_response = wp_remote_get( $person_url, array(
+            'timeout' => 20,
+            'headers' => array(
+                'Accept'      => 'application/json',
+                'x-api-token' => $api_token,
+            ),
+        ) );
+
+        if ( !is_wp_error( $person_response ) ) {
+            $person_body = json_decode( wp_remote_retrieve_body( $person_response ) );
+            $person_data = $person_body->data ?? null;
+        }
+    }
+
+    $organisation_data = null;
+
+    if ( !empty( $org_id ) ) {
+
+        $organisation_url = "https://api.pipedrive.com/api/v2/organizations/{$org_id}";
+
+        $organisation_response = wp_remote_get( $organisation_url, array(
+            'timeout' => 20,
+            'headers' => array(
+                'Accept'      => 'application/json',
+                'x-api-token' => $api_token,
+            ),
+        ) );
+
+        if ( !is_wp_error( $organisation_response ) ) {
+            $organisation_body = json_decode( wp_remote_retrieve_body( $organisation_response ) );
+            $organisation_data = $organisation_body->data ?? null;
+        }
+    }
+
+
+    // Tu peux retourner ce que tu veux : ici, un tableau structuré
+    $deal =  array(
+        'deal'   => array(
+            'id'          => $deal_id,
+            'person_id'   => $person_id,
+            'org_id'      => $org_id,
+            'stage_id'    => $stage_id,
+            'add_time'    => $add_time,
+            'update_time' => $update_time,
+            'budget'      => $budget,
+            'address'     => $address,
+            'projectInfo' => $projectInfo,
+            'gclid'       => $gclid,
+            'wbraid'      => $wbraid,
+            'utm_campaign'=> $utm_campaign,
+            'utm_content' => $utm_content,
+            'utm_source'  => $utm_source,
+        ),
+        'person' => $person_data,
+        'organisation' => $organisation_data,
+    );
+
+    var_dump($deal); die;
+}
+
+get_pipedrive_deal();
