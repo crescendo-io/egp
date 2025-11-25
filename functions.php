@@ -815,7 +815,9 @@ function get_pipedrive_deal( $deal_id = 3 ) {
         return new WP_Error( 'pipedrive_no_data', 'Aucune donnée de deal retournée par Pipedrive.' );
     }
 
+
     // Champs du deal
+    $deal_title    = $responseDatas->title ?? null;
     $deal_id    = $responseDatas->id ?? null;
     $person_id  = $responseDatas->person_id ?? null;
     $org_id     = $responseDatas->org_id ?? null;
@@ -881,6 +883,7 @@ function get_pipedrive_deal( $deal_id = 3 ) {
     $deal =  array(
         'deal'   => array(
             'id'          => $deal_id,
+            'deal_title'  => $deal_title,
             'person_id'   => $person_id,
             'org_id'      => $org_id,
             'stage_id'    => $stage_id,
@@ -899,7 +902,133 @@ function get_pipedrive_deal( $deal_id = 3 ) {
         'organisation' => $organisation_data,
     );
 
-    var_dump($deal); die;
+
+    return $deal;
 }
 
-get_pipedrive_deal();
+
+function get_token_fresh(){
+    $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/login';
+    $args = [
+        'body'      => [
+            'login'    => 'support_api',
+            'password' => 'X7oTJGhdfINP'
+        ],
+        'timeout'   => 10,
+        'redirection' => 10,
+        'blocking'  => true,
+        'headers'   => [
+            'Content-Type' => 'application/x-www-form-urlencoded'
+        ],
+    ];
+
+    $response = wp_remote_post($url, $args);
+    $responseBody = json_decode($response['body']);
+    if(isset($responseBody->success->token)){
+        $token = $responseBody->success->token;
+    }else{
+        $token = null;
+    }
+
+    return $token;
+}
+
+function add_data_to_fresh() {
+
+    $datas = get_pipedrive_deal();
+    $freshToken = get_token_fresh();
+
+
+    // Datas opp
+    $deal_title = $datas['deal']['deal_title'] ?? null;
+    $deal_id = $datas['deal']['id'] ?? null;
+    $projectInfo = $datas['deal']['projectInfo'] ?? null;
+    $gclid = $datas['deal']['gclid'] ?? null;
+    $wbraid = $datas['deal']['wbraid'] ?? null;
+    $utm_campaign = $datas['deal']['utm_campaign'] ?? null;
+    $utm_content = $datas['deal']['utm_content'] ?? null;
+    $utm_source = $datas['deal']['utm_source'] ?? null;
+    $deal_address = $datas['deal']['address']->formatted_address ?? null;
+
+    //Datas organisation
+    $organisation_name = $datas['organisation']->name ?? null;
+    $organisation_address = $datas['organisation']->address->value ?? null;
+
+    // Datas Person
+    $person_phone = $datas['person']->phones;
+    $person_phone_reset = reset($person_phone);
+    $person_phone_value = $person_phone_reset->value;
+
+    $person_fistname = $datas['person']->first_name;
+    $person_lastname = $datas['person']->last_name;
+    $person_emails = $datas['person']->emails;
+    $person_email_reset = reset($person_emails);
+    $person_email_value = $person_email_reset->value;
+
+
+    $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/gambetta/create-opportunity';
+
+    // On construit les données en tableau PHP
+    $data = array(
+        'opp' => array(
+            'title'        => $deal_title,
+            'ref'          => 'pipedrive_' . 1,
+            'description'  => $projectInfo,
+            'note_public'  => "Note publique concernant l'opportunité.",
+            'pipelinecol'  => 1,
+            'utm_source'   => $utm_source,
+            'utm_medium'   => 'cpc',
+            'utm_campaign' => $utm_campaign,
+            'utm_content'  => $utm_content,
+            'utm_term'     => 'achat lampe',
+            "wbraid" => $wbraid,
+            "gclid" => $gclid
+        ),
+        'tiers' => array(
+            'name'         => $organisation_name,
+            'address'      => $organisation_address,
+            'phone'        => $person_phone_value,
+            'note_private' => '',
+        ),
+        'contact' => array(
+            'firstname'    => $person_fistname,
+            'lastname'     => $person_lastname,
+            'phone'        => $person_phone_value,
+            'email'        => $person_email_value,
+            'country_id'   => 1,
+            'note_private' => 'Importé de Pipedrive',
+            'phone_pro'    => $person_phone_value,
+            'address'      => $deal_address,
+        ),
+    );
+
+    $args = array(
+        'method'      => 'POST',
+        'timeout'     => 20,
+        'redirection' => 10,
+        'httpversion' => '1.1',
+        'blocking'    => true,
+        'headers'     => array(
+            'Content-Type' => 'application/json',
+            'DOLAPIKEY'    => $freshToken,
+        ),
+        'body'        => wp_json_encode( $data ),
+    );
+
+    $response = wp_remote_post( $url, $args );
+
+    if ( is_wp_error( $response ) ) {
+        // Gestion d’erreur WordPress
+        error_log( 'Erreur requête Gambetta : ' . $response->get_error_message() );
+        return null;
+    }
+
+    // Corps de la réponse (équivalent de echo $response de ton cURL)
+    $body = wp_remote_retrieve_body( $response );
+
+    var_dump($body);
+
+    die;
+}
+
+add_data_to_fresh();
