@@ -1031,4 +1031,185 @@ function add_data_to_fresh() {
     die;
 }
 
-add_data_to_fresh();
+//add_data_to_fresh();
+
+function get_referentiel($source = null, $id = null, $referentiel = 'priority')
+{
+    // Référentiel priority
+    $priority = [
+        ['fresh' => 24, 'pipedrive' => 24],
+        ['fresh' => 45, 'pipedrive' => 25],
+        ['fresh' => 32, 'pipedrive' => 26],
+    ];
+
+    // Référentiel category_child
+    $category_child = [
+        ['fresh' => 139, 'pipedrive' => 139],
+        ['fresh' => 140, 'pipedrive' => 140],
+        ['fresh' => 141, 'pipedrive' => 141],
+        ['fresh' => 142, 'pipedrive' => 142],
+        ['fresh' => 143, 'pipedrive' => 143],
+        ['fresh' => 144, 'pipedrive' => 144],
+        ['fresh' => 145, 'pipedrive' => 145],
+        ['fresh' => 146, 'pipedrive' => 146],
+        ['fresh' => 147, 'pipedrive' => 147],
+        ['fresh' => 148, 'pipedrive' => 148],
+        ['fresh' => 149, 'pipedrive' => 149],
+        ['fresh' => 150, 'pipedrive' => 150],
+        ['fresh' => 151, 'pipedrive' => 151],
+        ['fresh' => 152, 'pipedrive' => 152],
+        ['fresh' => 153, 'pipedrive' => 153],
+        ['fresh' => 154, 'pipedrive' => 154],
+        ['fresh' => 155, 'pipedrive' => 155],
+        ['fresh' => 156, 'pipedrive' => 156],
+        ['fresh' => 157, 'pipedrive' => 157],
+        ['fresh' => 158, 'pipedrive' => 158],
+        ['fresh' => 159, 'pipedrive' => 159],
+        ['fresh' => 160, 'pipedrive' => 160],
+        ['fresh' => 161, 'pipedrive' => 161],
+        ['fresh' => 162, 'pipedrive' => 162],
+        ['fresh' => 163, 'pipedrive' => 163],
+        ['fresh' => 164, 'pipedrive' => 164],
+        ['fresh' => 165, 'pipedrive' => 165],
+        ['fresh' => 166, 'pipedrive' => 166],
+        ['fresh' => 167, 'pipedrive' => 167],
+        ['fresh' => 168, 'pipedrive' => 168],
+        ['fresh' => 169, 'pipedrive' => 169],
+        ['fresh' => 170, 'pipedrive' => 170],
+        ['fresh' => 171, 'pipedrive' => 171],
+        ['fresh' => 172, 'pipedrive' => 172],
+        ['fresh' => 173, 'pipedrive' => 173],
+        ['fresh' => 174, 'pipedrive' => 174],
+        ['fresh' => 175, 'pipedrive' => 175],
+        ['fresh' => 176, 'pipedrive' => 176],
+        ['fresh' => 177, 'pipedrive' => 177],
+        ['fresh' => 178, 'pipedrive' => 178],
+        ['fresh' => 179, 'pipedrive' => 179],
+        ['fresh' => 180, 'pipedrive' => 180],
+        ['fresh' => 181, 'pipedrive' => 181],
+        ['fresh' => 182, 'pipedrive' => 182],
+        ['fresh' => 183, 'pipedrive' => 183],
+        ['fresh' => 184, 'pipedrive' => 184],
+        ['fresh' => 185, 'pipedrive' => 185],
+        ['fresh' => 186, 'pipedrive' => 186],
+        ['fresh' => 187, 'pipedrive' => 187],
+        ['fresh' => 188, 'pipedrive' => 188],
+        ['fresh' => 189, 'pipedrive' => 189],
+        ['fresh' => 190, 'pipedrive' => 190],
+        ['fresh' => 191, 'pipedrive' => 191],
+        ['fresh' => 192, 'pipedrive' => 192],
+        ['fresh' => 193, 'pipedrive' => 193],
+        ['fresh' => 194, 'pipedrive' => 194],
+        ['fresh' => 195, 'pipedrive' => 195],
+        ['fresh' => 196, 'pipedrive' => 196],
+        ['fresh' => 197, 'pipedrive' => 197],
+        ['fresh' => 198, 'pipedrive' => 198],
+        ['fresh' => 199, 'pipedrive' => 199],
+        ['fresh' => 200, 'pipedrive' => 200],
+        ['fresh' => 201, 'pipedrive' => 201],
+        ['fresh' => 202, 'pipedrive' => 202],
+        ['fresh' => 203, 'pipedrive' => 203],
+        ['fresh' => 204, 'pipedrive' => 204],
+        ['fresh' => 205, 'pipedrive' => 205],
+        ['fresh' => 206, 'pipedrive' => 206],
+        ['fresh' => 207, 'pipedrive' => 207],
+        ['fresh' => 208, 'pipedrive' => 208],
+        ['fresh' => 209, 'pipedrive' => 209],
+        ['fresh' => 210, 'pipedrive' => 210],
+        ['fresh' => 211, 'pipedrive' => 211],
+        ['fresh' => 212, 'pipedrive' => 212],
+        ['fresh' => 213, 'pipedrive' => 213],
+        ['fresh' => 214, 'pipedrive' => 214],
+        ['fresh' => 215, 'pipedrive' => 215],
+        ['fresh' => 216, 'pipedrive' => 216],
+        ['fresh' => 217, 'pipedrive' => 217],
+        ['fresh' => 218, 'pipedrive' => 218],
+        ['fresh' => 219, 'pipedrive' => 219],
+        ['fresh' => 220, 'pipedrive' => 220],
+        ['fresh' => 221, 'pipedrive' => 221],
+        ['fresh' => 222, 'pipedrive' => 222],
+        ['fresh' => 223, 'pipedrive' => 223],
+        ['fresh' => 224, 'pipedrive' => 224],
+        ['fresh' => 225, 'pipedrive' => 225],
+        ['fresh' => 226, 'pipedrive' => 226],
+        ['fresh' => 227, 'pipedrive' => 227],
+        ['fresh' => 228, 'pipedrive' => 228],
+        ['fresh' => 229, 'pipedrive' => 229],
+        ['fresh' => 230, 'pipedrive' => 230],
+        ['fresh' => 231, 'pipedrive' => 231],
+        ['fresh' => 888, 'pipedrive' => 232],
+        ['fresh' => 233, 'pipedrive' => 233],
+        ['fresh' => 234, 'pipedrive' => 234],
+        ['fresh' => 235, 'pipedrive' => 235],
+        ['fresh' => 236, 'pipedrive' => 236],
+        ['fresh' => 237, 'pipedrive' => 237],
+        ['fresh' => 238, 'pipedrive' => 238],
+        ['fresh' => 239, 'pipedrive' => 239],
+        ['fresh' => 240, 'pipedrive' => 240],
+        ['fresh' => 241, 'pipedrive' => 241],
+        ['fresh' => 242, 'pipedrive' => 242],
+        ['fresh' => 243, 'pipedrive' => 243],
+        ['fresh' => 244, 'pipedrive' => 244],
+        ['fresh' => 245, 'pipedrive' => 245],
+        ['fresh' => 246, 'pipedrive' => 246],
+        ['fresh' => 247, 'pipedrive' => 247],
+        ['fresh' => 248, 'pipedrive' => 248],
+        ['fresh' => 249, 'pipedrive' => 249],
+        ['fresh' => 250, 'pipedrive' => 250],
+        ['fresh' => 251, 'pipedrive' => 251],
+        ['fresh' => 252, 'pipedrive' => 252],
+        ['fresh' => 253, 'pipedrive' => 253],
+        ['fresh' => 254, 'pipedrive' => 254],
+        ['fresh' => 255, 'pipedrive' => 255],
+        ['fresh' => 256, 'pipedrive' => 256],
+        ['fresh' => 257, 'pipedrive' => 257],
+        ['fresh' => 258, 'pipedrive' => 258],
+        ['fresh' => 259, 'pipedrive' => 259],
+        ['fresh' => 260, 'pipedrive' => 260],
+        ['fresh' => 261, 'pipedrive' => 261],
+        ['fresh' => 262, 'pipedrive' => 262],
+        ['fresh' => 263, 'pipedrive' => 263],
+        ['fresh' => 264, 'pipedrive' => 264],
+        ['fresh' => 265, 'pipedrive' => 265],
+        ['fresh' => 266, 'pipedrive' => 266],
+        ['fresh' => 267, 'pipedrive' => 267],
+        ['fresh' => 268, 'pipedrive' => 268],
+        ['fresh' => 269, 'pipedrive' => 269],
+        ['fresh' => 270, 'pipedrive' => 270],
+        ['fresh' => 271, 'pipedrive' => 271],
+        ['fresh' => 272, 'pipedrive' => 272],
+        ['fresh' => 273, 'pipedrive' => 273],
+        ['fresh' => 274, 'pipedrive' => 274],
+        ['fresh' => 275, 'pipedrive' => 275],
+    ];
+
+    // Choisir le référentiel selon le paramètre
+    switch ($referentiel) {
+        case 'priority':
+            $datas = $priority;
+            break;
+        case 'category_child':
+            $datas = $category_child;
+            break;
+        default:
+            return null; // Cas où le référentiel n'est pas reconnu
+    }
+
+    // Si source ou id sont non précisés, retourner toutes les données
+    if ($source === null || $id === null) {
+        return $datas;
+    }
+
+    // Recherche dans les données du référentiel
+    foreach ($datas as $row) {
+        if ($source === 'pipedrive' && $row['pipedrive'] == $id) {
+            return $row['fresh']; // Retourne la valeur fresh correspondante
+        }
+        if ($source === 'fresh' && $row['fresh'] == $id) {
+            return $row['pipedrive']; // Retourne la valeur pipedrive correspondante
+        }
+    }
+
+    return null; // Retourne null si aucune correspondance trouvée
+}
+echo get_referentiel('fresh', 888, 'category_child');
