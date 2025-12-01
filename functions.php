@@ -646,6 +646,8 @@ function add_opportunity() {
     $body = json_encode($objSender);
 
 
+    
+
 // Arguments de la requête
     $args = [
         'body'        => $body,
@@ -659,6 +661,7 @@ function add_opportunity() {
     ];
 
     $response = wp_remote_post($url, $args);
+
 
     if (is_wp_error($response)) {
         error_log('Erreur API FreshProcess : ' . $response->get_error_message());
@@ -954,6 +957,8 @@ function add_data_to_fresh() {
     $organisation_name = $datas['organisation']->name ?? null;
     $organisation_address = $datas['organisation']->address->value ?? null;
 
+
+
     // Datas Person
     $person_phone = $datas['person']->phones;
     $person_phone_reset = reset($person_phone);
@@ -972,7 +977,7 @@ function add_data_to_fresh() {
     $data = array(
         'opp' => array(
             'title'        => $deal_title,
-            'ref'          => 'pipedrive_' . 1,
+            'ref'          => 'pipedrive_' . 3,
             'description'  => $projectInfo,
             'note_public'  => "Note publique concernant l'opportunité.",
             'pipelinecol'  => 1,
@@ -991,14 +996,26 @@ function add_data_to_fresh() {
             'note_private' => '',
         ),
         'contact' => array(
-            'firstname'    => $person_fistname,
-            'lastname'     => $person_lastname,
-            'phone'        => $person_phone_value,
-            'email'        => $person_email_value,
-            'country_id'   => 1,
-            'note_private' => 'Importé de Pipedrive',
-            'phone_pro'    => $person_phone_value,
-            'address'      => $deal_address,
+            [
+                'firstname'    => $person_fistname,
+                'lastname'     => $person_lastname,
+                'phone'        => $person_phone_value,
+                'email'        => $person_email_value,
+                'country_id'   => 1,
+                'note_private' => 'Importé de Pipedrive',
+                'phone_pro'    => $person_phone_value,
+                'address'      => $organisation_address,
+            ],
+            [
+                'firstname'    => $organisation_name,
+                'lastname'     => 'TOTO',
+                'phone'        => $person_phone_value,
+                'email'        => $person_email_value,
+                'country_id'   => 1,
+                'note_private' => 'Importé de Pipedrive',
+                'phone_pro'    => $person_phone_value,
+                'address'      => $deal_address,
+            ]
         ),
     );
 
@@ -1030,6 +1047,7 @@ function add_data_to_fresh() {
 
     die;
 }
+
 
 //add_data_to_fresh();
 
@@ -1212,4 +1230,4 @@ function get_referentiel($source = null, $id = null, $referentiel = 'priority')
 
     return null; // Retourne null si aucune correspondance trouvée
 }
-echo get_referentiel('fresh', 888, 'category_child');
+// echo get_referentiel('fresh', 888, 'category_child');
