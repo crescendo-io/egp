@@ -938,7 +938,7 @@ function get_token_fresh(){
 
 function add_data_to_fresh() {
 
-    $datas = get_pipedrive_deal();
+    $datas = get_pipedrive_deal(5);
     $freshToken = get_token_fresh();
 
 
@@ -951,7 +951,7 @@ function add_data_to_fresh() {
     $utm_campaign = $datas['deal']['utm_campaign'] ?? null;
     $utm_content = $datas['deal']['utm_content'] ?? null;
     $utm_source = $datas['deal']['utm_source'] ?? null;
-    $deal_address = $datas['deal']['address']->formatted_address ?? null;
+    $deal_address = $datas['deal']['address']->value ?? null;
 
     //Datas organisation
     $organisation_name = $datas['organisation']->name ?? null;
@@ -977,7 +977,7 @@ function add_data_to_fresh() {
     $data = array(
         'opp' => array(
             'title'        => $deal_title,
-            'ref'          => 'pipedrive_' . 3,
+            'ref'          => 'pipedrive_' . 5,
             'description'  => $projectInfo,
             'note_public'  => "Note publique concernant l'opportunité.",
             'pipelinecol'  => 1,
@@ -1008,7 +1008,7 @@ function add_data_to_fresh() {
             ],
             [
                 'firstname'    => $organisation_name,
-                'lastname'     => 'TOTO',
+                'lastname'     => 'Adresse du projet',
                 'phone'        => $person_phone_value,
                 'email'        => $person_email_value,
                 'country_id'   => 1,
