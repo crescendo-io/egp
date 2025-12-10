@@ -13,16 +13,68 @@
 
 </div>
 <div class="header">
+    <div class="sup-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <?php
+                        $sentences_pre_header = get_field('sentences_pre_header', 'option');
+                        if($sentences_pre_header):
+                    ?>
+                    <ul>
+                        <?php foreach ($sentences_pre_header as $item): ?>
+                        <li>
+                            <?= $item["sentence"] ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <?php endif; ?>
+                </div>
+
+                <?php $note_sentence = get_field('note_sentence', 'option'); ?>
+                <div class="container-stars">
+                    <div class="note">
+                        <div class="sentence"><?= $note_sentence; ?></div>
+                        <div class="stars">
+                            <svg width="39" height="36" viewBox="0 0 39 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5 0L23.878 13.4742H38.0456L26.5838 21.8017L30.9618 35.2758L19.5 26.9483L8.03819 35.2758L12.4162 21.8017L0.954397 13.4742H15.122L19.5 0Z" fill="white"/>
+                            </svg>
+                            <svg width="39" height="36" viewBox="0 0 39 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5 0L23.878 13.4742H38.0456L26.5838 21.8017L30.9618 35.2758L19.5 26.9483L8.03819 35.2758L12.4162 21.8017L0.954397 13.4742H15.122L19.5 0Z" fill="white"/>
+                            </svg>
+                            <svg width="39" height="36" viewBox="0 0 39 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5 0L23.878 13.4742H38.0456L26.5838 21.8017L30.9618 35.2758L19.5 26.9483L8.03819 35.2758L12.4162 21.8017L0.954397 13.4742H15.122L19.5 0Z" fill="white"/>
+                            </svg>
+                            <svg width="39" height="36" viewBox="0 0 39 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5 0L23.878 13.4742H38.0456L26.5838 21.8017L30.9618 35.2758L19.5 26.9483L8.03819 35.2758L12.4162 21.8017L0.954397 13.4742H15.122L19.5 0Z" fill="white"/>
+                            </svg>
+                            <svg width="39" height="36" viewBox="0 0 39 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19.5 0L23.878 13.4742H38.0456L26.5838 21.8017L30.9618 35.2758L19.5 26.9483L8.03819 35.2758L12.4162 21.8017L0.954397 13.4742H15.122L19.5 0Z" fill="white"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-1">
+            <div class="col-sm-6">
                 <div class="logo">
                     <a href="<?= get_site_url(); ?>">
                         <img src="<?= get_stylesheet_directory_uri(); ?>/styles/img/logo.svg" alt="">
                     </a>
                 </div>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-6 text-right">
+                <a href="<?= get_site_url(); ?>/galerie/" class="button secondary">Nos réalisations</a>
+                <a href="<?= get_site_url(); ?>/demande-de-devis/" class="button">Demander un devis</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="burger-menu">
                     <div class="barre"></div>
                     <div class="barre"></div>
@@ -34,6 +86,9 @@
                         $pageId = $menu_item['menu_items_primary'];
                         $haveSub = $menu_item['menu_items_sub'];
                         $subMenu = $menu_item['menu_items_secondary'];
+                        $subMenuRight = $menu_item['menu_items_secondary_right'];
+                        $menu_items_secondary_label_left = $menu_item['menu_items_secondary_label_left'];
+                        $menu_items_secondary_label_right = $menu_item['menu_items_secondary_label_right'];
                         $imageSubMenu = $menu_item['menu_secondary_image'];
                         $imageSubMenuUrl = '';
                         if($imageSubMenu){
@@ -55,21 +110,48 @@
                                         </div>
                                     <?php endif; ?>
 
-                                    <div class="links">
-                                        <li class="intro-link">
+                                    <div class="container-links">
+                                        <div class="intro-link">
                                             <a href="<?= $link; ?>"><?= $title; ?></a>
-                                        </li>
-                                        <?php
-                                        foreach ($subMenu as $subMenuItem):
-                                            $title = get_the_title($subMenuItem);
-                                            $link = get_the_permalink($subMenuItem);
-                                            ?>
-                                            <li class="link-sub">
-                                                <a href="<?= $link; ?>">
-                                                    <?= $title; ?>
-                                                </a>
+                                        </div>
+                                        <div class="links">
+                                            <?php if($menu_items_secondary_label_left): ?>
+                                            <li class="cat-link">
+                                                <?= $menu_items_secondary_label_left; ?>
                                             </li>
-                                        <?php endforeach; ?>
+                                            <?php endif; ?>
+                                            <?php
+                                            foreach ($subMenu as $subMenuItem):
+                                                $title = get_the_title($subMenuItem);
+                                                $link = get_the_permalink($subMenuItem);
+                                                ?>
+                                                <li class="link-sub">
+                                                    <a href="<?= $link; ?>">
+                                                        <?= $title; ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <?php if($subMenuRight): ?>
+                                        <div class="links right">
+                                            <?php if($menu_items_secondary_label_right): ?>
+                                                <li class="cat-link">
+                                                    <?= $menu_items_secondary_label_right; ?>
+                                                </li>
+                                            <?php endif; ?>
+                                            <?php
+                                            foreach ($subMenuRight as $subMenuItem):
+                                                $title = get_the_title($subMenuItem);
+                                                $link = get_the_permalink($subMenuItem);
+                                                ?>
+                                                <li class="link-sub">
+                                                    <a href="<?= $link; ?>">
+                                                        <?= $title; ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </div>
+                                        <?php endif; ?>
                                     </div>
                                 </ul>
                             <?php endif; ?>
@@ -78,16 +160,9 @@
                     <?php
                     endforeach;
                     ?>
-                    <li>
-                        <a href="<?= get_site_url(); ?>/galerie/">
-                            Galerie
-                        </a>
-                    </li>
+
 
                 </ul>
-            </div>
-            <div class="col-sm-2 text-right">
-                <a href="<?= get_site_url(); ?>/demande-de-devis/" class="button">Demander un devis</a>
             </div>
         </div>
     </div>
