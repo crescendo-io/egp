@@ -432,7 +432,7 @@ footer .social {
     max-width: 2000px;
     width: calc(100% - 4vw);
     left: 50%;
-    top: calc(2vw + 90px);
+    top: calc(2vw + 145px);
     background: transparent;
     z-index: 200;
     position: absolute;
@@ -521,6 +521,7 @@ footer .social {
 .header .container-stars{
     position: absolute;
     right: 20px;
+    background: #0D445F;
 }
 .header .note{
     text-align: right;
@@ -541,6 +542,73 @@ footer .social {
 }
 .header .sup-header .sentence{
     display: inline-block;
+}
+
+.marquee-container {
+    overflow: hidden;
+    position: relative;
+    display: block;
+    width: calc(100% - 250px);
+}
+
+.marquee-container:before{
+    content: '';
+    background: #0D445F;
+    background: linear-gradient(90deg,rgba(13, 68, 95, 0) 0%, rgba(13, 68, 95, 1) 100%);
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 3;
+}
+.marquee-container:after{
+    content: '';
+    background: #0D445F;
+    background: linear-gradient(90deg,rgba(13, 68, 95, 1) 0%, rgba(13, 68, 95, 0) 100%);
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+}
+
+.sentences-pre-header {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 20px;
+    width: 100%;
+}
+
+.sentences-pre-header li {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.sentences-pre-header li.active {
+    opacity: 1;
+}
+
+.sentences-pre-header li .marquee-text {
+    display: inline-block;
+    transform: translateX(var(--start-position, 100vw));
+    animation: marquee var(--marquee-duration, 8s) linear forwards;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(var(--start-position, 100vw));
+    }
+    100% {
+        transform: translateX(-100%);
+    }
 }
 
 .header .submenu {
@@ -700,10 +768,10 @@ footer .social {
     font-size: 1.4vw;
 }
 .strate-hero .strate-hero_inner h1 {
-    font-size: 6vw;
+    font-size: 5vw;
     text-transform: uppercase;
     font-weight: 800;
-    line-height: 6vw;
+    line-height: 5vw;
 }
 .container-hero-slider.strate {
     padding-top: 0;
@@ -854,7 +922,7 @@ footer .social {
     border: 0;
 }
 .introduction-product {
-    margin-top: 170px;
+    margin-top: 195px;
     padding-bottom: 5vw;
 }
 .introduction-product .container-pricing-product .hero-product {
@@ -1491,7 +1559,7 @@ footer a {
         height: auto;
         max-height: calc(100vh - 180px);
         overflow: auto;
-        top: 66px;
+        top: 106px;
         background: rgba(255, 255, 255, .98);
         backdrop-filter: blur(5px);
         left: 0;
@@ -1503,10 +1571,22 @@ footer a {
         border-bottom: 1px solid rgba(14, 68, 95, .05);
         max-width: 100%;
         height: auto;
-        padding: 15px 45px 15px 15px;
+        padding: 15px 0 15px 15px;
         text-align: left;
         position: relative;
     }
+
+    .header .submenu .intro-link{
+        display: none;
+    }
+    .header .main-menu li .submenu .links{
+        padding-left: 15px;
+    }
+    .header .submenu .links.right{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
     .header .main-menu li .arrow-sub {
         width: 25px;
         height: 25px;
@@ -1536,9 +1616,8 @@ footer a {
     .header .burger-menu {
         position: absolute;
         right: 20px;
-        top: 50%;
+        bottom: 20px;
         z-index: 3;
-        transform: translateY(-50%);
     }
     .header .burger-menu .barre {
         width: 40px;
@@ -1583,6 +1662,14 @@ footer a {
         font-size: 13px;
         font-weight: 500;
     }
+
+    .header .submenu .container-links{
+        width: 100%;
+    }
+
+    .header .main-menu li .submenu{
+        padding: 10px;
+    }
     .strate-hero .strate-hero_inner h1.big {
         font-size: 100px;
         line-height: 80px;
@@ -1619,6 +1706,22 @@ footer a {
     .filter-buttons-toggle {
         width: 100%;
     }
+
+    .header .sup-header .stars{
+        display: none;
+    }
+
+    .header .sup-header .sentence{
+        font-size: 13px;
+    }
+    .marquee-container{
+        width: calc(100% - 130px);
+    }
+    .marquee-container:before,
+    .marquee-container:after{
+        width: 15px;
+    }
+
 }
 
 

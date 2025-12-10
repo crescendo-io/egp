@@ -21,13 +21,15 @@
                         $sentences_pre_header = get_field('sentences_pre_header', 'option');
                         if($sentences_pre_header):
                     ?>
-                    <ul>
-                        <?php foreach ($sentences_pre_header as $item): ?>
-                        <li>
-                            <?= $item["sentence"] ?>
-                        </li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <div class="marquee-container">
+                        <ul class="sentences-pre-header">
+                            <?php foreach ($sentences_pre_header as $item): ?>
+                            <li>
+                                <span class="marquee-text"><?= $item["sentence"] ?></span>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
 
                     <?php endif; ?>
                 </div>
@@ -167,5 +169,7 @@
         </div>
     </div>
 </div>
+
+
 
 <?php custom_breadcrumb(); ?>

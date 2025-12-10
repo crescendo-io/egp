@@ -38,6 +38,64 @@ $(window).on('load',function(){
 
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const marqueeContainer = document.querySelector('.marquee-container');
+    const container = document.querySelector('.sentences-pre-header');
+    if (!container || !marqueeContainer) return;
+
+    const items = container.querySelectorAll('li');
+    if (items.length === 0) return;
+
+    let currentIndex = 0;
+    const fadeTime = 400;
+
+    function getTextWidth(text) {
+        const measureEl = document.createElement('span');
+        measureEl.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font:inherit;';
+        measureEl.textContent = text;
+        marqueeContainer.appendChild(measureEl);
+        const width = measureEl.scrollWidth;
+        marqueeContainer.removeChild(measureEl);
+        return width;
+    }
+
+    function showNextItem() {
+        // Retirer la classe active de l'élément précédent
+        items.forEach(item => item.classList.remove('active'));
+
+        const currentItem = items[currentIndex];
+        const marqueeText = currentItem.querySelector('.marquee-text');
+        const containerWidth = marqueeContainer.offsetWidth;
+        const text = marqueeText.textContent.trim();
+        const textWidth = getTextWidth(text);
+
+        // Calculer la durée basée sur la distance totale
+        const baseSpeed = 100; // pixels par seconde
+        const totalDistance = containerWidth + textWidth;
+        const duration = Math.max(5, totalDistance / baseSpeed);
+
+        // Définir les variables CSS
+        currentItem.style.setProperty('--marquee-duration', duration + 's');
+        currentItem.style.setProperty('--start-position', containerWidth + 'px');
+
+        // Réinitialiser l'animation
+        marqueeText.style.animation = 'none';
+        marqueeText.offsetHeight; // Force reflow
+        marqueeText.style.animation = '';
+
+        currentItem.classList.add('active');
+
+        // Passer au suivant après la fin de l'animation + petit délai pour le fade
+        setTimeout(() => {
+            currentIndex = (currentIndex + 1) % items.length;
+            showNextItem();
+        }, (duration * 1000) + fadeTime);
+    }
+
+    // Démarrer le défilement
+    showNextItem();
+});
+
 
 jQuery(document).ready(function($) {
     const floatingPhone = $('.floating-phone');
