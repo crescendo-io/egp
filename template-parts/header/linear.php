@@ -116,7 +116,7 @@
                                         <div class="intro-link">
                                             <a href="<?= $link; ?>"><?= $title; ?></a>
                                         </div>
-                                        <div class="links">
+                                        <div class="links left">
                                             <?php if($menu_items_secondary_label_left): ?>
                                             <li class="cat-link">
                                                 <?= $menu_items_secondary_label_left; ?>

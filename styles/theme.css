@@ -651,8 +651,12 @@ footer .social {
     display: inline-block;
     padding: 15px 0;
     vertical-align: top;
-
 }
+
+.header .submenu .links.left{
+    padding-top: 30px;
+}
+
 .header .submenu .intro-link {
     width: 100%;
     padding-left: 0;
@@ -1582,6 +1586,10 @@ footer a {
     .header .main-menu li .submenu .links{
         padding-left: 15px;
     }
+
+    .header .submenu .links.left{
+        padding-top: 15px;
+    }
     .header .submenu .links.right{
         padding-top: 15px;
         padding-bottom: 15px;
@@ -1708,14 +1716,24 @@ footer a {
     }
 
     .header .sup-header .stars{
+        margin-left: 0;
+    }
+
+    .header .sup-header .stars svg{
         display: none;
+    }
+    .header .sup-header .stars svg:nth-child(1){
+        display: inline-block;
+    }
+    .header .container-stars{
+        right: 10px;
     }
 
     .header .sup-header .sentence{
         font-size: 13px;
     }
     .marquee-container{
-        width: calc(100% - 130px);
+        width: calc(100% - 145px);
     }
     .marquee-container:before,
     .marquee-container:after{
