@@ -18,10 +18,12 @@ $(window).on('load',function(){
         // Scroll vers le bas et au-delà du seuil → cacher le pré-header
         if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
             header.addClass('scrolled');
+            $('body').addClass('header-scrolled');
         } 
         // Scroll vers le haut → afficher le pré-header
         else if (scrollTop < lastScrollTop) {
             header.removeClass('scrolled');
+            $('body').removeClass('header-scrolled');
         }
         
         lastScrollTop = scrollTop;
