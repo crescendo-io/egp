@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const textWidth = getTextWidth(text);
 
         // Calculer la durée basée sur la distance totale
-        const baseSpeed = 200; // pixels par seconde
+        const baseSpeed = 150; // pixels par seconde
         const totalDistance = containerWidth + textWidth;
         const duration = Math.max(5, totalDistance / baseSpeed);
 
