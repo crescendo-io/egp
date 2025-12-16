@@ -7,6 +7,23 @@ $(window).on('load',function(){
        $('html, body').toggleClass('open');
     });
 
+    // Header scroll behavior - cache le pré-header au scroll
+    let lastScrollTop = 0;
+    const header = $('.header');
+    const scrollThreshold = 50;
+
+    $(window).on('scroll', function() {
+        const scrollTop = $(this).scrollTop();
+        
+        if (scrollTop > scrollThreshold) {
+            header.addClass('scrolled');
+        } else {
+            header.removeClass('scrolled');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+
 
     $('#masonry-grid').masonry({
         // options
@@ -70,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const textWidth = getTextWidth(text);
 
         // Calculer la durée basée sur la distance totale
-        const baseSpeed = 100; // pixels par seconde
+        const baseSpeed = 200; // pixels par seconde
         const totalDistance = containerWidth + textWidth;
         const duration = Math.max(5, totalDistance / baseSpeed);
 

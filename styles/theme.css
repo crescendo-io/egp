@@ -495,6 +495,17 @@ footer .social {
     left: 50%;
     border-radius: 15px 15px 0 0;
     transform: translateX(-50%);
+    transition: top 0.3s ease;
+}
+.header.scrolled {
+    top: -35px;
+}
+.header .sup-header {
+    transition: opacity 0.3s ease;
+}
+.header.scrolled .sup-header {
+    opacity: 0;
+    pointer-events: none;
 }
 .header .button {
     top: 50%;
@@ -548,7 +559,16 @@ footer .social {
     overflow: hidden;
     position: relative;
     display: block;
-    width: calc(100% - 250px);
+    width: calc(100% - 260px);
+}
+
+
+.google-logo{
+    width: 17px;
+    height: 17px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
 .marquee-container:before{
@@ -1733,7 +1753,7 @@ footer a {
         font-size: 13px;
     }
     .marquee-container{
-        width: calc(100% - 145px);
+        width: calc(100% - 160px);
     }
     .marquee-container:before,
     .marquee-container:after{
