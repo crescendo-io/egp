@@ -32,7 +32,7 @@ add_action( 'wp_enqueue_scripts', 'wpm_enqueue_styles' );
 function wpm_enqueue_styles(){
     //wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/styles/theme.css' );
     wp_enqueue_style('lightbox', get_stylesheet_directory_uri() . '/styles/lightbox.css', array(), filemtime(get_template_directory() . '/styles/theme.css'));
-    wp_enqueue_style('theme', get_stylesheet_directory_uri() . '/styles/theme.css?cache=34983987918
+    wp_enqueue_style('theme', get_stylesheet_directory_uri() . '/styles/theme.css?cache=3498398387918
     ', array(), filemtime(get_template_directory() . '/styles/theme.css'));
     wp_enqueue_script(
         'lightbox', // Identifiant unique du script
