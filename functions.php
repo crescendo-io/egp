@@ -44,7 +44,7 @@ function wpm_enqueue_styles(){
 
     wp_enqueue_script(
         'script', // Identifiant unique du script
-        get_stylesheet_directory_uri() . '/js/script.js?cache=349839879', // URL du fichier JS
+        get_stylesheet_directory_uri() . '/js/script.js?cache=349839637879', // URL du fichier JS
         array( 'jquery' ), // Dépendances (si besoin, ici 'jquery')
         null, // Version du script (null pour désactiver la gestion des versions)
         true // Charger dans le footer (true) ou dans le header (false)
