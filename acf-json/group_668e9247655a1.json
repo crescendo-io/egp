@@ -71,8 +71,30 @@
                     "parent_repeater": "field_668e9247962e9"
                 },
                 {
+                    "key": "field_6938233ef6bba",
+                    "label": "Libellé sous menu gauche",
+                    "name": "menu_items_secondary_label_left",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_668e9247962e9"
+                },
+                {
                     "key": "field_668e9318962eb",
-                    "label": "Sous menu",
+                    "label": "Sous menu gauche",
                     "name": "menu_items_secondary",
                     "aria-label": "",
                     "type": "relationship",
@@ -105,6 +127,70 @@
                     "return_format": "id",
                     "min": "",
                     "max": "",
+                    "allow_in_bindings": 1,
+                    "elements": "",
+                    "bidirectional": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_668e9247962e9"
+                },
+                {
+                    "key": "field_69382368f6bbc",
+                    "label": "Libellé sous menu droite",
+                    "name": "menu_items_secondary_label_right",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_668e9247962e9"
+                },
+                {
+                    "key": "field_69382359f6bbb",
+                    "label": "Sous menu droite",
+                    "name": "menu_items_secondary_right",
+                    "aria-label": "",
+                    "type": "relationship",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_668e936e962ed",
+                                "operator": "==",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "page"
+                    ],
+                    "post_status": "",
+                    "taxonomy": "",
+                    "filters": [
+                        "search",
+                        "post_type",
+                        "taxonomy"
+                    ],
+                    "return_format": "id",
+                    "min": "",
+                    "max": "",
+                    "allow_in_bindings": 1,
                     "elements": "",
                     "bidirectional": 0,
                     "bidirectional_target": [],
@@ -145,6 +231,73 @@
                     "parent_repeater": "field_668e9247962e9"
                 }
             ]
+        },
+        {
+            "key": "field_69382621053fd",
+            "label": "Phrases information pré-header",
+            "name": "sentences_pre_header",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Ajouter un élément",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_69382647053fe",
+                    "label": "Phrase",
+                    "name": "sentence",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_69382621053fd"
+                }
+            ]
+        },
+        {
+            "key": "field_6938281455a1f",
+            "label": "Phrase d'avis étoiles",
+            "name": "note_sentence",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [
@@ -165,5 +318,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1720620723
+    "modified": 1765287980
 }

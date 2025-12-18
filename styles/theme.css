@@ -333,6 +333,10 @@ header.burger.is-scrolled .social {
     padding: 30px 30px 27px;
     margin-bottom: 0;
 }
+
+
+
+
 .container-slider-logo .swiper .card-slide img {
     margin-bottom: 0;
 }
@@ -428,7 +432,7 @@ footer .social {
     max-width: 2000px;
     width: calc(100% - 4vw);
     left: 50%;
-    top: calc(2vw + 90px);
+    top: calc(2vw + 145px);
     background: transparent;
     z-index: 200;
     position: absolute;
@@ -458,6 +462,18 @@ footer .social {
 .page-template-page-product .breadcrumb a, .page-template-page-product .breadcrumb span {
     color: #0e445f;
 }
+
+
+.header .sup-header{
+    background: #0D445F;
+    color: #FFF;
+    height: 40px;
+    overflow: hidden;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 15px 15px 0 0;
+}
+
 .header .submenu {
     position: absolute;
     left: 0;
@@ -471,14 +487,25 @@ footer .social {
 .header {
     position: fixed;
     z-index: 300;
-    top: 2vw;
-    background-color: rgba(255, 255, 255, 0.7);
+    top: 1vw;
+    background-color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(5px);
     max-width: 2000px;
-    width: calc(100% - 4vw);
+    width: calc(100% - 2vw);
     left: 50%;
+    border-radius: 15px 15px 0 0;
     transform: translateX(-50%);
-    border-radius: 25px 25px 0 0;
+    transition: top 0.3s ease;
+}
+.header.scrolled {
+    top: -35px;
+}
+.header .sup-header {
+    transition: opacity 0.3s ease;
+}
+.header.scrolled .sup-header {
+    opacity: 0;
+    pointer-events: none;
 }
 .header .button {
     top: 50%;
@@ -493,15 +520,117 @@ footer .social {
 .header .logo {
     display: inline-block;
     vertical-align: middle;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 .header .main-menu {
     display: inline-block;
     vertical-align: middle;
-    text-align: center;
+    text-align: left;
+    border-top: 1px solid rgba(0,0,0,.1);
     width: 100%;
 }
+
+.header .container-stars{
+    position: absolute;
+    right: 20px;
+    background: #0D445F;
+}
+.header .note{
+    text-align: right;
+    font-weight: 800;
+}
+.header .sup-header .stars{
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.header .sup-header .stars svg{
+    width: 15px;
+    height: 13px;
+}
+
+.header .sup-header .stars svg path{
+    fill: #F1D035;
+}
+.header .sup-header .sentence{
+    display: inline-block;
+}
+
+.marquee-container {
+    overflow: hidden;
+    position: relative;
+    display: block;
+    width: calc(100% - 260px);
+}
+
+
+.google-logo{
+    width: 17px;
+    height: 17px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.marquee-container:before{
+    content: '';
+    background: #0D445F;
+    background: linear-gradient(90deg,rgba(13, 68, 95, 0) 0%, rgba(13, 68, 95, 1) 100%);
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 3;
+}
+.marquee-container:after{
+    content: '';
+    background: #0D445F;
+    background: linear-gradient(90deg,rgba(13, 68, 95, 1) 0%, rgba(13, 68, 95, 0) 100%);
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+}
+
+.sentences-pre-header {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 20px;
+    width: 100%;
+}
+
+.sentences-pre-header li {
+    position: absolute;
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.sentences-pre-header li.active {
+    opacity: 1;
+}
+
+.sentences-pre-header li .marquee-text {
+    display: inline-block;
+    transform: translateX(var(--start-position, 100vw));
+    animation: marquee var(--marquee-duration, 8s) linear forwards;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(var(--start-position, 100vw));
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 .header .submenu {
     position: absolute;
     left: 0;
@@ -510,7 +639,8 @@ footer .social {
     display: none;
     background: #fff;
     text-align: left;
-    padding: 2vw;
+    padding: 30px;
+    border-radius: 0 0 15px 15px;
 }
 .header .submenu .image {
     width: 30%;
@@ -520,26 +650,61 @@ footer .social {
     vertical-align: middle;
     overflow: hidden;
     margin-right: 60px;
+    border-radius: 0 0 10px 10px;
 }
 .header .submenu .image .img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.header .submenu .links {
-    width: 63%;
-    display: inline-block;
-    vertical-align: middle;
+.header .submenu .links.right {
+    background: #0D445F;
+    padding: 30px;
+    color: #FFF;
+    border-radius: 0 0 10px 10px;
 }
-.header .submenu .links .intro-link {
+.header .submenu .links.right a{
+    color: #FFF;
+}
+.header .submenu .links {
+    width: 46%;
+    display: inline-block;
+    padding: 15px 0;
+    vertical-align: top;
+}
+
+.header .submenu .links.left{
+    padding-top: 30px;
+}
+
+.header .submenu .intro-link {
     width: 100%;
     padding-left: 0;
     font-size: 26px;
+    border-bottom: 1px solid #E9E9E9;
+}
+
+.header .submenu .cat-link{
+    color: #9B9B9B;
+    padding-left: 0;
+    font-size: 16px;
+    padding-top: 0;
+    padding-bottom: 5px;
+}
+
+.header .submenu .links.right .cat-link{
+    color: #FFF;
+}
+
+.header .submenu .container-links{
+    width: 64%;
+    display: inline-block;
+    vertical-align: middle;
 }
 .header .submenu .links .link-sub {
     display: inline-block;
-    width: 40%;
-    padding: 7px 0;
+    width: 100%;
+    padding: 3px 0;
     vertical-align: top;
     top: 0;
     transform: translateY(0);
@@ -587,10 +752,10 @@ footer .social {
     font-weight: 800;
     text-transform: uppercase;
     font-size: 12px;
-    max-width: 8vw;
+    max-width: 15vw;
     text-align: center;
     vertical-align: middle;
-    height: 83px;
+    height: 60px;
 }
 .header .main-menu li a {
     color: #0e445f;
@@ -627,10 +792,10 @@ footer .social {
     font-size: 1.4vw;
 }
 .strate-hero .strate-hero_inner h1 {
-    font-size: 6vw;
+    font-size: 5vw;
     text-transform: uppercase;
     font-weight: 800;
-    line-height: 6vw;
+    line-height: 5vw;
 }
 .container-hero-slider.strate {
     padding-top: 0;
@@ -781,7 +946,7 @@ footer .social {
     border: 0;
 }
 .introduction-product {
-    margin-top: 170px;
+    margin-top: 195px;
     padding-bottom: 5vw;
 }
 .introduction-product .container-pricing-product .hero-product {
@@ -1008,15 +1173,22 @@ footer .social {
     padding-top: 10px;
     margin-top: 200px;
     position: sticky;
-    top: calc(83px + 2vw);
+    top: calc(139px + 2vw);
     text-align: center;
-    z-index: 5;
+    z-index: 200;
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(5px);
     max-width: 2000px;
-    width: calc(100% - 4vw);
     margin-left: auto;
     margin-right: auto;
+    transition: top 0.3s ease;
+}
+body.header-scrolled .filters-form {
+    top: 130px;
+}
+
+.post-type-archive-galerie .breadcrumb{
+    display: none;
 }
 
 .filters-form .list-group {
@@ -1418,7 +1590,7 @@ footer a {
         height: auto;
         max-height: calc(100vh - 180px);
         overflow: auto;
-        top: 66px;
+        top: 106px;
         background: rgba(255, 255, 255, .98);
         backdrop-filter: blur(5px);
         left: 0;
@@ -1430,10 +1602,26 @@ footer a {
         border-bottom: 1px solid rgba(14, 68, 95, .05);
         max-width: 100%;
         height: auto;
-        padding: 15px 45px 15px 15px;
+        padding: 15px 0 15px 15px;
         text-align: left;
         position: relative;
     }
+
+    .header .submenu .intro-link{
+        display: none;
+    }
+    .header .main-menu li .submenu .links{
+        padding-left: 15px;
+    }
+
+    .header .submenu .links.left{
+        padding-top: 15px;
+    }
+    .header .submenu .links.right{
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
     .header .main-menu li .arrow-sub {
         width: 25px;
         height: 25px;
@@ -1463,9 +1651,8 @@ footer a {
     .header .burger-menu {
         position: absolute;
         right: 20px;
-        top: 50%;
+        bottom: 20px;
         z-index: 3;
-        transform: translateY(-50%);
     }
     .header .burger-menu .barre {
         width: 40px;
@@ -1510,6 +1697,14 @@ footer a {
         font-size: 13px;
         font-weight: 500;
     }
+
+    .header .submenu .container-links{
+        width: 100%;
+    }
+
+    .header .main-menu li .submenu{
+        padding: 10px;
+    }
     .strate-hero .strate-hero_inner h1.big {
         font-size: 100px;
         line-height: 80px;
@@ -1546,6 +1741,32 @@ footer a {
     .filter-buttons-toggle {
         width: 100%;
     }
+
+    .header .sup-header .stars{
+        margin-left: 0;
+    }
+
+    .header .sup-header .stars svg{
+        display: none;
+    }
+    .header .sup-header .stars svg:nth-child(1){
+        display: inline-block;
+    }
+    .header .container-stars{
+        right: 10px;
+    }
+
+    .header .sup-header .sentence{
+        font-size: 13px;
+    }
+    .marquee-container{
+        width: calc(100% - 160px);
+    }
+    .marquee-container:before,
+    .marquee-container:after{
+        width: 15px;
+    }
+
 }
 
 
@@ -1560,7 +1781,7 @@ footer a {
     .filter-buttons-toggle{
         max-width: calc(100% - 30px);
         margin-left: 15px;
-        margin-top: 90px;
+        margin-top: 135px;
     }
 
     .filters-form{
