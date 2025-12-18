@@ -1231,3 +1231,61 @@ function get_referentiel($source = null, $id = null, $referentiel = 'priority')
     return null; // Retourne null si aucune correspondance trouvée
 }
 // echo get_referentiel('fresh', 888, 'category_child');
+
+
+/**
+ * Route API pour recevoir les webhooks FreshProcess
+ */
+define('FRESHPROCESS_WEBHOOK_TOKEN', 'fp_wh_8Kx3mNpQ7vR2sY9wZ4aB6cD1eF5gH0jL');
+
+add_action('rest_api_init', function () {
+    register_rest_route('egp/v1', '/freshprocess-webhook', [
+        'methods'  => 'POST',
+        'callback' => 'handle_freshprocess_webhook',
+        'permission_callback' => 'verify_freshprocess_token',
+    ]);
+});
+
+function verify_freshprocess_token(WP_REST_Request $request) {
+    // Vérifier le token dans le header Authorization ou en paramètre GET
+    $token = $request->get_header('X-Webhook-Token');
+    
+    if (!$token) {
+        $token = $request->get_param('token');
+    }
+    
+    return $token === FRESHPROCESS_WEBHOOK_TOKEN;
+}
+
+function handle_freshprocess_webhook(WP_REST_Request $request) {
+    // Récupérer les données POST
+    $body = $request->get_body();
+    $params = $request->get_params();
+    $headers = $request->get_headers();
+    
+    // Préparer les données à logger
+    $log_data = [
+        'timestamp' => date('Y-m-d H:i:s'),
+        'headers' => $headers,
+        'body' => $body,
+        'params' => $params,
+    ];
+    
+    // Chemin du fichier de log
+    $log_file = get_stylesheet_directory() . '/freshprocess-webhook.log';
+    
+    // Écrire dans le fichier de log
+    $log_entry = "=== " . $log_data['timestamp'] . " ===\n";
+    $log_entry .= "Headers: " . json_encode($headers, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";
+    $log_entry .= "Body: " . $body . "\n";
+    $log_entry .= "Params: " . json_encode($params, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";
+    $log_entry .= "========================================\n\n";
+    
+    file_put_contents($log_file, $log_entry, FILE_APPEND);
+    
+    // Retourner une réponse de succès
+    return new WP_REST_Response([
+        'success' => true,
+        'message' => 'Webhook reçu et loggé'
+    ], 200);
+}
