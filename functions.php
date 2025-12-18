@@ -1236,26 +1236,13 @@ function get_referentiel($source = null, $id = null, $referentiel = 'priority')
 /**
  * Route API pour recevoir les webhooks FreshProcess
  */
-define('FRESHPROCESS_WEBHOOK_TOKEN', 'fp_wh_8Kx3mNpQ7vR2sY9wZ4aB6cD1eF5gH0jL');
-
 add_action('rest_api_init', function () {
     register_rest_route('egp/v1', '/freshprocess-webhook', [
         'methods'  => 'POST',
         'callback' => 'handle_freshprocess_webhook',
-        'permission_callback' => 'verify_freshprocess_token',
+        'permission_callback' => '__return_true',
     ]);
 });
-
-function verify_freshprocess_token(WP_REST_Request $request) {
-    // Vérifier le token dans le header Authorization ou en paramètre GET
-    $token = $request->get_header('X-Webhook-Token');
-    
-    if (!$token) {
-        $token = $request->get_param('token');
-    }
-    
-    return $token === FRESHPROCESS_WEBHOOK_TOKEN;
-}
 
 function handle_freshprocess_webhook(WP_REST_Request $request) {
     // Récupérer les données POST
