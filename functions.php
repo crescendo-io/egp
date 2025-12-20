@@ -1250,22 +1250,18 @@ function handle_freshprocess_webhook(WP_REST_Request $request) {
     $params = $request->get_params();
     $headers = $request->get_headers();
     
-    // Préparer les données à logger
-    $log_data = [
-        'timestamp' => date('Y-m-d H:i:s'),
-        'headers' => $headers,
-        'body' => $body,
-        'params' => $params,
-    ];
-    
     // Chemin du fichier de log
     $log_file = get_stylesheet_directory() . '/freshprocess-webhook.log';
     
     // Écrire dans le fichier de log
-    $log_entry = "=== " . $log_data['timestamp'] . " ===\n";
-    $log_entry .= "Headers: " . json_encode($headers, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";
+    $log_entry = "=== " . date('Y-m-d H:i:s') . " ===\n";
     $log_entry .= "Body: " . $body . "\n";
     $log_entry .= "Params: " . json_encode($params, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";
+    
+    // Mettre à jour le deal Pipedrive
+    $pipedrive_result = update_pipedrive_deal_from_fresh($params);
+    
+    $log_entry .= "Pipedrive Response: " . json_encode($pipedrive_result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";
     $log_entry .= "========================================\n\n";
     
     file_put_contents($log_file, $log_entry, FILE_APPEND);
@@ -1273,6 +1269,242 @@ function handle_freshprocess_webhook(WP_REST_Request $request) {
     // Retourner une réponse de succès
     return new WP_REST_Response([
         'success' => true,
-        'message' => 'Webhook reçu et loggé'
+        'message' => 'Webhook reçu et envoyé à Pipedrive',
+        'pipedrive_response' => $pipedrive_result
+    ], 200);
+}
+
+/**
+ * Met à jour un deal Pipedrive avec les données FreshProcess
+ */
+function update_pipedrive_deal_from_fresh($fresh_data) {
+    $api_token = 'dc709fbe3e1fc31fa63a75c0e4099d928afd39ca';
+    $deal_id = 4; // ID du deal Pipedrive en dur pour les tests
+    
+    // Clés des champs personnalisés Pipedrive - INFO DEVIS 1
+    $FIELD_LIEN_DEVIS = 'f2e33f128fa41f70d54526d021a2c4637b4d01b2';      // 01 - Lien du Devis (varchar)
+    $FIELD_REF = '5707788962bd07a846e8e7908cab20d044b43ab7';             // 02 - Ref (varchar)
+    $FIELD_MONTANT_HT = '7ab7fd57a0f7ae28bbbf740ecd02b464e4872672';      // 03 - Montant HT (monetary)
+    $FIELD_STATU = '4cc903fdebdd6390d4f8cd1b598bccf1d38b2ffd';           // 04 - Statu (enum: 100=VALIDÉ, 101=BROUILLON)
+    $FIELD_LIEN_SIGNATURE = '2b51d7ea3bd67edd002cae7c8552298fded62879';  // 05 - Lien Signature (varchar)
+    $FIELD_DATE_FIN_VALIDITE = 'ee1799557507143ca6935a5e4c928a7d70739cce'; // 06 - Date fin Validité (date)
+    
+    // Autres champs utiles
+    $FIELD_SYNC = '3efe132b7fa2e85d872e5df378ecac1a2cb4b371';            // Synchronisation (319=envoyées, 321=traitées)
+    $FIELD_LIEN_FRESH = 'ff0bca4afeb2df248cf48b9c6b1fda7b740a1993';      // Lien Opportunité Fresh Process
+    $FIELD_GCLID = '72b31b6f20e15e3bec5225122f9b43539e0ca395';           // gclid
+    
+    // Extraire les données de FreshProcess
+    $object_type = $fresh_data['object_type'] ?? null;
+    $object_id = $fresh_data['object_id'] ?? null;
+    $object_ref = $fresh_data['object_ref'] ?? null;
+    $date_creation = $fresh_data['date_creation'] ?? null;
+    $project_id = $fresh_data['project_id'] ?? null;
+    $gclid = $fresh_data['gclid'] ?? null;
+    $name = $fresh_data['name'] ?? null;
+    $soc_id = $fresh_data['soc_id'] ?? null;
+    $total_ht = $fresh_data['total_ht'] ?? null;
+    $first_proposal_total_ht = $fresh_data['first_proposal_total_ht'] ?? null;
+    $total_proposals_ht = $fresh_data['total_proposals_ht'] ?? null;
+    $total_proposals_valid_ht = $fresh_data['total_proposals_valid_ht'] ?? null;
+    $first_order = $fresh_data['first_order'] ?? null;
+    $first_order_total_ht = $fresh_data['first_order_total_ht'] ?? null;
+    $total_orders_ht = $fresh_data['total_orders_ht'] ?? null;
+    $first_invoice = $fresh_data['first_invoice'] ?? null;
+    $first_invoice_total_ht = $fresh_data['first_invoice_total_ht'] ?? null;
+    $total_invoices_ht = $fresh_data['total_invoices_ht'] ?? null;
+    
+    // Construire les données à envoyer à Pipedrive
+    $pipedrive_data = [];
+    
+    // Mettre à jour le titre avec le nom + type d'événement
+    if ($name && $object_type) {
+        $pipedrive_data['title'] = $name . ' - ' . $object_type;
+    }
+    
+    // Mettre à jour la valeur du deal avec total_ht
+    if ($total_ht !== null && floatval($total_ht) > 0) {
+        $pipedrive_data['value'] = floatval($total_ht);
+        $pipedrive_data['currency'] = 'EUR';
+    }
+    
+    // Si c'est un devis signé, on peut marquer le deal comme gagné
+    if ($object_type === 'PROPAL_CLOSE_SIGNED') {
+        $pipedrive_data['status'] = 'won';
+        $pipedrive_data['won_time'] = date('Y-m-d\TH:i:s\Z');
+    }
+    
+    // Champs personnalisés - INFO DEVIS 1
+    $custom_fields = [];
+    
+    // 01 - Lien du Devis (TODO: à compléter avec les vraies données Fresh)
+    $lien_devis = $fresh_data['lien_devis'] ?? "https://atelier-gambetta.crm.freshprocess.eu/comm/propal/card.php?id={$object_id}";
+    $custom_fields[$FIELD_LIEN_DEVIS] = $lien_devis;
+    
+    // 02 - Ref
+    if ($object_ref) {
+        $custom_fields[$FIELD_REF] = $object_ref;
+    }
+    
+    // 03 - Montant HT (format monetary: objet avec value et currency)
+    $montant_devis = $first_proposal_total_ht ?? $total_proposals_valid_ht ?? $total_ht;
+    if ($montant_devis !== null && floatval($montant_devis) > 0) {
+        $custom_fields[$FIELD_MONTANT_HT] = [
+            'value' => floatval($montant_devis),
+            'currency' => 'EUR'
+        ];
+    }
+    
+    // 04 - Statu (100 = VALIDÉ, 101 = BROUILLON)
+    if ($object_type === 'PROPAL_VALIDATE' || $object_type === 'PROPAL_CLOSE_SIGNED') {
+        $custom_fields[$FIELD_STATU] = 100; // VALIDÉ
+    } else {
+        $custom_fields[$FIELD_STATU] = 101; // BROUILLON
+    }
+    
+    // 05 - Lien Signature (TODO: à compléter avec les vraies données Fresh)
+    $lien_signature = $fresh_data['lien_signature'] ?? "https://atelier-gambetta.crm.freshprocess.eu/signature/{$object_id}";
+    $custom_fields[$FIELD_LIEN_SIGNATURE] = $lien_signature;
+    
+    // 06 - Date fin Validité (TODO: à compléter avec les vraies données Fresh)
+    // Format attendu: YYYY-MM-DD
+    $date_fin_validite = $fresh_data['date_fin_validite'] ?? date('Y-m-d', strtotime('+30 days'));
+    $custom_fields[$FIELD_DATE_FIN_VALIDITE] = $date_fin_validite;
+    
+    // Lien vers l'opportunité Fresh Process
+    $lien_fresh = "https://atelier-gambetta.crm.freshprocess.eu/projet/card.php?id={$project_id}";
+    $custom_fields[$FIELD_LIEN_FRESH] = $lien_fresh;
+    
+    // GCLID
+    if ($gclid) {
+        $custom_fields[$FIELD_GCLID] = $gclid;
+    }
+    
+    // Synchronisation : 321 = Données traitées ✅
+    $custom_fields[$FIELD_SYNC] = 321;
+    
+    // Ajouter les champs personnalisés à la requête
+    if (!empty($custom_fields)) {
+        $pipedrive_data['custom_fields'] = $custom_fields;
+    }
+    
+    // Log pour debug
+    $notes = "=== Mise à jour FreshProcess ({$object_type}) ===\n";
+    $notes .= "Date: " . date('Y-m-d H:i:s') . "\n";
+    $notes .= "Ref: {$object_ref}\n";
+    $notes .= "Project ID: {$project_id}\n";
+    $notes .= "Société: {$name} (ID: {$soc_id})\n";
+    $notes .= "Montant HT: {$montant_devis} €\n";
+    $notes .= "Total commandes HT: {$total_orders_ht} €\n";
+    $notes .= "Total factures HT: {$total_invoices_ht} €\n";
+    $notes .= "GCLID: {$gclid}\n";
+    
+    // Appel API Pipedrive v2 pour mettre à jour le deal
+    $url = "https://api.pipedrive.com/api/v2/deals/{$deal_id}";
+    
+    $response = wp_remote_request($url, [
+        'method'  => 'PATCH',
+        'timeout' => 20,
+        'headers' => [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json',
+            'x-api-token'  => $api_token,
+        ],
+        'body' => json_encode($pipedrive_data),
+    ]);
+    
+    if (is_wp_error($response)) {
+        return [
+            'success' => false,
+            'error' => $response->get_error_message(),
+        ];
+    }
+    
+    $response_body = json_decode(wp_remote_retrieve_body($response), true);
+    $response_code = wp_remote_retrieve_response_code($response);
+    
+    // Ajouter une note au deal avec les détails
+    add_note_to_pipedrive_deal($deal_id, $notes, $api_token);
+    
+    return [
+        'success' => $response_code >= 200 && $response_code < 300,
+        'response_code' => $response_code,
+        'data_sent' => $pipedrive_data,
+        'pipedrive_response' => $response_body,
+    ];
+}
+
+/**
+ * Ajoute une note à un deal Pipedrive
+ */
+function add_note_to_pipedrive_deal($deal_id, $content, $api_token) {
+    $url = "https://api.pipedrive.com/v1/notes";
+    
+    $note_data = [
+        'deal_id' => $deal_id,
+        'content' => $content,
+        'pinned_to_deal_flag' => 0,
+    ];
+    
+    $response = wp_remote_post($url . '?api_token=' . $api_token, [
+        'timeout' => 20,
+        'headers' => [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json',
+        ],
+        'body' => json_encode($note_data),
+    ]);
+    
+    return !is_wp_error($response);
+}
+
+/**
+ * Route pour lister tous les champs personnalisés des deals Pipedrive
+ * Accès : /wp-json/egp/v1/pipedrive-fields
+ */
+add_action('rest_api_init', function () {
+    register_rest_route('egp/v1', '/pipedrive-fields', [
+        'methods'  => 'GET',
+        'callback' => 'get_pipedrive_deal_fields',
+        'permission_callback' => '__return_true',
+    ]);
+});
+
+function get_pipedrive_deal_fields() {
+    $api_token = 'dc709fbe3e1fc31fa63a75c0e4099d928afd39ca';
+    $url = "https://api.pipedrive.com/v1/dealFields?api_token={$api_token}";
+    
+    $response = wp_remote_get($url, [
+        'timeout' => 20,
+        'headers' => [
+            'Accept' => 'application/json',
+        ],
+    ]);
+    
+    if (is_wp_error($response)) {
+        return new WP_REST_Response(['error' => $response->get_error_message()], 500);
+    }
+    
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+    
+    // Filtrer pour n'afficher que les champs personnalisés (custom fields)
+    $custom_fields = [];
+    if (!empty($body['data'])) {
+        foreach ($body['data'] as $field) {
+            // Les champs personnalisés ont une clé qui est un hash
+            if (strlen($field['key']) > 20) {
+                $custom_fields[] = [
+                    'name' => $field['name'],
+                    'key' => $field['key'],
+                    'field_type' => $field['field_type'],
+                    'options' => $field['options'] ?? null,
+                ];
+            }
+        }
+    }
+    
+    return new WP_REST_Response([
+        'success' => true,
+        'custom_fields' => $custom_fields,
     ], 200);
 }
