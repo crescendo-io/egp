@@ -882,12 +882,14 @@ function handle_pipedrive_webhook(WP_REST_Request $request)
  */
 function my_pipedrive_action($data)
 {
+
     // Log des données dans un fichier
     $log_file = __DIR__ . '/pipedrive-log.txt';
     file_put_contents($log_file, date('Y-m-d H:i:s') . " - " . print_r($data, true) . "\n\n", FILE_APPEND);
 
     // Récupérer l'ID du deal depuis les données du webhook
-    $deal_id = $data['current']['id'] ?? $data['meta']['id'] ?? null;
+    $deal_id = $data['v'] ?? $data['v'] ?? null;
+
     
     if ($deal_id) {
         // Envoyer les données vers FreshProcess
@@ -1051,11 +1053,16 @@ function get_token_fresh(){
 
 function add_data_to_fresh($deal_id = null) {
     
+
     if (!$deal_id) {
         return ['success' => false, 'error' => 'Deal ID manquant'];
     }
 
+    
+
     $datas = get_pipedrive_deal($deal_id);
+
+
     
     // Vérifier si get_pipedrive_deal a retourné une erreur
     if (is_wp_error($datas)) {
