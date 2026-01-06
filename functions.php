@@ -605,87 +605,193 @@ function add_opportunity() {
         "zip" => $societyAddressZip
     ];
 
-    $objSender['opp'] = $opp;
-    $objSender['tiers'] = $tiers;
-    $objSender['contact'] = $contact;
-
-
-    // Token API CALL
-    $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/login';
-    $args = [
-        'body'      => [
-            'login'    => 'support_api',
-            'password' => 'X7oTJGhdfINP'
-        ],
-        'timeout'   => 10,
-        'redirection' => 10,
-        'blocking'  => true,
-        'headers'   => [
-            'Content-Type' => 'application/x-www-form-urlencoded'
-        ],
-    ];
-
-    $response = wp_remote_post($url, $args);
-
-    // Vérification des erreurs
-    if (is_wp_error($response)) {
-        error_log('Erreur API FreshProcess : ' . $response->get_error_message());
-        return;
-    }
-
-    // Récupération et décodage du corps de la réponse
-    $response_body = wp_remote_retrieve_body($response);
-    $response_data = json_decode($response_body, true);
-
-    // Vérification de la présence du token
-    $token_api = $response_data['success']['token'] ?? null;
-
-    // POST DATAS API CALL
-    $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/gambetta/create-opportunity';
-
-    $body = json_encode($objSender);
-
-
+    // ========================================
+    // ENVOI VERS PIPEDRIVE
+    // ========================================
     
-
-// Arguments de la requête
-    $args = [
-        'body'        => $body,
-        'timeout'     => 10,
-        'redirection' => 10,
-        'blocking'    => true,
-        'headers'     => [
-            'Content-Type' => 'application/json',
-            'DOLAPIKEY'    => $token_api,
-        ],
+    $api_token = 'dc709fbe3e1fc31fa63a75c0e4099d928afd39ca';
+    $pipedrive_errors = [];
+    
+    // 1) Créer l'organisation
+    $org_data = [
+        'name' => $societyName,
+        'address' => $societyAddress . ', ' . $societyAddressZip . ' ' . $societyAddressTown,
     ];
-
-    $response = wp_remote_post($url, $args);
-
-
-    if (is_wp_error($response)) {
-        error_log('Erreur API FreshProcess : ' . $response->get_error_message());
-        return;
-    }
-
-// Récupération de la réponse
-    $response_body = wp_remote_retrieve_body($response);
-    $response_data = json_decode($response_body, true);
-
-    var_dump($response_data); die;
-
-    if ($response_data) {
-        error_log('Réponse API : ' . print_r($response_data, true));
+    
+    $org_response = wp_remote_post("https://api.pipedrive.com/v1/organizations?api_token={$api_token}", [
+        'timeout' => 20,
+        'headers' => ['Content-Type' => 'application/json'],
+        'body' => json_encode($org_data),
+    ]);
+    
+    $org_id = null;
+    if (!is_wp_error($org_response)) {
+        $org_body = json_decode(wp_remote_retrieve_body($org_response), true);
+        $org_id = $org_body['data']['id'] ?? null;
     } else {
-        error_log('Erreur : réponse vide ou invalide.');
+        $pipedrive_errors[] = 'Erreur création organisation: ' . $org_response->get_error_message();
     }
-
-    if (is_wp_error($response)) {
-        echo 'Erreur : ' . $response->get_error_message();
+    
+    // 2) Créer la personne (contact)
+    $person_data = [
+        'name' => $firstName . ' ' . $secondName,
+        'email' => [$email],
+        'phone' => [$phone],
+        'org_id' => $org_id,
+    ];
+    
+    $person_response = wp_remote_post("https://api.pipedrive.com/v1/persons?api_token={$api_token}", [
+        'timeout' => 20,
+        'headers' => ['Content-Type' => 'application/json'],
+        'body' => json_encode($person_data),
+    ]);
+    
+    $person_id = null;
+    if (!is_wp_error($person_response)) {
+        $person_body = json_decode(wp_remote_retrieve_body($person_response), true);
+        $person_id = $person_body['data']['id'] ?? null;
     } else {
-        echo wp_remote_retrieve_body($response);
+        $pipedrive_errors[] = 'Erreur création personne: ' . $person_response->get_error_message();
     }
-
+    
+    // 3) Créer le deal
+    // Clés des champs personnalisés
+    $FIELD_ADDRESS = '542d02944d09ca0fccd0bd7e239ca07613086ae2';      // Adresse d'installation
+    $FIELD_PROJECT_INFO = '52443409ad9636122e6596305d2ed1a3c1cb6f9d'; // Note Information du projet
+    $FIELD_GCLID = '72b31b6f20e15e3bec5225122f9b43539e0ca395';        // gclid
+    $FIELD_WBRAID = 'e3bf20c1ef4989cc07eef8c87a05e46e664df071';       // wbraid
+    $FIELD_UTM_SOURCE = '78313cb1c2b6733c61930eb0d0089a6f73adb107';   // utm_source
+    $FIELD_UTM_MEDIUM = 'eb81a0d857c5b38a6fde2a776eb9aa201fea2f83';   // utm_medium
+    $FIELD_UTM_CAMPAIGN = '017b423da414a8447f699f99d9012e49bd88e5ca'; // utm_campaign
+    $FIELD_UTM_CONTENT = '9adf14b638e90ddf8da2796f2a44892dd2c5f2fa';  // utm_content
+    $FIELD_UTM_TERM = '7e60cb9a2b5d175d7a2497bec97a93aaaf036dee';     // utm_term
+    $FIELD_SYNC = '3efe132b7fa2e85d872e5df378ecac1a2cb4b371';         // Synchronisation (319=envoyées)
+    
+    // Construire l'adresse d'installation
+    $installation_address = $projectAddress ? $projectAddress . ', ' . $projectAddressZip . ' ' . $projectAddressTown : '';
+    
+    // Description avec les fichiers
+    $deal_description = $descriptionProject;
+    if (isset($mediasHtml) && $mediasHtml) {
+        $deal_description .= '<br/><strong>Liste des fichiers</strong> : ' . $mediasHtml;
+    }
+    
+    $deal_data = [
+        'title' => 'Site - ' . $societyName,
+        'org_id' => $org_id,
+        'person_id' => $person_id,
+        'stage_id' => 1, // Premier stage du pipeline (à ajuster selon votre config)
+        $FIELD_PROJECT_INFO => $deal_description,
+        $FIELD_GCLID => $gclid,
+        $FIELD_WBRAID => $wbraid,
+        $FIELD_UTM_SOURCE => $utm_source,
+        $FIELD_UTM_MEDIUM => $utm_medium,
+        $FIELD_UTM_CAMPAIGN => $utm_campaign,
+        $FIELD_UTM_CONTENT => $utm_content,
+        $FIELD_UTM_TERM => $utm_term,
+        $FIELD_SYNC => 319, // Données envoyées 📤 (Opport. Brouillon)
+    ];
+    
+    // Ajouter l'adresse d'installation si disponible
+    if ($installation_address) {
+        $deal_data[$FIELD_ADDRESS] = $installation_address;
+    }
+    
+    $deal_response = wp_remote_post("https://api.pipedrive.com/v1/deals?api_token={$api_token}", [
+        'timeout' => 20,
+        'headers' => ['Content-Type' => 'application/json'],
+        'body' => json_encode($deal_data),
+    ]);
+    
+    $deal_id = null;
+    if (!is_wp_error($deal_response)) {
+        $deal_body = json_decode(wp_remote_retrieve_body($deal_response), true);
+        $deal_id = $deal_body['data']['id'] ?? null;
+        
+        if (!$deal_body['success']) {
+            $pipedrive_errors[] = 'Erreur création deal: ' . ($deal_body['error'] ?? 'Erreur inconnue');
+        }
+    } else {
+        $pipedrive_errors[] = 'Erreur création deal: ' . $deal_response->get_error_message();
+    }
+    
+    // 4) Attacher les fichiers au deal Pipedrive
+    $uploaded_file_ids = [];
+    if ($deal_id && !empty($uploaded_files)) {
+        $upload_dir = wp_upload_dir();
+        $target_dir = $upload_dir['basedir'] . '/opportunity/';
+        
+        foreach ($uploaded_files as $file_url) {
+            // Récupérer le chemin local du fichier
+            $filename = basename($file_url);
+            $file_path = $target_dir . $filename;
+            
+            if (file_exists($file_path)) {
+                // Utiliser cURL pour l'upload multipart (wp_remote_post ne gère pas bien les fichiers)
+                $curl = curl_init();
+                
+                $post_fields = [
+                    'file' => new CURLFile($file_path, mime_content_type($file_path), $filename),
+                    'deal_id' => $deal_id,
+                ];
+                
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => "https://api.pipedrive.com/v1/files?api_token={$api_token}",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => $post_fields,
+                    CURLOPT_HTTPHEADER => [
+                        'Accept: application/json',
+                    ],
+                    CURLOPT_TIMEOUT => 30,
+                ]);
+                
+                $file_response = curl_exec($curl);
+                $curl_error = curl_error($curl);
+                curl_close($curl);
+                
+                if ($curl_error) {
+                    $pipedrive_errors[] = "Erreur upload fichier {$filename}: {$curl_error}";
+                } else {
+                    $file_data = json_decode($file_response, true);
+                    if (isset($file_data['data']['id'])) {
+                        $uploaded_file_ids[] = $file_data['data']['id'];
+                    } else {
+                        $pipedrive_errors[] = "Erreur upload fichier {$filename}: " . ($file_data['error'] ?? 'Erreur inconnue');
+                    }
+                }
+            }
+        }
+    }
+    
+    // Log pour debug
+    $log_file = get_stylesheet_directory() . '/pipedrive-form.log';
+    $log_entry = "=== " . date('Y-m-d H:i:s') . " ===\n";
+    $log_entry .= "Société: {$societyName}\n";
+    $log_entry .= "Contact: {$firstName} {$secondName} - {$email} - {$phone}\n";
+    $log_entry .= "Org ID: {$org_id}\n";
+    $log_entry .= "Person ID: {$person_id}\n";
+    $log_entry .= "Deal ID: {$deal_id}\n";
+    $log_entry .= "Fichiers uploadés: " . count($uploaded_file_ids) . " (" . implode(', ', $uploaded_file_ids) . ")\n";
+    if (!empty($pipedrive_errors)) {
+        $log_entry .= "Erreurs: " . implode(', ', $pipedrive_errors) . "\n";
+    }
+    $log_entry .= "========================================\n\n";
+    file_put_contents($log_file, $log_entry, FILE_APPEND);
+    
+    // Réponse
+    if ($deal_id) {
+        wp_send_json_success([
+            'message' => 'Demande envoyée avec succès !',
+            'deal_id' => $deal_id,
+        ]);
+    } else {
+        wp_send_json_error([
+            'message' => 'Erreur lors de l\'envoi de la demande.',
+            'errors' => $pipedrive_errors,
+        ]);
+    }
+    
     wp_die();
 }
 
@@ -776,13 +882,20 @@ function handle_pipedrive_webhook(WP_REST_Request $request)
  */
 function my_pipedrive_action($data)
 {
-    // Exemple : log des données dans un fichier
-
+    // Log des données dans un fichier
     $log_file = __DIR__ . '/pipedrive-log.txt';
     file_put_contents($log_file, date('Y-m-d H:i:s') . " - " . print_r($data, true) . "\n\n", FILE_APPEND);
 
-    // Ici tu mets ta vraie logique
-    // Exemple : $deal_id = $data['current']['id'] ?? null;
+    // Récupérer l'ID du deal depuis les données du webhook
+    $deal_id = $data['current']['id'] ?? $data['meta']['id'] ?? null;
+    
+    if ($deal_id) {
+        // Envoyer les données vers FreshProcess
+        $result = add_data_to_fresh($deal_id);
+        
+        // Log du résultat
+        file_put_contents($log_file, date('Y-m-d H:i:s') . " - FreshProcess sync pour deal {$deal_id}: " . print_r($result, true) . "\n\n", FILE_APPEND);
+    }
 }
 
 
@@ -936,9 +1049,13 @@ function get_token_fresh(){
     return $token;
 }
 
-function add_data_to_fresh() {
+function add_data_to_fresh($deal_id = null) {
+    
+    if (!$deal_id) {
+        return ['success' => false, 'error' => 'Deal ID manquant'];
+    }
 
-    $datas = get_pipedrive_deal(5);
+    $datas = get_pipedrive_deal($deal_id);
     $freshToken = get_token_fresh();
 
 
@@ -977,7 +1094,7 @@ function add_data_to_fresh() {
     $data = array(
         'opp' => array(
             'title'        => $deal_title,
-            'ref'          => 'pipedrive_' . 5,
+            'ref'          => 'pipedrive_' . $deal_id,
             'description'  => $projectInfo,
             'note_public'  => "Note publique concernant l'opportunité.",
             'pipelinecol'  => 1,
@@ -1035,17 +1152,20 @@ function add_data_to_fresh() {
     $response = wp_remote_post( $url, $args );
 
     if ( is_wp_error( $response ) ) {
-        // Gestion d’erreur WordPress
+        // Gestion d'erreur WordPress
         error_log( 'Erreur requête Gambetta : ' . $response->get_error_message() );
-        return null;
+        return ['success' => false, 'error' => $response->get_error_message()];
     }
 
-    // Corps de la réponse (équivalent de echo $response de ton cURL)
+    // Corps de la réponse
     $body = wp_remote_retrieve_body( $response );
-
-    var_dump($body);
-
-    die;
+    $response_data = json_decode($body, true);
+    
+    return [
+        'success' => true,
+        'deal_id' => $deal_id,
+        'fresh_response' => $response_data
+    ];
 }
 
 
