@@ -1056,6 +1056,17 @@ function add_data_to_fresh($deal_id = null) {
     }
 
     $datas = get_pipedrive_deal($deal_id);
+    
+    // Vérifier si get_pipedrive_deal a retourné une erreur
+    if (is_wp_error($datas)) {
+        return ['success' => false, 'error' => $datas->get_error_message(), 'deal_id' => $deal_id];
+    }
+    
+    // Vérifier si les données sont valides
+    if (empty($datas) || !is_array($datas)) {
+        return ['success' => false, 'error' => 'Données du deal invalides ou vides', 'deal_id' => $deal_id];
+    }
+    
     $freshToken = get_token_fresh();
 
 
@@ -1072,20 +1083,33 @@ function add_data_to_fresh($deal_id = null) {
 
     //Datas organisation
     $organisation_name = $datas['organisation']->name ?? null;
-    $organisation_address = $datas['organisation']->address->value ?? null;
+    $organisation_address = isset($datas['organisation']->address->value) ? $datas['organisation']->address->value : null;
 
-
-
-    // Datas Person
-    $person_phone = $datas['person']->phones;
-    $person_phone_reset = reset($person_phone);
-    $person_phone_value = $person_phone_reset->value;
-
-    $person_fistname = $datas['person']->first_name;
-    $person_lastname = $datas['person']->last_name;
-    $person_emails = $datas['person']->emails;
-    $person_email_reset = reset($person_emails);
-    $person_email_value = $person_email_reset->value;
+    // Datas Person (avec vérifications null-safe)
+    $person_phone_value = null;
+    $person_fistname = null;
+    $person_lastname = null;
+    $person_email_value = null;
+    
+    if (!empty($datas['person'])) {
+        $person = $datas['person'];
+        
+        // Téléphone
+        if (!empty($person->phones) && is_array($person->phones)) {
+            $person_phone_reset = reset($person->phones);
+            $person_phone_value = $person_phone_reset->value ?? null;
+        }
+        
+        // Nom / Prénom
+        $person_fistname = $person->first_name ?? null;
+        $person_lastname = $person->last_name ?? null;
+        
+        // Email
+        if (!empty($person->emails) && is_array($person->emails)) {
+            $person_email_reset = reset($person->emails);
+            $person_email_value = $person_email_reset->value ?? null;
+        }
+    }
 
 
     $url = 'https://atelier-gambetta.crm.freshprocess.eu/api/index.php/gambetta/create-opportunity';
