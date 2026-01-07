@@ -888,7 +888,7 @@ function my_pipedrive_action($data)
     file_put_contents($log_file, date('Y-m-d H:i:s') . " - " . print_r($data, true) . "\n\n", FILE_APPEND);
 
     // Récupérer l'ID du deal depuis les données du webhook
-    $deal_id = $data['v'] ?? $data['v'] ?? null;
+    $deal_id = $data['deal_id'] ?? $data['deal_id'] ?? null;
 
     
     if ($deal_id) {
