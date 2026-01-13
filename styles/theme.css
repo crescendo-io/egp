@@ -1770,9 +1770,16 @@ footer a {
 }
 
 
+.visible-xs-menu{
+    display: none !important;
+}
 @media (max-width: 576px) {
     .filters-form {
         display: none;
+    }
+
+    .visible-xs-menu{
+        display: block !important;
     }
     .post-galerie{
         width: 100%;

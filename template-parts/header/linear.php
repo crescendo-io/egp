@@ -164,11 +164,15 @@
                                 </ul>
                             <?php endif; ?>
                         </li>
-
                     <?php
                     endforeach;
                     ?>
-
+                    <li class="visible-xs-menu">
+                        <a href="<?= get_site_url(); ?>/galerie/">Nos réalisations</a>
+                    </li>
+                    <li class="visible-xs-menu">
+                        <a href="<?= get_site_url(); ?>/demande-de-devis/">Demander un devis</a>
+                    </li>
 
                 </ul>
             </div>
