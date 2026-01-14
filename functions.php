@@ -1134,7 +1134,7 @@ function add_data_to_fresh($deal_id = null) {
             'utm_campaign' => $utm_campaign,
             'utm_content'  => $utm_content,
             'utm_term'     => '',
-            'id_pipedrive' => $deal_title,
+            'id_pipedrive' => $deal_id,
             "wbraid" => $wbraid,
             "gclid" => $gclid
         ),
