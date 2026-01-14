@@ -680,7 +680,8 @@ function add_opportunity() {
         'title' => 'Site - ' . $societyName,
         'org_id' => $org_id,
         'person_id' => $person_id,
-        'stage_id' => 1, // Premier stage du pipeline (à ajuster selon votre config)
+        'stage_id' => 0, // Nouvelle demande
+        'user_id' => 24734617,
         $FIELD_PROJECT_INFO => $deal_description,
         $FIELD_GCLID => $gclid,
         $FIELD_WBRAID => $wbraid,
