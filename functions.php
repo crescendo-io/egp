@@ -1500,10 +1500,10 @@ function update_pipedrive_deal_from_fresh($fresh_data) {
     }
     
     // 03 - Montant HT (format monetary: objet avec value et currency)
-    $montant_devis = $first_proposal_total_ht ?? $total_proposals_valid_ht ?? $total_ht;
+    $montant_devis = $total_ht;
     if ($montant_devis !== null && floatval($montant_devis) > 0) {
         $custom_fields[$FIELD_MONTANT_HT] = [
-            'value' => floatval($montant_devis),
+            'value' => floatval($total_ht),
             'currency' => 'EUR'
         ];
     }
