@@ -1133,7 +1133,8 @@ function add_data_to_fresh($deal_id = null) {
             'utm_medium'   => 'cpc',
             'utm_campaign' => $utm_campaign,
             'utm_content'  => $utm_content,
-            'utm_term'     => 'achat lampe',
+            'utm_term'     => '',
+            'id_pipedrive' => $deal_title,
             "wbraid" => $wbraid,
             "gclid" => $gclid
         ),
@@ -1455,6 +1456,7 @@ function update_pipedrive_deal_from_fresh($fresh_data) {
     $name = $fresh_data['name'] ?? null;
     $soc_id = $fresh_data['soc_id'] ?? null;
     $total_ht = $fresh_data['total_ht'] ?? null;
+    $deal_id_pipedrive = $fresh_data['id_pipedrive'] ?? null;
     $first_proposal_total_ht = $fresh_data['first_proposal_total_ht'] ?? null;
     $total_proposals_ht = $fresh_data['total_proposals_ht'] ?? null;
     $total_proposals_valid_ht = $fresh_data['total_proposals_valid_ht'] ?? null;
@@ -1489,7 +1491,7 @@ function update_pipedrive_deal_from_fresh($fresh_data) {
     $custom_fields = [];
     
     // 01 - Lien du Devis (TODO: à compléter avec les vraies données Fresh)
-    $lien_devis = $fresh_data['lien_devis'] ?? "https://atelier-gambetta.crm.freshprocess.eu/comm/propal/card.php?id={$object_id}";
+    $lien_devis = $fresh_data['object_url'] ?? "https://atelier-gambetta.crm.freshprocess.eu/comm/propal/card.php?id={$object_id}";
     $custom_fields[$FIELD_LIEN_DEVIS] = $lien_devis;
     
     // 02 - Ref
@@ -1514,7 +1516,7 @@ function update_pipedrive_deal_from_fresh($fresh_data) {
     }
     
     // 05 - Lien Signature (TODO: à compléter avec les vraies données Fresh)
-    $lien_signature = $fresh_data['lien_signature'] ?? "https://atelier-gambetta.crm.freshprocess.eu/signature/{$object_id}";
+    $lien_signature = $fresh_data['object_url'] ?? "https://atelier-gambetta.crm.freshprocess.eu/signature/{$object_id}";
     $custom_fields[$FIELD_LIEN_SIGNATURE] = $lien_signature;
     
     // 06 - Date fin Validité (TODO: à compléter avec les vraies données Fresh)
@@ -1551,7 +1553,7 @@ function update_pipedrive_deal_from_fresh($fresh_data) {
     $notes .= "GCLID: {$gclid}\n";
     
     // Appel API Pipedrive v2 pour mettre à jour le deal
-    $url = "https://api.pipedrive.com/api/v2/deals/{$deal_id}";
+    $url = "https://api.pipedrive.com/api/v2/deals/{$deal_id_pipedrive}";
     
     $response = wp_remote_request($url, [
         'method'  => 'PATCH',
